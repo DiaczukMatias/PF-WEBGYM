@@ -2,7 +2,7 @@
 import { validateLoginForm } from "@/helpers/validate";
 import { ILoginErrors, ILoginProps } from "@/interfaces/ILogin";
 import React, { useState, useEffect } from "react";
-import styles from "./Login.module.css";
+import styles from "./Login.module.css" ;
 
 const LoginView = () => {
   const initialState = {
