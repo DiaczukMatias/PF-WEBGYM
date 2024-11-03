@@ -68,7 +68,7 @@ const HomeView = () => {
         <div>
         <p>home </p>
        <Category categories={categoriesData} />
-       <p> Clases favoritas:  (ver maa clases) </p>
+       <p> Clases favoritas:  ( agregar cardlist de resumen de 3 clases y boton ver mas clases) </p>
        <Profesores profesores={profesoresData}/>
         </div>
     )
