@@ -1,25 +1,88 @@
 "use client";
+import { useState } from "react";
 import Link from "next/link";
+import { FaSearch } from "react-icons/fa";
 
 const Navbar = () => {
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  //Cambiar manual el estado para ver navbar con usuario logeado
+  const [isLogged, setIsLogged] = useState(true);
+ //
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const userName = "Usuario"; 
+
   return (
-    <nav className="bg-slate-800 text-white-200 py-4 ">
-      <div className="container mx-auto flex flex-wrap items-center justify-between">
+    <nav className="bg-primary text-secondary py-4">
+      <div className="container mx-auto flex flex-wrap items-center justify-between px-4">
         <Link href="/">
           <div className="flex items-center space-x-2 text-lg font-bold">
-            <span className="flex items-center text-white">NOMBREDELGYM</span>
+            <span>LOGO</span>
+            <span className="text-secondary">NOMBREDELGYM</span>
           </div>
         </Link>
 
         <div className="flex items-center space-x-4">
-          <>
-            <a href="/login" className="hover:text-gray-400 text-white">
-              Sign In
-            </a>
-            <a href="/register" className="hover:text-gray-400 text-white">
-              Sign Up
-            </a>
-          </>
+          {!isLogged ? (
+            <>
+              <Link href="/login" className="hover:text-secondary2 text-secondary">
+                Login
+              </Link>
+              <Link href="/register" className="hover:text-secondary2 text-secondary">
+                Register
+              </Link>
+              <Link href="/contact" className="hover:text-secondary2 text-secondary">
+                Contact
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link href="/activities" className="hover:text-secondary2 text-secondary">
+                Clases Disponibles
+              </Link>
+              <div className="relative">
+                <button
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  className="hover:text-secondary2 text-secondary"
+                >
+                  Hola, {userName} {isMenuOpen ? '▵' : '▿'}
+                </button>
+                {isMenuOpen && (
+                  <div className="absolute right-0 bg-white text-black shadow-lg mt-2 rounded-md">
+                    <Link href="/profile" className="block px-4 py-2 hover:bg-gray-200">Perfil</Link>
+                    <Link href="/agenda" className="block px-4 py-2 hover:bg-gray-200">Mi Agenda</Link>
+                    <Link href="/subscription" className="block px-4 py-2 hover:bg-gray-200">Mi Suscripción</Link>
+                    <button
+                      onClick={() => {
+                        setIsLogged(false); // Aquí podrías manejar el cierre de sesión
+                        setIsMenuOpen(false);
+                      }}
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-200"
+                    >
+                      Cerrar Sesión
+                    </button>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+
+          {/* Search Icon and Input */}
+          <div className="flex items-center space-x-2">
+            {isSearchOpen && (
+              <input
+                type="text"
+                placeholder="Search..."
+                className="px-3 py-2 bg-primary text-secondary border border-accent rounded-md focus:outline-none focus:border-accent2 transition-all duration-200 w-48"
+              />
+            )}
+            <button
+              onClick={() => setIsSearchOpen(!isSearchOpen)}
+              className="text-accent2 hover:text-secondary2"
+            >
+              <FaSearch size={20} />
+            </button>
+          </div>
         </div>
       </div>
     </nav>
