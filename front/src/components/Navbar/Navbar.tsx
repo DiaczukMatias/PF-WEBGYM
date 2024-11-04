@@ -5,12 +5,10 @@ import { FaSearch } from "react-icons/fa";
 
 const Navbar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  //Cambiar manual el estado para ver navbar con usuario logeado
-  const [isLogged, setIsLogged] = useState(true);
- //
-
+  // Cambiar manual el estado para ver navbar con usuario logeado
+  const [isLogged, setIsLogged] = useState(true); 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const userName = "Usuario"; 
+  const userName = "Usuario";
 
   return (
     <nav className="bg-primary text-secondary py-4">
@@ -54,7 +52,7 @@ const Navbar = () => {
                     <Link href="/subscription" className="block px-4 py-2 hover:bg-gray-200">Mi Suscripción</Link>
                     <button
                       onClick={() => {
-                        setIsLogged(false); // Aquí podrías manejar el cierre de sesión
+                        setIsLogged(false); 
                         setIsMenuOpen(false);
                       }}
                       className="block w-full text-left px-4 py-2 hover:bg-gray-200"
@@ -67,15 +65,22 @@ const Navbar = () => {
             </>
           )}
 
-          {/* Search Icon and Input */}
+          {/* Barra buscadora  */}
           <div className="flex items-center space-x-2">
-            {isSearchOpen && (
+            <div
+              className={`overflow-hidden transition-all duration-300 ${
+                isSearchOpen ? "w-48 opacity-100 ml-2" : "w-0 opacity-0"
+              }`}
+            >
               <input
                 type="text"
                 placeholder="Search..."
-                className="px-3 py-2 bg-primary text-secondary border border-accent rounded-md focus:outline-none focus:border-accent2 transition-all duration-200 w-48"
+                className="px-3 py-2 bg-primary text-secondary border border-accent rounded-md focus:outline-none focus:border-accent2 w-full transition-transform duration-300 transform"
+                style={{
+                  transform: isSearchOpen ? "translateX(0)" : "translateX(100%)",
+                }}
               />
-            )}
+            </div>
             <button
               onClick={() => setIsSearchOpen(!isSearchOpen)}
               className="text-accent2 hover:text-secondary2"
