@@ -13,7 +13,7 @@ const Navbar = () => {
   return (
     <nav className="bg-primary text-secondary py-4">
       <div className="container mx-auto flex flex-wrap items-center justify-between px-4">
-        <Link href="/">
+        <Link href="/home">
           <div className="flex items-center space-x-2 text-lg font-bold">
             <span>LOGO</span>
             <span className="text-secondary">NOMBREDELGYM</span>
@@ -75,7 +75,7 @@ const Navbar = () => {
               <input
                 type="text"
                 placeholder="Search..."
-                className="px-3 py-2 bg-primary text-secondary border border-accent rounded-md focus:outline-none focus:border-accent2 w-full transition-transform duration-300 transform"
+                className="px-3 py-2 bg-secondary2 text-secondary border border-accent rounded-md focus:outline-none focus:border-accent2 w-full transition-transform duration-300 transform"
                 style={{
                   transform: isSearchOpen ? "translateX(0)" : "translateX(100%)",
                 }}
@@ -83,7 +83,7 @@ const Navbar = () => {
             </div>
             <button
               onClick={() => setIsSearchOpen(!isSearchOpen)}
-              className="text-accent2 hover:text-secondary2"
+              className="text-accent hover:text-secondary2"
             >
               <FaSearch size={20} />
             </button>
