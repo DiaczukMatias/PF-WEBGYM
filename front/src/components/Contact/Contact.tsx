@@ -28,7 +28,7 @@ const ContactForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-3/4 mx-auto bg-secondary2 border border-b-accent m-4 p-4 md:w-2/3 lg:w-1/2">
+    <form onSubmit={handleSubmit} className="w-3/4 mx-auto bg-transparent border border-accent m-4 p-4 md:w-2/3 lg:w-1/2">
       <div className="mb-4">
         <label className="block text-sm font-medium mb-1" htmlFor="name">Nombre</label>
         <input

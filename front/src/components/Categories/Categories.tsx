@@ -27,10 +27,10 @@ const Category: React.FC<CategoryProps> = ({ categories }) => {
       <div className="flex items-center">
         <button
           onClick={handleScrollLeft}
-          className="flex items-center justify-center w-12 h-12 bg-gray-200 hover:bg-gray-300 rounded-full"
+          className="flex items-center justify-center w-12 h-12 border border-secondary2  hover:bg-secondary2 rounded-full"
           aria-label="Scroll left"
         >
-          <div className="border-l-4 border-t-4 border-transparent border-l-black border-t-transparent w-0 h-0 transform rotate-135" />
+          <div className="border-l-4 border-t-4  border-t-transparent w-0 h-0 transform rotate-135" />
         </button>
         <div className="overflow-hidden w-full">
           <div className="flex transition-transform duration-300" style={{ transform: `translateX(-${currentIndex * (100 / itemsPerPage)}%)` }}>
@@ -52,10 +52,10 @@ const Category: React.FC<CategoryProps> = ({ categories }) => {
         </div>
         <button
           onClick={handleScrollRight}
-          className="flex items-center justify-center w-12 h-12 bg-gray-200 hover:bg-gray-300 rounded-full"
+          className="flex items-center justify-center w-12 h-12 border border-secondary2  hover:bg-secondary2 rounded-full"
           aria-label="Scroll right"
         >
-          <div className="border-r-4 border-b-4 border-transparent border-r-black border-b-transparent w-0 h-0 transform rotate-45" />
+          <div className="border-r-4 border-b-4  border-b-transparent w-0 h-0 transform rotate-45" />
         </button>
       </div>
     </div>
