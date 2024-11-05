@@ -15,7 +15,7 @@ const Footer = () => {
         <div className="flex space-x-4 text-sm mb-4 md:mb-0">
           <Link href="/privacy" className="hover:text-secondary2">Privacy Policy</Link>
           <Link href="/terms" className="hover:text-secondary2">Terms of Service</Link>
-          <Link href="/contact" className="hover:text-secondary2">Contact</Link>
+          <Link href="/contacto" className="hover:text-secondary2">Contact</Link>
         </div>
 
         {/* derecha*/}
