@@ -1,3 +1,9 @@
-export default function Home() {
-  return <div></div>;
+import LandingView from "@/views/LandingView/LandingView";
+
+export default function Landing() {
+  return (
+    <div>
+      <LandingView />
+    </div>
+  );
 }
