@@ -6,7 +6,7 @@ import { FaSearch } from "react-icons/fa";
 const Navbar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   // Cambiar manual el estado para ver navbar con usuario logeado
-  const [isLogged, setIsLogged] = useState(true); 
+  const [isLogged, setIsLogged] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const userName = "Usuario";
 
@@ -23,19 +23,37 @@ const Navbar = () => {
         <div className="flex items-center space-x-4">
           {!isLogged ? (
             <>
-              <Link href="/login" className="hover:text-secondary2 text-secondary">
+              <Link
+                href="/login"
+                className="hover:text-secondary2 text-secondary"
+              >
                 Login
               </Link>
-              <Link href="/register" className="hover:text-secondary2 text-secondary">
+              <Link
+                href="/register"
+                className="hover:text-secondary2 text-secondary"
+              >
                 Register
               </Link>
-              <Link href="/contact" className="hover:text-secondary2 text-secondary">
+              <Link
+                href="/contact"
+                className="hover:text-secondary2 text-secondary"
+              >
                 Contact
+              </Link>
+              <Link
+                href="/aboutUs"
+                className="hover:text-secondary2 text-secondary"
+              >
+                Sobre Nosotros
               </Link>
             </>
           ) : (
             <>
-              <Link href="/activities" className="hover:text-secondary2 text-secondary">
+              <Link
+                href="/activities"
+                className="hover:text-secondary2 text-secondary"
+              >
                 Clases Disponibles
               </Link>
               <div className="relative">
@@ -43,16 +61,31 @@ const Navbar = () => {
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
                   className="hover:text-secondary2 text-secondary"
                 >
-                  Hola, {userName} {isMenuOpen ? '▵' : '▿'}
+                  Hola, {userName} {isMenuOpen ? "▵" : "▿"}
                 </button>
                 {isMenuOpen && (
                   <div className="absolute right-0 bg-white text-black shadow-lg mt-2 rounded-md">
-                    <Link href="/profile" className="block px-4 py-2 hover:bg-gray-200">Perfil</Link>
-                    <Link href="/agenda" className="block px-4 py-2 hover:bg-gray-200">Mi Agenda</Link>
-                    <Link href="/subscription" className="block px-4 py-2 hover:bg-gray-200">Mi Suscripción</Link>
+                    <Link
+                      href="/profile"
+                      className="block px-4 py-2 hover:bg-gray-200"
+                    >
+                      Perfil
+                    </Link>
+                    <Link
+                      href="/agenda"
+                      className="block px-4 py-2 hover:bg-gray-200"
+                    >
+                      Mi Agenda
+                    </Link>
+                    <Link
+                      href="/subscription"
+                      className="block px-4 py-2 hover:bg-gray-200"
+                    >
+                      Mi Suscripción
+                    </Link>
                     <button
                       onClick={() => {
-                        setIsLogged(false); 
+                        setIsLogged(false);
                         setIsMenuOpen(false);
                       }}
                       className="block w-full text-left px-4 py-2 hover:bg-gray-200"
@@ -77,7 +110,9 @@ const Navbar = () => {
                 placeholder="Search..."
                 className="px-3 py-2 bg-secondary2 text-secondary border border-accent rounded-md focus:outline-none focus:border-accent2 w-full transition-transform duration-300 transform"
                 style={{
-                  transform: isSearchOpen ? "translateX(0)" : "translateX(100%)",
+                  transform: isSearchOpen
+                    ? "translateX(0)"
+                    : "translateX(100%)",
                 }}
               />
             </div>
