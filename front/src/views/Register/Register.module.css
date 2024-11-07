@@ -1,11 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
 
 .formContainer {
-  border: 2px solid #efcd7e;
+  border: 2px solid #b6ff04;
   max-width: 400px;
   margin: 90px auto;
   padding: 30px;
-  background-color: #ffffff;
+  background-color: black;
   border-radius: 15px;
   box-shadow: 0 2px 10px #333333;
   text-align: center;
@@ -13,22 +13,22 @@
 }
 
 .h2 {
-  color: #efcd7e;
+  color: #b6ff04;
   font-size: 1.8rem;
   margin-bottom: 20px;
   font-weight: 700;
 }
 
 .inputField {
-  background-color: ffffff;
-  color: black;
+  background-color: black;
+  color: white;
   width: 90%;
   padding: 12px;
   margin-bottom: 20px;
   font-size: 1rem;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
   border: none;
-  border-bottom: 2px solid #efcd7e;
+  border-bottom: 2px solid #b6ff04;
   outline: none;
 }
 
@@ -36,9 +36,9 @@
   margin-top: 20px;
   width: 120px;
   padding: 10px;
-  background-color: #efcd7e;
+  background-color: #b6ff04;
   color: black;
-  border: 3px, solid, #efcd7e;
+  border: 3px, solid, #b6ff04;
   border-radius: 40px;
   font-size: 1.1rem;
   font-weight: 700;
@@ -49,12 +49,12 @@
 .submitButton:hover {
   font-weight: 700;
   color: black;
-  background-color: #efcd7e;
+  background-color: #b6ff04;
   transform: translateY(-2px);
 }
 
 .submitButton:disabled {
-  background-color: #efcd7e;
+  background-color: #b6ff04;
   cursor: not-allowed;
 }
 
@@ -66,7 +66,7 @@
 }
 
 .formGroup {
-  background-color: ffffff;
+  background-color: black;
   color: black;
   width: 90%;
   padding: 12px;
@@ -74,10 +74,10 @@
   font-size: 1rem;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
   border: none;
-  border-bottom: 2px solid #efcd7e;
+  border-bottom: 2px solid #b6ff04;
   outline: none;
 }
 
 .label {
-  color: #efcd7e;
+  color: #b6ff04;
 }

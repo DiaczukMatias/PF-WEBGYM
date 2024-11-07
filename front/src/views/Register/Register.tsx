@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unescaped-entities */
 "use client";
 
 import { validateRegisterForm } from "@/helpers/validate";
@@ -114,7 +113,7 @@ const RegisterView = () => {
             type="text"
             value={dataUser.name}
             onChange={handleChange}
-            placeholder="John Doe"
+            placeholder="Name"
             className={styles.inputField}
           />
           {errors.name && (

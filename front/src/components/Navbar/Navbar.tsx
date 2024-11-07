@@ -6,53 +6,86 @@ import { FaSearch } from "react-icons/fa";
 const Navbar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   // Cambiar manual el estado para ver navbar con usuario logeado
-  const [isLogged, setIsLogged] = useState(true); 
+  const [isLogged, setIsLogged] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const userName = "Usuario";
 
   return (
     <nav className="bg-primary text-secondary py-4">
-      <div className="container mx-auto flex flex-wrap items-center justify-between px-4">
+      <div className="container mx-auto flex flex-wrap items-center px-4">
         <Link href="/home">
-          <div className="flex items-center space-x-2 text-lg font-bold">
+          <div className="flex items-center justify-start space-x-2 text-lg font-bold">
             <span>LOGO</span>
             <span className="text-secondary">NOMBREDELGYM</span>
           </div>
         </Link>
 
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center justify-center space-x-4 mx-24">
           {!isLogged ? (
             <>
-              <Link href="/login" className="hover:text-secondary2 text-secondary">
+              <Link
+                href="/login"
+                className="hover:text-secondary2 text-secondary"
+              >
                 Login
               </Link>
-              <Link href="/register" className="hover:text-secondary2 text-secondary">
-                Register
+              <Link
+                href="/register"
+                className="hover:text-secondary2 text-secondary"
+              >
+                Registrate
               </Link>
-              <Link href="/contact" className="hover:text-secondary2 text-secondary">
-                Contact
+              <Link
+                href="/contact"
+                className="hover:text-secondary2 text-secondary"
+              >
+                Contacto
+              </Link>
+              <Link
+                href="/aboutUs"
+                className="hover:text-secondary2 text-secondary"
+              >
+                Sobre Nosotros
               </Link>
             </>
           ) : (
             <>
-              <Link href="/activities" className="hover:text-secondary2 text-secondary">
-                Clases Disponibles
+              <Link
+                href="/activities"
+                className="hover:text-secondary2 text-secondary"
+              >
+                Clases
               </Link>
               <div className="relative">
                 <button
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
                   className="hover:text-secondary2 text-secondary"
                 >
-                  Hola, {userName} {isMenuOpen ? '▵' : '▿'}
+                  Hola, {userName} {isMenuOpen ? "▵" : "▿"}
                 </button>
                 {isMenuOpen && (
                   <div className="absolute right-0 bg-white text-black shadow-lg mt-2 rounded-md">
-                    <Link href="/profile" className="block px-4 py-2 hover:bg-gray-200">Perfil</Link>
-                    <Link href="/agenda" className="block px-4 py-2 hover:bg-gray-200">Mi Agenda</Link>
-                    <Link href="/subscription" className="block px-4 py-2 hover:bg-gray-200">Mi Suscripción</Link>
+                    <Link
+                      href="/profile"
+                      className="block px-4 py-2 hover:bg-gray-200"
+                    >
+                      Mi Perfil
+                    </Link>
+                    <Link
+                      href="/agenda"
+                      className="block px-4 py-2 hover:bg-gray-200"
+                    >
+                      Mi Agenda
+                    </Link>
+                    <Link
+                      href="/subscription"
+                      className="block px-4 py-2 hover:bg-gray-200"
+                    >
+                      Mi Suscripción
+                    </Link>
                     <button
                       onClick={() => {
-                        setIsLogged(false); 
+                        setIsLogged(false);
                         setIsMenuOpen(false);
                       }}
                       className="block w-full text-left px-4 py-2 hover:bg-gray-200"
@@ -66,7 +99,7 @@ const Navbar = () => {
           )}
 
           {/* Barra buscadora  */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 ">
             <div
               className={`overflow-hidden transition-all duration-300 ${
                 isSearchOpen ? "w-48 opacity-100 ml-2" : "w-0 opacity-0"
@@ -77,7 +110,9 @@ const Navbar = () => {
                 placeholder="Search..."
                 className="px-3 py-2 bg-secondary2 text-secondary border border-accent rounded-md focus:outline-none focus:border-accent2 w-full transition-transform duration-300 transform"
                 style={{
-                  transform: isSearchOpen ? "translateX(0)" : "translateX(100%)",
+                  transform: isSearchOpen
+                    ? "translateX(0)"
+                    : "translateX(100%)",
                 }}
               />
             </div>
