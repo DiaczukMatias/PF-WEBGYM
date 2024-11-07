@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import Image from 'next/image';
-import { IProfesor } from '@/interfaces/IProfesor';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import React, { useState } from "react";
+import Image from "next/image";
+import { IProfesor } from "@/interfaces/IProfesor";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 interface ProfesorProps {
   profesores: IProfesor[]; 

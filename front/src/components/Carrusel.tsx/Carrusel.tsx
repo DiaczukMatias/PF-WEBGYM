@@ -2,7 +2,7 @@
 "use client";
 import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 interface Categoria {
   nombre: string;
@@ -14,15 +14,15 @@ interface CarouselProps {
 }
 
 const Carrusel: React.FC<CarouselProps> = ({ categorias }) => {
-    const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-    const nextSlide = useCallback(() => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % categorias.length);
-    }, [categorias.length]);
+  const nextSlide = useCallback(() => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % categorias.length);
+  }, [categorias.length]);
 
-    const prevSlide = useCallback(() => {
-        setCurrentIndex(
-            (prevIndex) => (prevIndex - 1 + categorias.length) % categorias.length
+   const prevSlide = useCallback(() => {
+      setCurrentIndex(
+         (prevIndex) => (prevIndex - 1 + categorias.length) % categorias.length
         );
     }, [categorias.length]);
 
@@ -50,23 +50,21 @@ const Carrusel: React.FC<CarouselProps> = ({ categorias }) => {
                     </Link>
                 </div>
             </div>
-
-            <button 
-                onClick={nextSlide} 
-                className="absolute top-1/2 right-4 transform -translate-y-1/2 p-2 rounded-full shadow-md hover:bg-accent2 transition"
-            >
-                <FaChevronRight size={20} color="white" />
-            </button>
-
-            <button
-                onClick={prevSlide}
-                className="absolute top-1/2 left-4 transform -translate-y-1/2 p-2 rounded-full shadow-md hover:bg-accent2 transition"
-            >
-                <FaChevronLeft size={20} color="white" />
-            </button>
-
-        </div>
-    );
+      <button
+        onClick={nextSlide}
+        className="absolute top-1/2 right-4 transform -translate-y-1/2 p-2 rounded-full shadow-md hover:bg-accent2 transition"
+      >
+        <FaChevronRight size={20} color="white" />
+      </button>
+          
+      <button
+        onClick={prevSlide}
+        className="absolute top-1/2 left-4 transform -translate-y-1/2 p-2 rounded-full shadow-md hover:bg-accent2 transition"
+      >
+        <FaChevronLeft size={20} color="white" />
+      </button>
+    </div>
+  );
 };
 
 export default Carrusel;

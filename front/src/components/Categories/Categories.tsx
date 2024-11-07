@@ -48,7 +48,7 @@ const Category: React.FC<CategoryProps> = ({ categories }) => {
                   <Image
                     src={`/images/categories/${categoria.nombre.toLowerCase()}.png`}  
                     alt={categoria.nombre}
-                    width={150}  
+                    width={150}
                     height={150}
                     className="h-24 w-auto max-w-48 rounded-lg object-contain lg:h-48 lg:max-w-96 border border-accent"
                   />
@@ -67,7 +67,7 @@ const Category: React.FC<CategoryProps> = ({ categories }) => {
         >
           <div className="flex items-center">
             <FaChevronRight size={20} color="white" />
-          </div>     
+          </div>
         </button>
       </div>
     </div>

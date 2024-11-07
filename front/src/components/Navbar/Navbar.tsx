@@ -39,13 +39,13 @@ const Navbar = () => {
                 className="hover:text-secondary2 text-secondary"
               >
                 CONTACTO
-                </Link>
+              </Link>
               <Link
                 href="/aboutUs"
                 className="hover:text-secondary2 text-secondary"
               >
                 SOBRE NOSOTROS
-                </Link>
+               </Link>
             </>
           ) : (
             <>
