@@ -1,8 +1,8 @@
-/*"use client";
+"use client";
 import React, { useRef, useEffect } from "react";
 import * as maptilersdk from "@maptiler/sdk";
 import styles from "./AboutUs.module.css";
-import locationIcon from "./location-icon.png";
+//import locationIcon from "./location-icon.png";
 import Image from "next/image";
 
 export default function AboutUs() {

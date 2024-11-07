@@ -36,7 +36,7 @@ const Navbar = () => {
                 Registrate
               </Link>
               <Link
-                href="/contact"
+                href="/contacto"
                 className="hover:text-secondary2 text-secondary"
               >
                 Contacto
