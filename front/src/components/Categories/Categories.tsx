@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState } from 'react';
@@ -7,7 +6,7 @@ import { ICategoria } from '../../interfaces/ICategory';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 interface CategoryProps {
-  categories: ICategoria[];  // Recibe las categorías como prop
+  categories: ICategoria[];  
 }
 
 const Category: React.FC<CategoryProps> = ({ categories }) => {
@@ -19,13 +18,14 @@ const Category: React.FC<CategoryProps> = ({ categories }) => {
   };
 
   const handleScrollRight = () => {
-    setCurrentIndex((prev) => Math.min(prev + 1, categories.length - itemsPerPage));
+    setCurrentIndex((prev) => 
+      Math.min(prev + 1, categories.length - itemsPerPage)
+    );
   };
 
   return (
-    <div className="relative m-4">
-      <h2 className="flex justify-center font-bold font-sans text-xl text-accent m-4">CATEGORIAS:</h2>
-      <div className="flex items-center">
+    <div className="relative m-4 py-4">
+        <div className="flex items-center">
         <button
           onClick={handleScrollLeft}
           className="flex items-center justify-center w-12 h-12 rounded-full shadow-md hover:bg-accent2"
@@ -36,20 +36,26 @@ const Category: React.FC<CategoryProps> = ({ categories }) => {
           </div>
         </button>
         <div className="overflow-hidden w-full">
-          <div className="flex transition-transform duration-300" 
-          style={{  transform: `translateX(-${(currentIndex * 100) / itemsPerPage}%)` }}>
-            {categories.map((categoria) => (
-              <div key={categoria.id} className="flex-none w-1/3 mx-2 flex flex-col items-center">
+          <div 
+            className="flex transition-transform duration-300" 
+            style={{ transform: `translateX(-${(currentIndex * 100) / itemsPerPage}%)` }}
+            >
+              {categories.map((categoria) => (
+                <div 
+                key={categoria.id} 
+                className="flex-none w-1/3 mx-2 flex flex-col items-center relative">
                 <a href={`/clases/${categoria.nombre}`} className="text-center">
                   <Image
-                    src={`/images/categories/${categoria.nombre.toLowerCase()}.png`}  // Imagen en `public/images/categories/`
+                    src={`/images/categories/${categoria.nombre.toLowerCase()}.png`}  
                     alt={categoria.nombre}
                     width={150}  
                     height={150}
                     className="h-24 w-auto max-w-48 rounded-lg object-contain lg:h-48 lg:max-w-96 border border-accent"
                   />
-                {//  <h5 className="flex justify-center mt-1 text-sm">{categoria.nombre}</h5>
-                }</a>
+                </a>
+                <h1 className="absolute bottom-0 left-1/2 transform -translate-x-1/2 text-center text-xl font-bebas font-extrabold mb-4 text-white text-shadow-lg">
+                  {categoria.nombre.toUpperCase()}
+                </h1>
               </div>
             ))}
           </div>
