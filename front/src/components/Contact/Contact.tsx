@@ -28,7 +28,9 @@ const ContactForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-3/4 mx-auto bg-transparent border border-accent m-4 p-4 md:w-2/3 lg:w-1/2">
+    <div>
+       <p className="text-center text-sm font-extralight text-secondary m-8">Si tienes alguna pregunta, por favor completa el formulario a continuación y nos pondremos en contacto contigo pronto.</p>
+    <form onSubmit={handleSubmit} className="w-3/4 mx-auto bg-transparent border border-accent rounded-lg m-4 p-4 md:w-2/3 lg:w-1/2">
       <div className="mb-4">
         <label className="block text-sm font-medium mb-1" htmlFor="name">Nombre</label>
         <input
@@ -37,7 +39,7 @@ const ContactForm: React.FC = () => {
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
-          className="border border-secondary rounded-md w-full p-2 text-secondary"
+          className="border border-secondary rounded-md w-full p-2 bg-transparent text-secondary2"
         />
       </div>
       <div className="mb-4">
@@ -48,7 +50,7 @@ const ContactForm: React.FC = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="border border-secondary rounded-md w-full p-2 text-secondary"
+          className="border border-secondary rounded-md w-full p-2 bg-transparent text-secondary2"
         />
       </div>
       <div className="mb-4">
@@ -58,18 +60,19 @@ const ContactForm: React.FC = () => {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           required
-          className="border border-secondary rounded-md w-full p-2 text-secondary"
+          className="border border-secondary rounded-md w-full p-2 bg-transparent text-secondary2"
           rows={4}
         />
       </div>
       <div className='flex justify-center'>
-        <button type="submit" className="bg-accent2 border border-accent text-black rounded-md p-4">
+        <button type="submit" className="bg-accent border border-accent text-primary font-semibold rounded-md p-4">
         Enviar Mensaje
       </button>
       </div>
       {success && <p className="text-green-500 mt-4">Mensaje enviado con éxito! Espera nuestra respuesta.</p>}
       {error && <p className="text-red-500 mt-4">{error}</p>}
     </form>
+    </div>
   );
 };
 

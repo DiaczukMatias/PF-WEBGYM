@@ -35,7 +35,7 @@ const Navbar = () => {
                 REGISTRATE
               </Link>
               <Link
-                href="/contact"
+                href="/contacto"
                 className="hover:text-secondary2 text-secondary"
               >
                 CONTACTO
@@ -45,7 +45,7 @@ const Navbar = () => {
                 className="hover:text-secondary2 text-secondary"
               >
                 SOBRE NOSOTROS
-              </Link>
+               </Link>
             </>
           ) : (
             <>
@@ -53,7 +53,7 @@ const Navbar = () => {
                 href="/activities"
                 className="hover:text-secondary2 text-secondary"
               >
-                Clases
+                CLASES
               </Link>
               <div className="relative">
                 <button

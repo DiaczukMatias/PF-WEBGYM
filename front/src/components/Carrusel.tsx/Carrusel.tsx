@@ -20,44 +20,43 @@ const Carrusel: React.FC<CarouselProps> = ({ categorias }) => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % categorias.length);
   }, [categorias.length]);
 
-  const prevSlide = useCallback(() => {
-    setCurrentIndex(
-      (prevIndex) => (prevIndex - 1 + categorias.length) % categorias.length
-    );
-  }, [categorias.length]);
+   const prevSlide = useCallback(() => {
+      setCurrentIndex(
+         (prevIndex) => (prevIndex - 1 + categorias.length) % categorias.length
+        );
+    }, [categorias.length]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      nextSlide();
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [nextSlide]);
+    useEffect(() => {
+        const interval = setInterval(() => {
+            nextSlide();
+        }, 5000);
+        return () => clearInterval(interval);
+    }, [nextSlide]);
 
-  return (
-    <div className="relative w-full max-w-screen-lg mx-auto">
-      <h2 className="text-center text-3xl font-bebas mb-4 uppercase">
-        <span className="text-white">Nuestros</span>{" "}
-        <span className="text-[#B6FF04]">Programas</span>
-      </h2>
-      <div className="overflow-hidden rounded-lg shadow-lg ">
-        <div className="relative h-[60vh] w-full rounded-lg ">
-          <Link href={`/clases/${categorias[currentIndex].nombre}`}>
-            <img
-              src={categorias[currentIndex].imagen}
-              alt={`Slide ${categorias[currentIndex].nombre}`}
-              className="w-full h-full object-contain rounded-lg"
-            />
-          </Link>
-        </div>
-      </div>
-
+    return (
+        <div className="relative w-full max-w-screen-lg mx-auto">
+          <h2 className="text-center text-3xl font-bebas mb-4 uppercase">
+            <span className="text-white">Nuestros</span>{" "}
+            <span className="text-accent">Programas</span>
+          </h2>
+            <div className="overflow-hidden rounded-lg shadow-lg">
+                <div className="relative h-[80vh] w-full">
+                    <Link href={`/clases/${categorias[currentIndex].nombre}`}>
+                        <img 
+                             src={categorias[currentIndex].imagen} 
+                             alt={`Slide ${categorias[currentIndex].nombre}`}
+                            className="w-full h-full object-contain rounded-lg" 
+                        />
+                    </Link>
+                </div>
+            </div>
       <button
         onClick={nextSlide}
         className="absolute top-1/2 right-4 transform -translate-y-1/2 p-2 rounded-full shadow-md hover:bg-accent2 transition"
       >
         <FaChevronRight size={20} color="white" />
       </button>
-
+          
       <button
         onClick={prevSlide}
         className="absolute top-1/2 left-4 transform -translate-y-1/2 p-2 rounded-full shadow-md hover:bg-accent2 transition"
