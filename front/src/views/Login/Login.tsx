@@ -4,8 +4,10 @@ import Link from "next/link";
 import { validateLoginForm } from "@/helpers/validate";
 import styles from "./Login.module.css";
 import { ILoginProps, ILoginErrors } from "@/interfaces/ILogin";
+import { fetchLogin } from "@/helpers/user.fetchFunction";
+import Swal from "sweetalert2";
 
-const LoginView = () => {
+const LoginView : React.FC = () => {
   const initialState = { email: "", password: "" };
   const [loginForm, setLoginForm] = useState<ILoginProps>(initialState);
   const [errors, setErrors] = useState<ILoginErrors>(initialState);
@@ -28,9 +30,31 @@ const LoginView = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('handle submit');
-    
-    
+  
+    try {
+      // Llamada a la función fetchLogin
+      const userloged = await fetchLogin(loginForm);
+  
+      // Verificación de estado de respuesta
+      if (userloged && userloged.status === 200) {
+        // Almacenar token en localStorage
+        localStorage.setItem("userToken", userloged.userData.token);
+  
+        // Mensaje de confirmación opcional
+        Swal.fire({
+          icon: "success",
+          title: "Login exitoso",
+          text: `Bienvenido, ${userloged.userData.name}`,
+        });
+  
+        // Futura redirección 
+        
+      }
+    } catch (error) {
+      // Manejador de errores
+      console.error("Error en el inicio de sesión:", error);
+      
+    }
   };
 
   // Effect to manage submit button state
@@ -40,7 +64,7 @@ const LoginView = () => {
 
   return (
     <div className={styles.formContainer}>
-      <h2 className={styles.h2}>Sign in to FORGEFIT</h2>
+      <h2 className={styles.h2}>Ingresa en FORGEFIT</h2>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="email-address"></label>
