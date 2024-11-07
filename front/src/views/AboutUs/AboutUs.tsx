@@ -2,7 +2,6 @@
 import React, { useRef, useEffect } from "react";
 import * as maptilersdk from "@maptiler/sdk";
 import styles from "./AboutUs.module.css";
-//import locationIcon from "./location-icon.png";
 import Image from "next/image";
 
 export default function AboutUs() {
@@ -83,10 +82,9 @@ export default function AboutUs() {
         CABALLITO
       </h2>
 
-      {/* Mapa */}
       <div className={styles.mapWrap}>
         <div ref={mapContainer} className={styles.map} />
       </div>
     </div>
   );
-}
+};

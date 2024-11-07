@@ -6,7 +6,7 @@ import { IProfesor } from '@/interfaces/IProfesor';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 interface ProfesorProps {
-  profesores: IProfesor[];  // Recibe las categorías como prop
+  profesores: IProfesor[]; 
 }
 
 const Profesores: React.FC<ProfesorProps> = ({ profesores }) => {
@@ -18,15 +18,23 @@ const Profesores: React.FC<ProfesorProps> = ({ profesores }) => {
   };
 
   const handleScrollRight = () => {
-    setCurrentIndex((prev) => Math.min(prev + 1, profesores.length - itemsPerPage));
+    setCurrentIndex((prev) => 
+      Math.min(prev + 1, profesores.length - itemsPerPage));
+  };
+
+  const calculateOffset = () => {
+    if (profesores.length < itemsPerPage) {
+      return (itemsPerPage - profesores.length) * (100 / itemsPerPage) / 2;
+    }
+    return 0;
   };
 
   return (
-    <div className="relative m-4">
+    <div className="relative m-4 p-4">
       <h2 className="flex justify-center font-bold font-sans text-xl text-accent m-4">PROFESORES:</h2>
-      <h3 className="flex justify-center font-normal text-secondary2 m-4">
+   {  /*  <h3 className="flex justify-center font-normal text-secondary2 m-4">
         Conoce nuestros instructores certificados enfocados en ofrecerte las mejores disciplinas para tu bienestar integral.
-      </h3>
+      </h3> */ }
       <div className="flex items-center">
         <button
           onClick={handleScrollLeft}
@@ -40,28 +48,30 @@ const Profesores: React.FC<ProfesorProps> = ({ profesores }) => {
         <div className="overflow-hidden w-full">
           <div
             className="flex transition-transform duration-300"
-            style={{transform: `translateX(-${(currentIndex * 100) / itemsPerPage}%)`}}
+            style={{
+              transform: `translateX(-${(currentIndex * 100) / itemsPerPage}%)`,
+              marginLeft: `${calculateOffset()}%`,
+            }}
           >
             {profesores.map((profesor) => (
-              <div key={profesor.id} className="flex-none w-1/8 mx-2 flex flex-col items-center  border-b-2 border-accent" >
-                <a href={`/clases/${profesor.nombre}`} className="text-center">
-                  <Image
-                    src={profesor.imagen}  // Imagen en `public/images/profesor/`
-                    alt={profesor.nombre}
-                    width={150}
-                    height={150}
-                    className="h-24 w-24 max-w-full rounded-lg object-cover lg:h-48 lg:w-48"
-                  />
-                  {/* Nombre de la clase en mayúsculas */}
+              <div key={profesor.id} 
+                className="flex-none w-1/8 mx-2 flex flex-col items-center border-b-2 border-accent">
+                  <a href={`/clases/${profesor.nombre}`} className="text-center">
+                    <Image
+                      src={profesor.imagen} 
+                      alt={profesor.nombre}
+                      width={150}
+                      height={150}
+                      className="h-24 w-24 max-w-full rounded-lg object-cover lg:h-48 lg:w-48"
+                    />
                   {profesor.clases.length > 0 && (
-                    <h5 className="flex justify-center mt-1 text-sm text-accent">
+                    <h4 className="flex justify-center mt-1 text-sm text-accent">
                       {profesor.clases[0].nombre.toUpperCase()}
-                    </h5>
+                    </h4>
                   )}
-                  {/* Nombre del profesor en mayúsculas */}
-                  <h4 className="flex justify-center mt-1 text-sm font-bold">
+                  <h5 className="flex justify-center mt-1 text-sm font-bold">
                     {profesor.nombre.toUpperCase()}
-                  </h4>
+                  </h5>
                 </a>
               </div>
             ))}
