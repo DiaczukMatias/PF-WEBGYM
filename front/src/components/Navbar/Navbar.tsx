@@ -6,21 +6,21 @@ import { FaSearch } from "react-icons/fa";
 const Navbar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   // Cambiar manual el estado para ver navbar con usuario logeado
-  const [isLogged, setIsLogged] = useState(true);
+  const [isLogged, setIsLogged] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const userName = "Usuario";
 
   return (
     <nav className="bg-primary text-secondary py-4">
-      <div className="container mx-auto flex flex-wrap items-center justify-between px-4">
+      <div className="container mx-auto flex flex-wrap items-center px-4">
         <Link href="/home">
-          <div className="flex items-center space-x-2 text-lg font-bold">
+          <div className="flex items-center justify-start space-x-2 text-lg font-bold">
             <span>LOGO</span>
             <span className="text-secondary">NOMBREDELGYM</span>
           </div>
         </Link>
 
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center justify-center space-x-4 mx-24">
           {!isLogged ? (
             <>
               <Link
@@ -33,13 +33,13 @@ const Navbar = () => {
                 href="/register"
                 className="hover:text-secondary2 text-secondary"
               >
-                Register
+                Registrate
               </Link>
               <Link
                 href="/contact"
                 className="hover:text-secondary2 text-secondary"
               >
-                Contact
+                Contacto
               </Link>
               <Link
                 href="/aboutUs"
@@ -54,7 +54,7 @@ const Navbar = () => {
                 href="/activities"
                 className="hover:text-secondary2 text-secondary"
               >
-                Clases Disponibles
+                Clases
               </Link>
               <div className="relative">
                 <button
@@ -69,7 +69,7 @@ const Navbar = () => {
                       href="/profile"
                       className="block px-4 py-2 hover:bg-gray-200"
                     >
-                      Perfil
+                      Mi Perfil
                     </Link>
                     <Link
                       href="/agenda"
@@ -99,7 +99,7 @@ const Navbar = () => {
           )}
 
           {/* Barra buscadora  */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 ">
             <div
               className={`overflow-hidden transition-all duration-300 ${
                 isSearchOpen ? "w-48 opacity-100 ml-2" : "w-0 opacity-0"

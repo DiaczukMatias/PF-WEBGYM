@@ -1,4 +1,4 @@
-"use client";
+/*"use client";
 import React, { useRef, useEffect } from "react";
 import * as maptilersdk from "@maptiler/sdk";
 import styles from "./AboutUs.module.css";

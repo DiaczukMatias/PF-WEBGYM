@@ -1,9 +1,9 @@
-
 'use client';
 
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { IProfesor } from '@/interfaces/IProfesor';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 interface ProfesorProps {
   profesores: IProfesor[];  // Recibe las categorías como prop
@@ -22,30 +22,46 @@ const Profesores: React.FC<ProfesorProps> = ({ profesores }) => {
   };
 
   return (
-    <div className="relative">
-      <h2 className="flex justify-start font-extrabold font-sans text-xl text-accent m-4">PROFESORES:</h2>
-      <h3 className='flex justify-center font-normal text-secondary2 m-4'> Conoce nuestros instructores certificados enfocados en ofrecerte las mejores disciplinas para tu bienestar integral.</h3>
+    <div className="relative m-4">
+      <h2 className="flex justify-center font-bold font-sans text-xl text-accent m-4">PROFESORES:</h2>
+      <h3 className="flex justify-center font-normal text-secondary2 m-4">
+        Conoce nuestros instructores certificados enfocados en ofrecerte las mejores disciplinas para tu bienestar integral.
+      </h3>
       <div className="flex items-center">
         <button
           onClick={handleScrollLeft}
-          className="flex items-center justify-center w-12 h-12 bg-gray-200 hover:bg-gray-300 rounded-full"
+          className="flex items-center justify-center w-12 h-12 rounded-full shadow-md hover:bg-accent2"
           aria-label="Scroll left"
         >
-          <div className="border-l-4 border-t-4 border-transparent border-l-black border-t-transparent w-0 h-0 transform rotate-135" />
+          <div className="flex items-center">
+            <FaChevronLeft size={20} color="white" />
+          </div>
         </button>
         <div className="overflow-hidden w-full">
-          <div className="flex transition-transform duration-300" style={{ transform: `translateX(-${currentIndex * (100 / itemsPerPage)}%)` }}>
+          <div
+            className="flex transition-transform duration-300"
+            style={{transform: `translateX(-${(currentIndex * 100) / itemsPerPage}%)`}}
+          >
             {profesores.map((profesor) => (
-              <div key={profesor.id} className="flex-none w-1/8 mx-1 flex flex-col items-center">
+              <div key={profesor.id} className="flex-none w-1/8 mx-2 flex flex-col items-center  border-b-2 border-accent" >
                 <a href={`/clases/${profesor.nombre}`} className="text-center">
                   <Image
                     src={profesor.imagen}  // Imagen en `public/images/profesor/`
                     alt={profesor.nombre}
-                    width={150}  
+                    width={150}
                     height={150}
-                    className="h-24 w-24 max-w-full border-4 border-accent rounded-full object-cover lg:h-48 lg:w-48"
+                    className="h-24 w-24 max-w-full rounded-lg object-cover lg:h-48 lg:w-48"
                   />
-                  <h5 className="flex justify-center mt-1 text-sm">{profesor.nombre}</h5>
+                  {/* Nombre de la clase en mayúsculas */}
+                  {profesor.clases.length > 0 && (
+                    <h5 className="flex justify-center mt-1 text-sm text-accent">
+                      {profesor.clases[0].nombre.toUpperCase()}
+                    </h5>
+                  )}
+                  {/* Nombre del profesor en mayúsculas */}
+                  <h4 className="flex justify-center mt-1 text-sm font-bold">
+                    {profesor.nombre.toUpperCase()}
+                  </h4>
                 </a>
               </div>
             ))}
@@ -53,10 +69,12 @@ const Profesores: React.FC<ProfesorProps> = ({ profesores }) => {
         </div>
         <button
           onClick={handleScrollRight}
-          className="flex items-center justify-center w-12 h-12 bg-gray-200 hover:bg-gray-300 rounded-full"
+          className="flex items-center justify-center w-12 h-12 rounded-full shadow-md hover:bg-accent2"
           aria-label="Scroll right"
         >
-          <div className="border-r-4 border-b-4 border-transparent border-r-black border-b-transparent w-0 h-0 transform rotate-45" />
+          <div className="flex items-center">
+            <FaChevronRight size={20} color="white" />
+          </div>
         </button>
       </div>
     </div>
