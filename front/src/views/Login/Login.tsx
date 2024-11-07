@@ -1,51 +1,61 @@
 "use client";
+import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import Link from "next/link";
 import { validateLoginForm } from "@/helpers/validate";
-import { ILoginErrors, ILoginProps } from "@/interfaces/ILogin";
-import React, { useState, useEffect } from "react";
-import styles from "./Login.module.css" ;
+import styles from "./Login.module.css";
+import { ILoginProps, ILoginErrors } from "@/interfaces/ILogin";
 
 const LoginView = () => {
-  const initialState = {
-    email: "",
-    password: "",
-  };
-
-  const [dataUser, setDataUser] = useState<ILoginProps>(initialState);
+  const initialState = { email: "", password: "" };
+  const [loginForm, setLoginForm] = useState<ILoginProps>(initialState);
   const [errors, setErrors] = useState<ILoginErrors>(initialState);
+  const [inputBlur, setInputBlur] = useState(initialState);
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+  
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setDataUser({
-      ...dataUser,
-      [name]: value,
-    });
+
+  // Handlers
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setLoginForm({ ...loginForm, [name]: value });
+    setErrors(validateLoginForm({ ...loginForm, [name]: value }));
   };
 
-  const handleSubmit = async () => {
-   console.log('handleSubmit')
+  const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const { name } = e.target;
+    setInputBlur({ ...inputBlur, [name]: true });
   };
 
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log('handle submit');
+    
+    
+  };
+
+  // Effect to manage submit button state
   useEffect(() => {
-    const errors = validateLoginForm(dataUser);
-    setErrors(errors);
-  }, [dataUser]);
+    setIsSubmitDisabled(Object.keys(errors).length > 0);
+  }, [errors]);
 
   return (
     <div className={styles.formContainer}>
-      <h2 className={styles.h2}>Sign in to NOMBREDELGYM</h2>
+      <h2 className={styles.h2}>Sign in to FORGEFIT</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="email-adress"></label>
+          <label htmlFor="email-address"></label>
           <input
-            id="email-adress"
+            id="email-address"
             name="email"
             type="email"
-            value={dataUser.email}
+            value={loginForm.email}
             onChange={handleChange}
+            onBlur={handleInputBlur}
             placeholder="johndoe@gmail.com"
             className={styles.inputField}
           />
-          {errors.email && <span>{errors.email}</span>}
+          <br/>
+          {inputBlur.email && errors.email && <span className={styles.errorText}>*{errors.email}</span>}
         </div>
 
         <div>
@@ -54,19 +64,22 @@ const LoginView = () => {
             id="password"
             name="password"
             type="password"
-            value={dataUser.password}
+            value={loginForm.password}
             onChange={handleChange}
+            onBlur={handleInputBlur}
             placeholder="**********"
             className={styles.inputField}
           />
-          {errors.password && <span>{errors.password}</span>}
+          <br/>
+          {inputBlur.password && errors.password && <span className={styles.errorText}>*{errors.password}</span>}
         </div>
+
         <div>
-          <a href="/register">You dont have an account? Create account</a>
+          <Link href="/register">No tienes una cuenta? Crea una!</Link>
         </div>
 
         <button
-          disabled={errors.email || errors.password ? true : false}
+          disabled={isSubmitDisabled}
           type="submit"
           className={styles.submitButton}
         >
