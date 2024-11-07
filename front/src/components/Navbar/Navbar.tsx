@@ -15,8 +15,7 @@ const Navbar = () => {
       <div className="container mx-auto flex flex-wrap items-center px-4">
         <Link href="/home">
           <div className="flex items-center justify-start space-x-2 text-lg font-bold">
-            <span>LOGO</span>
-            <span className="text-secondary">NOMBREDELGYM</span>
+            <span className="text-secondary">FORGEFIT</span>
           </div>
         </Link>
 
@@ -27,25 +26,25 @@ const Navbar = () => {
                 href="/login"
                 className="hover:text-secondary2 text-secondary"
               >
-                Login
+                LOGIN
               </Link>
               <Link
                 href="/register"
                 className="hover:text-secondary2 text-secondary"
               >
-                Registrate
+                REGISTRATE
               </Link>
               <Link
                 href="/contact"
                 className="hover:text-secondary2 text-secondary"
               >
-                Contacto
+                CONTACTO
               </Link>
               <Link
                 href="/aboutUs"
                 className="hover:text-secondary2 text-secondary"
               >
-                Sobre Nosotros
+                SOBRE NOSOTROS
               </Link>
             </>
           ) : (
@@ -108,7 +107,7 @@ const Navbar = () => {
               <input
                 type="text"
                 placeholder="Search..."
-                className="px-3 py-2 bg-secondary2 text-secondary border border-accent rounded-md focus:outline-none focus:border-accent2 w-full transition-transform duration-300 transform"
+                className="px-3 py-2 bg-black text-secondary border border-accent rounded-md focus:outline-none focus:border-accent2 w-full transition-transform duration-300 transform"
                 style={{
                   transform: isSearchOpen
                     ? "translateX(0)"
