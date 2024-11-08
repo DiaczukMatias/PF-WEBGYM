@@ -4,8 +4,9 @@ import Link from "next/link";
 import { validateLoginForm } from "@/helpers/validate";
 import styles from "./Login.module.css";
 import { ILoginProps, ILoginErrors } from "@/interfaces/ILogin";
-import { fetchLogin } from "@/helpers/user.fetchFunction";
+//import { fetchLogin } from "@/helpers/user.fetchFunction";
 import Swal from "sweetalert2";
+import { signIn } from "next-auth/react";
 
 const LoginView : React.FC = () => {
   const initialState = { email: "", contrasena: "" };
@@ -30,30 +31,20 @@ const LoginView : React.FC = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
-    try {
-      // Llamada a la función fetchLogin
-      const userloged = await fetchLogin(loginForm);
-  
-      // Verificación de estado de respuesta
-      if (userloged && userloged.status === 200) {
-        // Almacenar token en localStorage
-        localStorage.setItem("userToken", userloged.userData.token);
-  
-        // Mensaje de confirmación opcional
-        Swal.fire({
-          icon: "success",
-          title: "Login exitoso",
-          text: `Bienvenido, ${userloged.userData.name}`,
-        });
-  
-        // Futura redirección 
-        
-      }
-    } catch (error) {
-      // Manejador de errores
-      console.error("Error en el inicio de sesión:", error);
-      
+    const res = await signIn('credentials', {
+      email: loginForm.email,
+      password: loginForm.contrasena,
+      redirect: false,
+    });
+    if (res?.error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Credenciales incorrectas",
+      })
+    } else {
+      // Redirige al dashboard o donde quieras
+      window.location.href = '/dashboard';
     }
   };
 
@@ -109,6 +100,14 @@ const LoginView : React.FC = () => {
         >
           Sign In
         </button>
+
+        <button
+        onClick={() => signIn('google')}
+        className="bg-red-500 text-white py-2 px-4 rounded mt-4"
+      >
+        Iniciar sesión con Google
+      </button>
+
       </form>
     </div>
   );
