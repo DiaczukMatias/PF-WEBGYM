@@ -1,6 +1,7 @@
 import { IClase } from "@/interfaces/IClase";
 import { ICategoria } from "@/interfaces/ICategory";
 import { IProfesor } from "@/interfaces/IProfesor";
+import {ILoginProps} from "@/interfaces/ILogin"
 
 // data temporal hasta hacer la conexión con back
 export const categoriesData: ICategoria[] = [
@@ -117,4 +118,10 @@ export  const clasesData: IClase[] = [
       imagen: '/images/profesor/profe3.png',
       clases: [clasesData[2]],
     },
-  ]
+  ];
+
+  export const temporalLogin : ILoginProps = {
+    email: "prueba@mail.com",
+    password: "Prueba123!"
+  }
+
