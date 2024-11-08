@@ -8,7 +8,7 @@ export interface IRegisterErrors {
 }
 
 export interface IRegisterProps {
-  name: string;
+  nombre: string;
   email: string;
   password: string;
   repeatPassword:string;
