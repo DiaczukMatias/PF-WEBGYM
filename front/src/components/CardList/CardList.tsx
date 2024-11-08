@@ -23,7 +23,7 @@ const ClassCardList: React.FC<ClassCardListProps> = ({ classes, limit }) => {
             key={clase.id}
             className="flex-none max-w-2/3 sm:max-w-2/3 md:max-w-2/3 lg:w-1/3 lg:max-w-64 xl:w-1/3 xl:max-w-64 p-2 m-2"
           >
-            <a href={`/clases/${clase.categorias?.nombre}/${clase.nombre}`}>
+            <a href={`/clases/${clase.categoria?.nombre}/${clase.nombre}`}>
               <div className="border rounded-lg overflow-hidden shadow-md border-accent">
                 {clase.imagen && (
                   <Image
@@ -36,7 +36,7 @@ const ClassCardList: React.FC<ClassCardListProps> = ({ classes, limit }) => {
                 )}
                 <div className="p-4">
                   <h3 className="text-xl text-accent font-semibold">{clase.nombre}</h3>
-                  <p className="text-sm text-secondary mt-1">{clase.categorias?.nombre.toUpperCase()}</p>
+                  <p className="text-sm text-secondary mt-1">{clase.categoria?.nombre.toUpperCase()}</p>
                 </div>
               </div>
             </a>

@@ -9,10 +9,10 @@ interface ClassCardProps {
 }
 
 const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
-  const { nombre, descripcion, horario, imagen, categorias, profesores } = clase;
+  const { nombre, descripcion, fecha, imagen, categoria, profesores } = clase;
   
   // Formateamos el horario de la clase
-  const formattedHorario = new Date(horario).toLocaleString('es-ES', {
+  const formattedHorario = new Date(fecha).toLocaleString('es-ES', {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
@@ -34,10 +34,10 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
       )}
       <div className="p-4">
         <h3 className="text-xl font-semibold text-accent">{nombre}</h3>
-        <p className="text-sm text-gray-500 mt-1">{categorias?.nombre}</p> {/* Mostramos el nombre de la categoría */}
+        <p className="text-sm text-gray-500 mt-1">{categoria?.nombre}</p> {/* Mostramos el nombre de la categoría */}
         <p className="text-sm text-gray-600 mt-2">Profesor: {profesores?.nombre}</p> {/* Mostramos el nombre del profesor */}
         <p className="text-sm text-gray-500 mt-2">{descripcion}</p>
-        <p className="text-sm text-gray-400 mt-2">Horario: {formattedHorario}</p> {/* Mostramos el horario formateado */}
+        <p className="text-sm text-gray-400 mt-2">fecha: {formattedHorario}</p> {/* Mostramos el horario formateado */}
       </div>
     </div>
   );

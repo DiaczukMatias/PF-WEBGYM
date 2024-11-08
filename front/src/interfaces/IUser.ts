@@ -1,6 +1,8 @@
-import { IClase } from "./IClase";
+import { IProfesor } from "./IProfesor";
+import { IMembresia } from "./IMembresia";
+import { IInscripcion } from "./IInscripcion";
 
-export enum rolEnum {
+export enum RolEnum {
     ADMIN = 'admin',
     PROFESOR = 'profesor',
     CLIENTE = 'cliente',
@@ -13,7 +15,10 @@ export interface IUsuario {
     telefono?: number;                // Teléfono del usuario (opcional)
     email: string;                    // Correo electrónico del usuario
     contrasena: string;               // Contraseña del usuario
-    rol: rolEnum;                    // Rol del usuario (admin, profesor, cliente)
-    clases?: IClase[];                  // Clase asociada al usuario (opcional)
-   // turnos: Turnos[];                
-}
+     rol: RolEnum;                    // Rol del usuario (admin, profesor, cliente)
+     perfilProfesor?: IProfesor;    //nuevas:
+     membresia?: IMembresia;
+     inscripciones?: IInscripcion[];                
+     city?: string;    //agregaron q al editar el perfil del usuario ingresar la informacion de city y adress
+     address?: string;
+}  

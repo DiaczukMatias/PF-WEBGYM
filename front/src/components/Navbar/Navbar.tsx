@@ -50,7 +50,7 @@ const Navbar = () => {
           ) : (
             <>
               <Link
-                href="/activities"
+                href="/clases"
                 className="hover:text-secondary2 text-secondary"
               >
                 CLASES
