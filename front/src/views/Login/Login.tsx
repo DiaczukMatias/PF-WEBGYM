@@ -8,7 +8,7 @@ import { fetchLogin } from "@/helpers/user.fetchFunction";
 import Swal from "sweetalert2";
 
 const LoginView : React.FC = () => {
-  const initialState = { email: "", password: "" };
+  const initialState = { email: "", contrasena: "" };
   const [loginForm, setLoginForm] = useState<ILoginProps>(initialState);
   const [errors, setErrors] = useState<ILoginErrors>(initialState);
   const [inputBlur, setInputBlur] = useState(initialState);
@@ -88,14 +88,14 @@ const LoginView : React.FC = () => {
             id="password"
             name="password"
             type="password"
-            value={loginForm.password}
+            value={loginForm.contrasena}
             onChange={handleChange}
             onBlur={handleInputBlur}
             placeholder="**********"
             className={styles.inputField}
           />
           <br/>
-          {inputBlur.password && errors.password && <span className={styles.errorText}>*{errors.password}</span>}
+          {inputBlur.contrasena && errors.contrasena && <span className={styles.errorText}>*{errors.contrasena}</span>}
         </div>
 
         <div>

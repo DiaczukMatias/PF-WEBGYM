@@ -1,9 +1,9 @@
 export interface ILoginProps {
   email: string;
-  password: string;
+  contrasena: string;
 }
 
 export interface ILoginErrors {
   email?: string;
-  password?: string;
+  contrasena?: string;
 }
