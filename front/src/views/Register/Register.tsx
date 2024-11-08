@@ -4,18 +4,22 @@ import { validateRegisterForm } from "@/helpers/validate";
 import { IRegisterErrors, IRegisterProps } from "@/interfaces/IRegister";
 import React, { useEffect, useState } from "react";
 import styles from "./Register.module.css";
+import Link from "next/link";
 
-const RegisterView = () => {
+const RegisterView: React.FC = () => {
   const initialState = {
     name: "",
     email: "",
-    phone: "",
-    address: "",
     password: "",
+    repeatPassword: "",
+    age: "",
+    phone: "",
   };
 
   const [dataUser, setDataUser] = useState<IRegisterProps>(initialState);
   const [errors, setErrors] = useState<IRegisterErrors>(initialState);
+  const [inputBlur, setInputBlur] = useState(initialState);
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -25,9 +29,15 @@ const RegisterView = () => {
     });
   };
 
+  const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const { name } = e.target;
+    setInputBlur({ ...inputBlur, [name]: true });
+  };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log("handleSubmit");
+    // Agregar lógica para el envío de datos de registro aquí
   };
 
   useEffect(() => {
@@ -35,76 +45,17 @@ const RegisterView = () => {
     setErrors(errors);
   }, [dataUser]);
 
+  useEffect(() => {
+    setIsSubmitDisabled(Object.keys(errors).length > 0);
+  }, [errors]);
+
   return (
     <div className={styles.formContainer}>
       <div>
-        <h2 className={styles.h2}>Sign up to NOMBREDELGYM</h2>
+        <h2 className={styles.h2}>Regístrate en FORGEFIT</h2>
       </div>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email-adress" className={styles.label}></label>
-          <input
-            id="email-adress"
-            name="email"
-            type="email"
-            value={dataUser.email}
-            onChange={handleChange}
-            placeholder="johndoe@gmail.com"
-            className={styles.inputField}
-          />
-          {errors.email && (
-            <span className={styles.errorMessage}>{errors.email}</span>
-          )}
-        </div>
-
-        <div>
-          <label htmlFor="password-adress" className={styles.label}></label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            value={dataUser.password}
-            onChange={handleChange}
-            placeholder="**********"
-            className={styles.inputField}
-          />
-          {errors.password && (
-            <span className={styles.errorMessage}>{errors.password}</span>
-          )}
-        </div>
-
-        <div>
-          <label htmlFor="phone" className={styles.label}></label>
-          <input
-            id="phone"
-            name="phone"
-            type="tel"
-            value={dataUser.phone}
-            onChange={handleChange}
-            className={styles.inputField}
-            placeholder="Phone"
-          />
-          {errors.phone && (
-            <span className={styles.errorMessage}>{errors.phone}</span>
-          )}
-        </div>
-
-        <div>
-          <label htmlFor="address" className={styles.label}></label>
-          <input
-            id="address"
-            name="address"
-            type="address"
-            value={dataUser.address}
-            onChange={handleChange}
-            className={styles.formGroup}
-            placeholder="Adress"
-          />
-          {errors.address && (
-            <span className={styles.errorMessage}>{errors.address}</span>
-          )}
-        </div>
-
+        {/* nombre */}
         <div>
           <label htmlFor="name" className={styles.label}></label>
           <input
@@ -113,22 +64,121 @@ const RegisterView = () => {
             type="text"
             value={dataUser.name}
             onChange={handleChange}
-            placeholder="Name"
+            onBlur={handleInputBlur}
+            placeholder="Nombre"
             className={styles.inputField}
           />
-          {errors.name && (
+          <br/>
+          {inputBlur.name && errors.name && (
             <span className={styles.errorMessage}>{errors.name}</span>
           )}
         </div>
+
+        {/* Email */}
         <div>
-          <a href="/login">Do you have an account? Sign in</a>
+          <label htmlFor="email-adress" className={styles.label}></label>
+          <input
+            id="email-adress"
+            name="email"
+            type="email"
+            value={dataUser.email}
+            onChange={handleChange}
+            onBlur={handleInputBlur}
+            placeholder="Email"
+            className={styles.inputField}
+          />
+          <br/>
+          {inputBlur.email && errors.email && (
+            <span className={styles.errorMessage}>{errors.email}</span>
+          )}
         </div>
+
+        {/* contraseña*/}
+        <div>
+          <label htmlFor="password" className={styles.label}></label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            value={dataUser.password}
+            onChange={handleChange}
+            onBlur={handleInputBlur}
+            placeholder="Contraseña"
+            className={styles.inputField}
+          />
+          <br/>
+          {inputBlur.password && errors.password && (
+            <span className={styles.errorMessage}>{errors.password}</span>
+          )}
+        </div>
+
+        {/* repetir */}
+        <div>
+          <label htmlFor="repeatPassword" className={styles.label}></label>
+          <input
+            id="repeatPassword"
+            name="repeatPassword"
+            type="password"
+            value={dataUser.repeatPassword}
+            onChange={handleChange}
+            onBlur={handleInputBlur}
+            placeholder="Repetir Contraseña"
+            className={styles.inputField}
+          />
+          <br/>
+          {inputBlur.repeatPassword && errors.repeatPassword && (
+            <span className={styles.errorMessage}>{errors.repeatPassword}</span>
+          )}
+        </div>
+
+        {/* telefono */}
+        <div>
+          <label htmlFor="phone" className={styles.label}></label>
+          <input
+            id="phone"
+            name="phone"
+            type="tel"
+            value={dataUser.phone}
+            onChange={handleChange}
+            onBlur={handleInputBlur}
+            placeholder="Teléfono"
+            className={styles.inputField}
+          />
+          <br/>
+          {inputBlur.phone && errors.phone && (
+            <span className={styles.errorMessage}>{errors.phone}</span>
+          )}
+        </div>
+
+        {/* edad */}
+        <div>
+          <label htmlFor="age" className={styles.label}></label>
+          <input
+            id="age"
+            name="age"
+            type="number"
+            value={dataUser.age}
+            onChange={handleChange}
+            onBlur={handleInputBlur}
+            placeholder="Edad"
+            className={styles.inputField}
+          />
+          <br/>
+          {inputBlur.age && errors.age && (
+            <span className={styles.errorMessage}>{errors.age}</span>
+          )}
+        </div>
+
+        <div>
+          <Link href="/login">¿Ya tienes una cuenta? Ingresa acá!</Link>
+        </div>
+
         <button
-          disabled={errors.email ? true : false}
           type="submit"
+          disabled={isSubmitDisabled}
           className={styles.submitButton}
         >
-          Sign In
+          Registrarse
         </button>
       </form>
     </div>
