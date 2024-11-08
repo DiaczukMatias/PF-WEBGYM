@@ -35,7 +35,7 @@ const Carrusel: React.FC<CarouselProps> = ({ categorias }) => {
 
     return (
         <div className="relative w-full max-w-screen-lg mx-auto">
-          <h2 className="text-center text-3xl font-bebas mb-4 uppercase">
+          <h2 className="text-center text-3xl font-bebas m-4 pt-4 uppercase">
             <span className="text-white">Nuestros</span>{" "}
             <span className="text-accent">Programas</span>
           </h2>

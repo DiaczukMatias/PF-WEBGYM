@@ -7,11 +7,12 @@ export interface IRegisterErrors {
 }
 
 export interface IRegisterProps {
-  name: string;
+  nombre: string;
   email: string;
-  phone: string;
-  address: string;
-  password: string;
+  contrasena: string;
+  confirmarContrasena: string;  //La contraseña debe contener al menos una letra minúscula, una letra mayúscula, un número y un carácter especial (!@#$%^&*)
+  edad?: number;
+  telefono?: number;
 }
 
 
