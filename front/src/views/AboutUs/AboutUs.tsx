@@ -42,13 +42,10 @@ export default function AboutUs() {
       });
 
       map.current.on("load", () => {
-        console.log("Mapa cargado");
-
         if (map.current && !marker.current) {
           marker.current = new maptilersdk.Marker({ color: "#FF0000" })
             .setLngLat([comercio.lng, comercio.lat])
             .addTo(map.current);
-          console.log("Marcador añadido al mapa");
 
           map.current.flyTo({
             center: [comercio.lng, comercio.lat],

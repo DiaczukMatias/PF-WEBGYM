@@ -36,7 +36,6 @@ const RegisterView: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("handleSubmit");
     // Agregar lógica para el envío de datos de registro aquí
   };
 
@@ -57,6 +56,7 @@ const RegisterView: React.FC = () => {
             <span className={styles.whiteText}>REGISTRATE EN</span>{" "}
             <span className={styles.greenText}>FORGEFIT</span>
           </h2>
+
         </div>
         <form onSubmit={handleSubmit}>
           {/* nombre */}

@@ -11,7 +11,9 @@ declare module "next-auth" {
       image?: string;
       accessToken?: string | null;
       token?: string | null;
-    } & DefaultSession["user"];
+
+    } & DefaultSession['user'];
+
   }
 
   interface JWT extends DefaultJWT {

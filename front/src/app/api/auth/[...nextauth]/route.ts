@@ -45,13 +45,12 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async jwt({ token, account, user }) {
       if (account) {
-        token.accessToken =
-          typeof account.access_token === "string"
-            ? account.access_token
-            : undefined;
+
+        token.accessToken = account.access_token === "string" ? account.access_token: undefined;
       }
       if (user) {
-        token.user = typeof user === "string" ? user : undefined;
+        token.user = typeof user === "string" ? user: undefined;
+
       }
       return token;
     },
@@ -60,11 +59,9 @@ export const authOptions: AuthOptions = {
       if (token) {
         session.user = {
           ...session.user,
-          token: typeof token.user === "string" ? token.user : "",
-          accessToken:
-            typeof token.accessToken === "string"
-              ? token.accessToken
-              : undefined,
+
+          token: typeof token.user === "string" ? token.user : "", // Asegura que los datos del usuario se pasen a la sesión
+          accessToken: typeof token.accessToken === "string" ? token.accesToken: undefined,
         };
       }
       return session;
