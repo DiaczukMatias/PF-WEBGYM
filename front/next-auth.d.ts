@@ -1,8 +1,8 @@
 //extiende los types de nextAuth
 
-import { DefaultSession, DefaultJWT } from 'next-auth';
+import { DefaultSession, DefaultJWT } from "next-auth";
 
-declare module 'next-auth' {
+declare module "next-auth" {
   interface Session {
     user?: {
       id?: string;
@@ -10,7 +10,8 @@ declare module 'next-auth' {
       name?: string;
       image?: string;
       accessToken?: string | null;
-    } & DefaultSession['user'];
+      token?: string | null;
+    } & DefaultSession["user"];
   }
 
   interface JWT extends DefaultJWT {
@@ -18,8 +19,9 @@ declare module 'next-auth' {
       id?: string;
       email?: string;
       name?: string;
-      image?: string ;
+      image?: string;
     };
     accessToken?: string | null;
+    token?: string | null;
   }
 }

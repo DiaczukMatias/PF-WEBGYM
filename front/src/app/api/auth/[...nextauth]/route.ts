@@ -1,7 +1,7 @@
-import NextAuth, { AuthOptions } from 'next-auth';
-import GoogleProvider from 'next-auth/providers/google';
+import NextAuth, { AuthOptions } from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
 //import FacebookProvider from 'next-auth/providers/facebook';
-import CredentialsProvider from 'next-auth/providers/credentials';
+import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -19,48 +19,52 @@ export const authOptions: AuthOptions = {
 
     // Proveedor de autenticación clásica con email y password
     CredentialsProvider({
-      name: 'Credentials',
+      name: "Credentials",
       credentials: {
-        email: { label: 'Email', type: 'text' },
-        password: { label: 'Password', type: 'password' },
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         // Aquí debes implementar tu lógica de validación
         const { email, password } = credentials!;
         const res = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/login`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password }),
         });
         const user = await res.json();
 
         if (res.ok && user) {
-          return user; // Retorna un objeto con los datos del usuario
+          return user;
         }
-        return null; // Retorna null si la autenticación falla
+        return null;
       },
     }),
   ],
 
   callbacks: {
-    // Callback para JWT
     async jwt({ token, account, user }) {
       if (account) {
-        token.accessToken = account.access_token;
+        token.accessToken =
+          typeof account.access_token === "string"
+            ? account.access_token
+            : undefined;
       }
       if (user) {
-        token.user = user;
+        token.user = typeof user === "string" ? user : undefined;
       }
       return token;
     },
 
-    // Callback para la sesión
     async session({ session, token }) {
       if (token) {
         session.user = {
           ...session.user,
-          ...token.user, // Asegura que los datos del usuario se pasen a la sesión
-          accessToken: token.accessToken,
+          token: typeof token.user === "string" ? token.user : "",
+          accessToken:
+            typeof token.accessToken === "string"
+              ? token.accessToken
+              : undefined,
         };
       }
       return session;
@@ -70,7 +74,7 @@ export const authOptions: AuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 
   session: {
-    strategy: 'jwt', // Usa JWT para manejar sesiones
+    strategy: "jwt",
   },
 };
 
