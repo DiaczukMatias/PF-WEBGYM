@@ -36,7 +36,6 @@ const RegisterView: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("handleSubmit");
     // Agregar lógica para el envío de datos de registro aquí
   };
 
@@ -68,7 +67,7 @@ const RegisterView: React.FC = () => {
             placeholder="Nombre"
             className={styles.inputField}
           />
-          <br/>
+          <br />
           {inputBlur.name && errors.name && (
             <span className={styles.errorMessage}>{errors.name}</span>
           )}
@@ -87,7 +86,7 @@ const RegisterView: React.FC = () => {
             placeholder="Email"
             className={styles.inputField}
           />
-          <br/>
+          <br />
           {inputBlur.email && errors.email && (
             <span className={styles.errorMessage}>{errors.email}</span>
           )}
@@ -106,7 +105,7 @@ const RegisterView: React.FC = () => {
             placeholder="Contraseña"
             className={styles.inputField}
           />
-          <br/>
+          <br />
           {inputBlur.password && errors.password && (
             <span className={styles.errorMessage}>{errors.password}</span>
           )}
@@ -125,7 +124,7 @@ const RegisterView: React.FC = () => {
             placeholder="Repetir Contraseña"
             className={styles.inputField}
           />
-          <br/>
+          <br />
           {inputBlur.repeatPassword && errors.repeatPassword && (
             <span className={styles.errorMessage}>{errors.repeatPassword}</span>
           )}
@@ -144,7 +143,7 @@ const RegisterView: React.FC = () => {
             placeholder="Teléfono"
             className={styles.inputField}
           />
-          <br/>
+          <br />
           {inputBlur.phone && errors.phone && (
             <span className={styles.errorMessage}>{errors.phone}</span>
           )}
@@ -163,7 +162,7 @@ const RegisterView: React.FC = () => {
             placeholder="Edad"
             className={styles.inputField}
           />
-          <br/>
+          <br />
           {inputBlur.age && errors.age && (
             <span className={styles.errorMessage}>{errors.age}</span>
           )}
