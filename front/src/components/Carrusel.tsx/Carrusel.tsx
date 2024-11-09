@@ -64,7 +64,7 @@ const Carrusel: React.FC<CarouselProps> = ({ categorias }) => {
         <FaChevronLeft size={20} color="white" />
       </button>
     </div>
-  );
+  )
 };
 
 export default Carrusel;
