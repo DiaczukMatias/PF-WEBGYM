@@ -8,12 +8,12 @@ import Link from "next/link";
 
 const RegisterView: React.FC = () => {
   const initialState = {
-    name: "",
+    nombre: "",
     email: "",
-    password: "",
-    repeatPassword: "",
-    age: "",
-    phone: "",
+    contrasena: "",
+    confirmarContrasena: "",
+    edad: "",
+    telefono: "",
   };
 
   const [dataUser, setDataUser] = useState<IRegisterProps>(initialState);
@@ -61,15 +61,15 @@ const RegisterView: React.FC = () => {
             id="name"
             name="name"
             type="text"
-            value={dataUser.name}
+            value={dataUser.nombre}
             onChange={handleChange}
             onBlur={handleInputBlur}
             placeholder="Nombre"
             className={styles.inputField}
           />
-          <br />
-          {inputBlur.name && errors.name && (
-            <span className={styles.errorMessage}>{errors.name}</span>
+          <br/>
+          {inputBlur.nombre && errors.nombre && (
+            <span className={styles.errorMessage}>{errors.nombre}</span>
           )}
         </div>
 
@@ -99,15 +99,15 @@ const RegisterView: React.FC = () => {
             id="password"
             name="password"
             type="password"
-            value={dataUser.password}
+            value={dataUser.contrasena}
             onChange={handleChange}
             onBlur={handleInputBlur}
             placeholder="Contraseña"
             className={styles.inputField}
           />
-          <br />
-          {inputBlur.password && errors.password && (
-            <span className={styles.errorMessage}>{errors.password}</span>
+          <br/>
+          {inputBlur.contrasena && errors.contrasena && (
+            <span className={styles.errorMessage}>{errors.contrasena}</span>
           )}
         </div>
 
@@ -118,15 +118,15 @@ const RegisterView: React.FC = () => {
             id="repeatPassword"
             name="repeatPassword"
             type="password"
-            value={dataUser.repeatPassword}
+            value={dataUser.confirmarContrasena}
             onChange={handleChange}
             onBlur={handleInputBlur}
             placeholder="Repetir Contraseña"
             className={styles.inputField}
           />
-          <br />
-          {inputBlur.repeatPassword && errors.repeatPassword && (
-            <span className={styles.errorMessage}>{errors.repeatPassword}</span>
+          <br/>
+          {inputBlur.confirmarContrasena && errors.confirmarContrasena && (
+            <span className={styles.errorMessage}>{errors.confirmarContrasena}</span>
           )}
         </div>
 
@@ -137,15 +137,15 @@ const RegisterView: React.FC = () => {
             id="phone"
             name="phone"
             type="tel"
-            value={dataUser.phone}
+            value={dataUser.telefono}
             onChange={handleChange}
             onBlur={handleInputBlur}
             placeholder="Teléfono"
             className={styles.inputField}
           />
-          <br />
-          {inputBlur.phone && errors.phone && (
-            <span className={styles.errorMessage}>{errors.phone}</span>
+          <br/>
+          {inputBlur.telefono && errors.telefono && (
+            <span className={styles.errorMessage}>{errors.telefono}</span>
           )}
         </div>
 
@@ -156,15 +156,15 @@ const RegisterView: React.FC = () => {
             id="age"
             name="age"
             type="number"
-            value={dataUser.age}
+            value={dataUser.edad}
             onChange={handleChange}
             onBlur={handleInputBlur}
             placeholder="Edad"
             className={styles.inputField}
           />
-          <br />
-          {inputBlur.age && errors.age && (
-            <span className={styles.errorMessage}>{errors.age}</span>
+          <br/>
+          {inputBlur.edad && errors.edad && (
+            <span className={styles.errorMessage}>{errors.edad}</span>
           )}
         </div>
 

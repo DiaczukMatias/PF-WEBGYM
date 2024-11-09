@@ -1,17 +1,19 @@
 export interface IRegisterErrors {
-  name?: string;
+  nombre?: string;
   email?: string;
-  password?: string;
-  repeatPassword?: string;
-  phone?: string;
-  age?: string;
+  contrasena?: string;
+  confirmarContrasena?:string;
+  telefono?: string;
+  edad?: string;
 }
 
 export interface IRegisterProps {
-  name: string;
+  nombre: string;
   email: string;
-  password: string;
-  repeatPassword: string;
-  phone: string;
-  age: string;
+  contrasena: string;
+  confirmarContrasena:string;
+  telefono: string;
+  edad: string;
 }
+
+
