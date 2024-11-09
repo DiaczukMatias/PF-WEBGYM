@@ -36,7 +36,6 @@ const RegisterView: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("handleSubmit");
     // Agregar lógica para el envío de datos de registro aquí
   };
 
@@ -87,7 +86,7 @@ const RegisterView: React.FC = () => {
             placeholder="Email"
             className={styles.inputField}
           />
-          <br/>
+          <br />
           {inputBlur.email && errors.email && (
             <span className={styles.errorMessage}>{errors.email}</span>
           )}

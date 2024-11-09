@@ -8,12 +8,10 @@ export interface IRegisterErrors {
 }
 
 export interface IRegisterProps {
-  nombre: string;
+  name: string;
   email: string;
   contrasena: string;
   confirmarContrasena:string;
   telefono: string;
   edad: string;
 }
-
-
