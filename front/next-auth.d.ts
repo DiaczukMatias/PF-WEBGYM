@@ -10,6 +10,7 @@ declare module 'next-auth' {
       name?: string;
       image?: string;
       accessToken?: string | null;
+      token?: string | null;
     } & DefaultSession['user'];
   }
 
@@ -21,5 +22,6 @@ declare module 'next-auth' {
       image?: string ;
     };
     accessToken?: string | null;
+    token?: string | null;
   }
 }

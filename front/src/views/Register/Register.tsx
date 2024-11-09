@@ -67,15 +67,9 @@ const RegisterView: React.FC = () => {
             placeholder="Nombre"
             className={styles.inputField}
           />
-<<<<<<< HEAD
           <br/>
           {inputBlur.nombre && errors.nombre && (
             <span className={styles.errorMessage}>{errors.nombre}</span>
-=======
-          <br />
-          {inputBlur.name && errors.name && (
-            <span className={styles.errorMessage}>{errors.name}</span>
->>>>>>> 4aa039918b4ce165189cb21cb095ae7b421ac832
           )}
         </div>
 
@@ -111,15 +105,9 @@ const RegisterView: React.FC = () => {
             placeholder="Contraseña"
             className={styles.inputField}
           />
-<<<<<<< HEAD
           <br/>
           {inputBlur.contrasena && errors.contrasena && (
             <span className={styles.errorMessage}>{errors.contrasena}</span>
-=======
-          <br />
-          {inputBlur.password && errors.password && (
-            <span className={styles.errorMessage}>{errors.password}</span>
->>>>>>> 4aa039918b4ce165189cb21cb095ae7b421ac832
           )}
         </div>
 
@@ -136,15 +124,9 @@ const RegisterView: React.FC = () => {
             placeholder="Repetir Contraseña"
             className={styles.inputField}
           />
-<<<<<<< HEAD
           <br/>
           {inputBlur.confirmarContrasena && errors.confirmarContrasena && (
             <span className={styles.errorMessage}>{errors.confirmarContrasena}</span>
-=======
-          <br />
-          {inputBlur.repeatPassword && errors.repeatPassword && (
-            <span className={styles.errorMessage}>{errors.repeatPassword}</span>
->>>>>>> 4aa039918b4ce165189cb21cb095ae7b421ac832
           )}
         </div>
 
@@ -161,15 +143,9 @@ const RegisterView: React.FC = () => {
             placeholder="Teléfono"
             className={styles.inputField}
           />
-<<<<<<< HEAD
           <br/>
           {inputBlur.telefono && errors.telefono && (
             <span className={styles.errorMessage}>{errors.telefono}</span>
-=======
-          <br />
-          {inputBlur.phone && errors.phone && (
-            <span className={styles.errorMessage}>{errors.phone}</span>
->>>>>>> 4aa039918b4ce165189cb21cb095ae7b421ac832
           )}
         </div>
 
@@ -186,15 +162,9 @@ const RegisterView: React.FC = () => {
             placeholder="Edad"
             className={styles.inputField}
           />
-<<<<<<< HEAD
           <br/>
           {inputBlur.edad && errors.edad && (
             <span className={styles.errorMessage}>{errors.edad}</span>
-=======
-          <br />
-          {inputBlur.age && errors.age && (
-            <span className={styles.errorMessage}>{errors.age}</span>
->>>>>>> 4aa039918b4ce165189cb21cb095ae7b421ac832
           )}
         </div>
 
