@@ -10,12 +10,12 @@ export function validateLoginForm (values: ILoginProps) :ILoginErrors {
     errors.email = "El email no tiene un formato válido";
   }
   // Validación para la contraseña
-  if (!values.password) {
-    errors.password = "La contraseña es un campo obligatorio";
-  } else if (values.password.length < 8) {
-    errors.password = "La contraseña debe tener al menos 8 caracteres";
-  } else if (!/(?=.*[A-Z])(?=.*\d)/.test(values.password)) {
-    errors.password =
+  if (!values.contrasena) {
+    errors.contrasena = "La contraseña es un campo obligatorio";
+  } else if (values.contrasena.length < 8) {
+    errors.contrasena = "La contraseña debe tener al menos 8 caracteres";
+  } else if (!/(?=.*[A-Z])(?=.*\d)/.test(values.contrasena)) {
+    errors.contrasena =
       "La contraseña debe contener al menos un número y una letra mayúscula";
   }
 
@@ -27,12 +27,12 @@ export function validateRegisterForm(values: IRegisterProps): IRegisterErrors {
   const errors: IRegisterErrors = {};
 
   // Validación del nombre
-  if (!values.name) {
-    errors.name = "El nombre es un campo obligatorio";
-  } else if (values.name.length < 3) {
-    errors.name = "El nombre debe tener al menos 3 letras";
-  } else if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(values.name)) {
-    errors.name = "El nombre no debe contener caracteres especiales";
+  if (!values.nombre) {
+    errors.nombre = "El nombre es un campo obligatorio";
+  } else if (values.nombre.length < 3) {
+    errors.nombre = "El nombre debe tener al menos 3 letras";
+  } else if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(values.nombre)) {
+    errors.nombre = "El nombre no debe contener caracteres especiales";
   }
 
   // Validación del email
@@ -43,38 +43,38 @@ export function validateRegisterForm(values: IRegisterProps): IRegisterErrors {
   }
 
   // Validación del teléfono
-  if (!values.phone) {
-    errors.phone = "El número de teléfono es un campo obligatorio";
-  } else if (!/^\d{9,12}$/.test(values.phone)) {
-    errors.phone =
+  if (!values.telefono) {
+    errors.telefono = "El número de teléfono es un campo obligatorio";
+  } else if (!/^\d{9,12}$/.test(values.telefono)) {
+    errors.telefono =
       "El número de teléfono debe ser numérico y tener entre 9 y 12 caracteres";
   }
 
   // Validación de la edad
-  if (!values.age) {
-    errors.age = "La edad es un campo obligatorio";
-  } else if (parseInt(values.age) < 13) {
-    errors.age = "Debes ser mayor de 13 años para registrarte";
+  if (!values.edad) {
+    errors.edad = "La edad es un campo obligatorio";
+  } else if (parseInt(values.edad) < 13) {
+    errors.edad = "Debes ser mayor de 13 años para registrarte";
   }
 
   // Validación de la contraseña
-  if (!values.password) {
-    errors.password = "La contraseña es un campo obligatorio";
-  } else if (values.password.length < 8) {
-    errors.password = "La contraseña debe tener al menos 8 caracteres";
-  } else if (!/(?=.*[A-Z])/.test(values.password)) {
-    errors.password = "La contraseña debe contener al menos una letra mayúscula";
-  } else if (!/(?=.*\d)/.test(values.password)) {
-    errors.password = "La contraseña debe contener al menos un número";
-  } else if (!/(?=.*[!@#$%^&*(),.?":{}|<>])/.test(values.password)) {
-    errors.password = "La contraseña debe contener al menos un carácter especial";
+  if (!values.confirmarContrasena) {
+    errors.confirmarContrasena = "La contraseña es un campo obligatorio";
+  } else if (values.confirmarContrasena.length < 8) {
+    errors.confirmarContrasena = "La contraseña debe tener al menos 8 caracteres";
+  } else if (!/(?=.*[A-Z])/.test(values.confirmarContrasena)) {
+    errors.confirmarContrasena = "La contraseña debe contener al menos una letra mayúscula";
+  } else if (!/(?=.*\d)/.test(values.confirmarContrasena)) {
+    errors.confirmarContrasena = "La contraseña debe contener al menos un número";
+  } else if (!/(?=.*[!@#$%^&*(),.?":{}|<>])/.test(values.confirmarContrasena)) {
+    errors.confirmarContrasena = "La contraseña debe contener al menos un carácter especial";
   }
 
   // Validación de la repetición de la contraseña
-  if (!values.repeatPassword) {
-    errors.repeatPassword = "Repetir la contraseña es un campo obligatorio";
-  } else if (values.repeatPassword !== values.password) {
-    errors.repeatPassword = "Las contraseñas no coinciden";
+  if (!values.confirmarContrasena) {
+    errors.confirmarContrasena = "Repetir la contraseña es un campo obligatorio";
+  } else if (values.confirmarContrasena !== values.contrasena) {
+    errors.confirmarContrasena = "Las contraseñas no coinciden";
   }
 
   return errors;
