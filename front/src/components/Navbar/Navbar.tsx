@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { FaSearch } from "react-icons/fa";
+import Image from "next/image";
 
 const Navbar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -12,53 +13,52 @@ const Navbar = () => {
 
   return (
     <nav className="bg-primary text-secondary py-4">
-      <div className="container mx-auto flex flex-wrap items-center px-4">
+      <div className="container mx-auto flex items-center px-4">
         <Link href="/home">
-          <div className="flex items-center justify-start space-x-2 text-lg font-bold">
-            <span className="text-secondary">FORGEFIT</span>
-          </div>
+          <Image src="/Group.png" alt="Location" width={120} height={100} />
         </Link>
 
-        <div className="flex items-center justify-center space-x-4 mx-24">
+        {/* Contenedor para los enlaces de navegación y la barra de búsqueda (centrado) */}
+        <div className="flex items-center space-x-4 mx-auto">
           {!isLogged ? (
             <>
               <Link
                 href="/login"
-                className="hover:text-secondary2 text-secondary"
+                className="text-secondary hover:text-[#b6ff04] transition-colors duration-300"
               >
                 LOGIN
               </Link>
               <Link
                 href="/register"
-                className="hover:text-secondary2 text-secondary"
+                className="text-secondary hover:text-[#b6ff04] transition-colors duration-300"
               >
                 REGISTRATE
               </Link>
               <Link
                 href="/contacto"
-                className="hover:text-secondary2 text-secondary"
+                className="text-secondary hover:text-[#b6ff04] transition-colors duration-300"
               >
                 CONTACTO
               </Link>
               <Link
                 href="/aboutUs"
-                className="hover:text-secondary2 text-secondary"
+                className="text-secondary hover:text-[#b6ff04] transition-colors duration-300"
               >
                 SOBRE NOSOTROS
-               </Link>
+              </Link>
             </>
           ) : (
             <>
               <Link
                 href="/clases"
-                className="hover:text-secondary2 text-secondary"
+                className="text-secondary hover:text-[#b6ff04] transition-colors duration-300"
               >
                 CLASES
               </Link>
               <div className="relative">
                 <button
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className="hover:text-secondary2 text-secondary"
+                  className="text-secondary hover:text-[#b6ff04] transition-colors duration-300"
                 >
                   Hola, {userName} {isMenuOpen ? "▵" : "▿"}
                 </button>
@@ -66,19 +66,19 @@ const Navbar = () => {
                   <div className="absolute right-0 bg-white text-black shadow-lg mt-2 rounded-md">
                     <Link
                       href="/profile"
-                      className="block px-4 py-2 hover:bg-gray-200"
+                      className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
                     >
                       Mi Perfil
                     </Link>
                     <Link
                       href="/agenda"
-                      className="block px-4 py-2 hover:bg-gray-200"
+                      className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
                     >
                       Mi Agenda
                     </Link>
                     <Link
                       href="/subscription"
-                      className="block px-4 py-2 hover:bg-gray-200"
+                      className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
                     >
                       Mi Suscripción
                     </Link>
@@ -87,7 +87,7 @@ const Navbar = () => {
                         setIsLogged(false);
                         setIsMenuOpen(false);
                       }}
-                      className="block w-full text-left px-4 py-2 hover:bg-gray-200"
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
                     >
                       Cerrar Sesión
                     </button>
@@ -97,8 +97,8 @@ const Navbar = () => {
             </>
           )}
 
-          {/* Barra buscadora  */}
-          <div className="flex items-center space-x-2 ">
+          {/* Barra buscadora */}
+          <div className="flex items-center space-x-2">
             <div
               className={`overflow-hidden transition-all duration-300 ${
                 isSearchOpen ? "w-48 opacity-100 ml-2" : "w-0 opacity-0"

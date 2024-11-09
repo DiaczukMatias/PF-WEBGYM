@@ -8,14 +8,12 @@ import { ILoginProps, ILoginErrors } from "@/interfaces/ILogin";
 import Swal from "sweetalert2";
 import { signIn } from "next-auth/react";
 
-const LoginView : React.FC = () => {
+const LoginView: React.FC = () => {
   const initialState = { email: "", contrasena: "" };
   const [loginForm, setLoginForm] = useState<ILoginProps>(initialState);
   const [errors, setErrors] = useState<ILoginErrors>(initialState);
   const [inputBlur, setInputBlur] = useState(initialState);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
-  
-
 
   // Handlers
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +29,7 @@ const LoginView : React.FC = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const res = await signIn('credentials', {
+    const res = await signIn("credentials", {
       email: loginForm.email,
       password: loginForm.contrasena,
       redirect: false,
@@ -41,10 +39,10 @@ const LoginView : React.FC = () => {
         icon: "error",
         title: "Oops...",
         text: "Credenciales incorrectas",
-      })
+      });
     } else {
       // Redirige al dashboard o donde quieras
-      window.location.href = '/dashboard';
+      window.location.href = "/dashboard";
     }
   };
 
@@ -54,62 +52,70 @@ const LoginView : React.FC = () => {
   }, [errors]);
 
   return (
-    <div className={styles.formContainer}>
-      <h2 className={styles.h2}>Ingresa en FORGEFIT</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email-address"></label>
-          <input
-            id="email-address"
-            name="email"
-            type="email"
-            value={loginForm.email}
-            onChange={handleChange}
-            onBlur={handleInputBlur}
-            placeholder="johndoe@gmail.com"
-            className={styles.inputField}
-          />
-          <br/>
-          {inputBlur.email && errors.email && <span className={styles.errorText}>*{errors.email}</span>}
-        </div>
+    <main className={styles.main}>
+      <div className={styles.formContainer}>
+        <h2 className={styles.h2}>
+          <span className={styles.whiteText}>INGRESA EN</span>{" "}
+          <span className={styles.greenText}>FORGEFIT</span>
+        </h2>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="email-address"></label>
+            <input
+              id="email-address"
+              name="email"
+              type="email"
+              value={loginForm.email}
+              onChange={handleChange}
+              onBlur={handleInputBlur}
+              placeholder="johndoe@gmail.com"
+              className={styles.inputField}
+            />
+            <br />
+            {inputBlur.email && errors.email && (
+              <span className={styles.errorText}>*{errors.email}</span>
+            )}
+          </div>
 
-        <div>
-          <label htmlFor="password"></label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            value={loginForm.contrasena}
-            onChange={handleChange}
-            onBlur={handleInputBlur}
-            placeholder="**********"
-            className={styles.inputField}
-          />
-          <br/>
-          {inputBlur.contrasena && errors.contrasena && <span className={styles.errorText}>*{errors.contrasena}</span>}
-        </div>
+          <div>
+            <label htmlFor="password"></label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              value={loginForm.contrasena}
+              onChange={handleChange}
+              onBlur={handleInputBlur}
+              placeholder="**********"
+              className={styles.inputField}
+            />
+            <br />
+            {inputBlur.contrasena && errors.contrasena && (
+              <span className={styles.errorText}>*{errors.contrasena}</span>
+            )}
+          </div>
 
-        <div>
-          <Link href="/register">No tienes una cuenta? Crea una!</Link>
-        </div>
+          <div>
+            <Link href="/register">No tienes una cuenta? Crea una!</Link>
+          </div>
 
-        <button
-          disabled={isSubmitDisabled}
-          type="submit"
-          className={styles.submitButton}
-        >
-          Sign In
-        </button>
+          <button
+            disabled={isSubmitDisabled}
+            type="submit"
+            className={styles.submitButton}
+          >
+            INGRESA
+          </button>
 
-        <button
-        onClick={() => signIn('google')}
-        className="bg-red-500 text-white py-2 px-4 rounded mt-4"
-      >
-        Iniciar sesión con Google
-      </button>
-
-      </form>
-    </div>
+          <button
+            onClick={() => signIn("google")}
+            className="bg-red-500 text-white py-2 px-4 rounded mt-4"
+          >
+            Iniciar sesión con Google
+          </button>
+        </form>
+      </div>
+    </main>
   );
 };
 
