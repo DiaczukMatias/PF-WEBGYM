@@ -178,7 +178,7 @@ const RegisterView: React.FC = () => {
           className={styles.submitButton}
         >
           Registrarse
-        </button>
+        </button> 
       </form>
     </div>
   );
