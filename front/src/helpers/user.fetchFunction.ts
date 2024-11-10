@@ -6,7 +6,7 @@ export const fetchLogin = async (userData: ILoginProps) => {
   // Lógica temporal de comparación
   if (
     userData.email === temporalLogin.email &&
-    userData.password === temporalLogin.password
+    userData.contrasena === temporalLogin.contrasena
   ) {
     // Simulando una respuesta exitosa del servidor
     return {

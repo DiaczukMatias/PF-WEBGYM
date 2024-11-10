@@ -8,6 +8,7 @@ import { ILoginProps, ILoginErrors } from "@/interfaces/ILogin";
 import Swal from "sweetalert2";
 import { signIn } from "next-auth/react";
 import { useSession } from 'next-auth/react';
+
 const LoginView : React.FC = () => {
 
   const initialState = { email: "", contrasena: "" };

@@ -122,6 +122,6 @@ export  const clasesData: IClase[] = [
 
   export const temporalLogin : ILoginProps = {
     email: "prueba@mail.com",
-    password: "Prueba123!"
+    contrasena: "Prueba123!"
   }
 
