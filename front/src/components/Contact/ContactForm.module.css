@@ -1,4 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+/* ContactForm.module.css */
+
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@400&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@400&family=Kantumruy+Pro:wght@700&display=swap");
 
 .main {
@@ -6,6 +8,9 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+.container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -14,33 +19,26 @@
 }
 
 .formContainer {
-  border: 2px solid #b6ff04;
-  max-width: 400px;
-  margin: 90px auto;
-  padding: 30px;
   background-color: rgba(182, 255, 4, 0.08);
+  max-width: 450px;
+  margin: 120px auto;
+  padding: 40px;
 
-  border-radius: 15px;
+  border-radius: 20px;
   box-shadow: 0 2px 10px #333333;
+  border: 2px solid #b6ff04;
   text-align: center;
 }
 
-.h2 {
-  font-size: 1.8rem;
-  margin-bottom: 20px;
-  font-weight: 600;
-}
-
-.whiteText {
-  color: #ffffff; 
-}
-
-.greenText {
-  color: #b6ff04;
+.title {
   font-family: "Oswald", sans-serif;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #ffffff;
+  text-align: left;
 }
 
-.inputField {
+.input {
   width: 100%;
   padding: 0.75rem;
   margin-bottom: 1rem;
@@ -51,8 +49,21 @@
   font-size: 1rem;
 }
 
+.input:focus {
+  border-color: #b6ff04;
+  outline: none;
+}
+
+.input::placeholder {
+  color: #777777;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+}
+
 .submitButton {
-  margin-top: 20px;
   white-space: nowrap;
   width: 50%;
   padding: 0.75rem;
@@ -68,37 +79,15 @@
 }
 
 .submitButton:hover {
-  font-weight: 700;
-  color: black;
   background-color: #b6ff04;
-  transform: translateY(-2px);
 }
 
-.submitButton:disabled {
-  background-color: #b6ff04;
-  cursor: not-allowed;
+.successMessage {
+  color: #4caf50;
+  margin-top: 1rem;
 }
 
 .errorMessage {
-  color: red;
-  font-size: 0.9rem;
-  margin-bottom: 15px;
-  font-weight: bold;
-}
-
-.formGroup {
-  background-color: black;
-  color: black;
-  width: 90%;
-  padding: 12px;
-  margin-bottom: 20px;
-  font-size: 1rem;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  border: none;
-  border-bottom: 2px solid #b6ff04;
-  outline: none;
-}
-
-.label {
-  color: #b6ff04;
+  color: #f44336;
+  margin-top: 1rem;
 }

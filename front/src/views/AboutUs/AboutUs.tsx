@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import * as maptilersdk from "@maptiler/sdk";
 import styles from "./AboutUs.module.css";
 import Image from "next/image";
@@ -16,8 +16,14 @@ export default function AboutUs() {
 
   maptilersdk.config.apiKey = apiKey || "";
 
+  const [isClient, setIsClient] = useState(false);
+
   useEffect(() => {
-    if (map.current) return;
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isClient || map.current) return;
 
     if (mapContainer.current) {
       map.current = new maptilersdk.Map({
@@ -55,7 +61,11 @@ export default function AboutUs() {
         map.current.remove();
       }
     };
-  }, [comercio.lng, comercio.lat, zoom]);
+  }, [isClient, comercio.lng, comercio.lat, zoom]);
+
+  if (!isClient) {
+    return <div>Cargando el mapa...</div>;
+  }
 
   return (
     <div>

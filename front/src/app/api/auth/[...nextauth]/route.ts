@@ -1,6 +1,8 @@
+
 import NextAuth, { AuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
+
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -9,8 +11,9 @@ export const authOptions: AuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
     CredentialsProvider({
-      name: 'Credentials',
+      name: "Credentials",
       credentials: {
+
         email: { label: 'Email', type: 'text' },
         contrasena: { label: 'Password', type: 'password' },
       },
@@ -26,12 +29,14 @@ export const authOptions: AuthOptions = {
         if (res.ok && user) {
           console.log('USER EN AUTHORIZE: ' + user.usuario.nombre);
           return user; 
+
         }
         return null;
       },
     }),
   ],
   callbacks: {
+
     async jwt({ token, user }) {
       if (user) {
         token.user = {
@@ -41,10 +46,13 @@ export const authOptions: AuthOptions = {
           rol: user.usuario.rol,
         };
         token.accessToken = user.token;
+
       }
       console.log('token en jwt:', token);
       return token;
     },
+
+
     async session({ session, token }) {
       if (token && token.user && token.user.id && token.user.email && token.user.name && token.user.rol && token.accessToken) {
         session.user = {
@@ -54,6 +62,7 @@ export const authOptions: AuthOptions = {
           name: token.user.name,
           rol: token.user.rol,
           accessToken: token.accessToken
+
         };
       } else {
         // Manejar el caso donde algunos valores son undefined
@@ -67,7 +76,9 @@ export const authOptions: AuthOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
   session: {
+
     strategy: 'jwt',
+
   },
 };
 
