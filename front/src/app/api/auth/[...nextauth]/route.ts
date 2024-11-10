@@ -1,77 +1,84 @@
-import NextAuth, { AuthOptions } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-//import FacebookProvider from 'next-auth/providers/facebook';
-import CredentialsProvider from "next-auth/providers/credentials";
+
+import NextAuth, { AuthOptions } from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
+import CredentialsProvider from 'next-auth/providers/credentials';
+
 
 export const authOptions: AuthOptions = {
   providers: [
-    // Proveedor de Google
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
-
-    /* Proveedor de Facebook
-    FacebookProvider({
-      clientId: process.env.FACEBOOK_CLIENT_ID!,
-      clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
-    }),*/
-
-    // Proveedor de autenticación clásica con email y password
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "text" },
-        password: { label: "Password", type: "password" },
+
+        email: { label: 'Email', type: 'text' },
+        contrasena: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        // Aquí debes implementar tu lógica de validación
-        const { email, password } = credentials!;
-        const res = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
+        const { email, contrasena } = credentials!;
+        const res = await fetch(`http://localhost:3010/usuarios/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, contrasena }),
         });
         const user = await res.json();
 
         if (res.ok && user) {
-          return user;
+          console.log('USER EN AUTHORIZE: ' + user.usuario.nombre);
+          return user; 
+
         }
         return null;
       },
     }),
   ],
-
   callbacks: {
-    async jwt({ token, account, user }) {
-      if (account) {
 
-        token.accessToken = account.access_token === "string" ? account.access_token: undefined;
-      }
+    async jwt({ token, user }) {
       if (user) {
-        token.user = typeof user === "string" ? user: undefined;
+        token.user = {
+          id: user.usuario.id,
+          email: user.usuario.email,
+          name: user.usuario.nombre,
+          rol: user.usuario.rol,
+        };
+        token.accessToken = user.token;
 
       }
+      console.log('token en jwt:', token);
       return token;
     },
 
+
     async session({ session, token }) {
-      if (token) {
+      if (token && token.user && token.user.id && token.user.email && token.user.name && token.user.rol && token.accessToken) {
         session.user = {
           ...session.user,
+          id: token.user.id,
+          email: token.user.email,
+          name: token.user.name,
+          rol: token.user.rol,
+          accessToken: token.accessToken
 
-          token: typeof token.user === "string" ? token.user : "", // Asegura que los datos del usuario se pasen a la sesión
-          accessToken: typeof token.accessToken === "string" ? token.accesToken: undefined,
         };
+      } else {
+        // Manejar el caso donde algunos valores son undefined
+        console.error("Algunas propiedades de token o user son undefined");
       }
+      
+      console.log('session data:', session);
       return session;
-    },
+    }
+    
   },
-
   secret: process.env.NEXTAUTH_SECRET,
-
   session: {
-    strategy: "jwt",
+
+    strategy: 'jwt',
+
   },
 };
 
