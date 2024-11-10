@@ -59,7 +59,7 @@ const RegisterView: React.FC = () => {
           <label htmlFor="name" className={styles.label}></label>
           <input
             id="name"
-            name="name"
+            name="nombre"
             type="text"
             value={dataUser.nombre}
             onChange={handleChange}
@@ -97,7 +97,7 @@ const RegisterView: React.FC = () => {
           <label htmlFor="password" className={styles.label}></label>
           <input
             id="password"
-            name="password"
+            name="contrasena"
             type="password"
             value={dataUser.contrasena}
             onChange={handleChange}
@@ -116,7 +116,7 @@ const RegisterView: React.FC = () => {
           <label htmlFor="repeatPassword" className={styles.label}></label>
           <input
             id="repeatPassword"
-            name="repeatPassword"
+            name="confirmarContrasena"
             type="password"
             value={dataUser.confirmarContrasena}
             onChange={handleChange}
@@ -135,7 +135,7 @@ const RegisterView: React.FC = () => {
           <label htmlFor="phone" className={styles.label}></label>
           <input
             id="phone"
-            name="phone"
+            name="telefono"
             type="tel"
             value={dataUser.telefono}
             onChange={handleChange}
@@ -154,7 +154,7 @@ const RegisterView: React.FC = () => {
           <label htmlFor="age" className={styles.label}></label>
           <input
             id="age"
-            name="age"
+            name="edad"
             type="number"
             value={dataUser.edad}
             onChange={handleChange}
