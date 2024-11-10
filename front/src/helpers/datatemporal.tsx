@@ -14,8 +14,8 @@ export const categoriesData: ICategoria[] = [
 export  const clasesData: IClase[] = [
     {
       id: '1',
-      nombre: 'Yoga',
-      descripcion: 'Clase de yoga avanzada',
+      nombre: 'Crossfit',
+      descripcion: 'Clase de crossfit avanzada',
       fecha: new Date('2024-11-01T10:00:00'),
       categoriaId: "1",
       categoria: categoriesData[0], // Asignamos una categoría
@@ -23,12 +23,12 @@ export  const clasesData: IClase[] = [
     },
     {
       id: '2',
-      nombre: 'Pilates',
-      descripcion: 'Entrenamiento de pilates para principiantes',
-      fecha: new Date('2024-11-02T10:00:00'),
+      nombre: 'Funcional',
+      descripcion: 'Entrenamiento funcional',
+      fecha: new Date('2024-11-01T14:00:00'),
       categoriaId: "2",
       categoria: categoriesData[1], // Asignamos una categoría
-      imagen: '/images/clases/pilates.jpg',
+      imagen: '/images/clases/funcional.jpg',
     },
     {
       id: '3',
@@ -50,20 +50,20 @@ export  const clasesData: IClase[] = [
       },
       {
         id: '5',
-        nombre: 'Pilates2',
+        nombre: 'Pilates',
         descripcion: 'Entrenamiento de pilates para principiantes',
-        fecha: new Date('2024-11-01T14:00:00'),
+        fecha: new Date('2024-11-02T10:00:00'),
         categoriaId: "2",
         categoria: categoriesData[1], // Asignamos una categoría
-        imagen: '/images/clases/pilates.jpg',
+        imagen: '/images/clases/pilates.png',
       },
       {
         id: '6',
-        nombre: 'Natación2',
-        descripcion: 'Clase de natación para todas las edades',
+        nombre: 'Zumba',
+        descripcion: 'Clase de zumba para todas las edades',
         fecha: new Date('2024-11-02T14:00:00'),
-        categoriaId: "3",
-        categoria: categoriesData[2], // Asignamos una categoría
+        categoriaId: "4",
+        categoria: categoriesData[3], // Asignamos una categoría
         imagen: '/images/clases/natacion.jpg',
       },
     
@@ -72,7 +72,7 @@ export  const clasesData: IClase[] = [
  export const profesoresData: IProfesor[] = [
     {
       id: '1',
-      nombre: 'Profesor 1',
+      nombre: 'Carlos',
       descripcion: 'Especialista en musculación y acondicionamiento físico',
       certificacion: 'Certificación Internacional en Musculación',
       imagen: '/images/profesor/profe1.png',
@@ -80,42 +80,42 @@ export  const clasesData: IClase[] = [
     },
     {
       id: '2',
-      nombre: 'Profesor 2',
-      descripcion: 'Instructora de aeróbica y zumba con 10 años de experiencia',
-      certificacion: 'Certificación en Aeróbica y Zumba',
-      imagen: '/images/profesor/profe2.png',
+      nombre: 'Pedro',
+      descripcion: 'Instructora de funcional y zumba con 10 años de experiencia',
+      certificacion: 'Certificación en funcionañ y Zumba',
+      imagen: '/images/profesor/pedroLopez.jpg',
       clases: [clasesData[1], clasesData[2]],
     },
     {
       id: '3',
-      nombre: 'Profesor 3',
+      nombre: 'Ana',
       descripcion: 'Profesor de natación y ejercicios en piscina',
       certificacion: 'Certificación en Entrenamiento Acuático',
       imagen: '/images/profesor/profe3.png',
-      clases: [clasesData[2]],
+      clases: [clasesData[1]],
     },
     {
       id: '4',
-      nombre: 'Profesor 4',
+      nombre: 'franco',
       descripcion: 'Especialista en musculación y acondicionamiento físico',
       certificacion: 'Certificación Internacional en Musculación',
-      imagen: '/images/profesor/profe1.png',
+      imagen: '/images/profesor/profe2.png',
       clases: [clasesData[0], clasesData[1]],
     },
     {
       id: '5',
-      nombre: 'Profesor 5',
+      nombre: 'Sofia',
       descripcion: 'Instructora de aeróbica y zumba con 10 años de experiencia',
       certificacion: 'Certificación en Aeróbica y Zumba',
-      imagen: '/images/profesor/profe2.png',
-      clases: [clasesData[1], clasesData[2]],
+      imagen: '/images/profesor/sofia.png',
+      clases: [clasesData[4], clasesData[2]],
     },
     {
       id: '6',
-      nombre: 'Profesor 6',
+      nombre: 'Gonzalo',
       descripcion: 'Profesor de natación y ejercicios en piscina',
       certificacion: 'Certificación en Entrenamiento Acuático',
-      imagen: '/images/profesor/profe3.png',
+      imagen: '/images/profesor/gonzalo.png',
       clases: [clasesData[2]],
     },
   ];

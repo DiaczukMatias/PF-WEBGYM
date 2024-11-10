@@ -24,12 +24,6 @@ const Navbar = () => {
           {!isLogged ? (
             <>
               <Link
-                href="/profile"
-                className="text-secondary hover:text-[#b6ff04] transition-colors duration-300"
-              >
-                PERFIL
-              </Link>
-              <Link
                 href="/planes"
                 className="text-secondary hover:text-[#b6ff04] transition-colors duration-300"
               >
@@ -85,7 +79,7 @@ const Navbar = () => {
                   >
                     <Link
                       href="/profile"
-                      className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
+                      className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04] transition-colors duration-300"
                     >
                       Mi Perfil
                     </Link>

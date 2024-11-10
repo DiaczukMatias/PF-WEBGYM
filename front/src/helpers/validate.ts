@@ -1,7 +1,22 @@
 import { ILoginErrors, ILoginProps } from "@/interfaces/ILogin";
 import { IRegisterErrors, IRegisterProps } from "@/interfaces/IRegister";
 
-export function validateLoginForm (values: ILoginProps) :ILoginErrors {
+/*
+// Función para verificar si el email existe usando el endpoint que retorna todos los usuarios
+async function emailExists(email: string): Promise<boolean> {
+  try {
+    const response = await fetch(`http://localhost:3010/usuarios`); // Asegúrate de que coincida con el endpoint de tu backend
+    const users = await response.json();
+    // Comprobamos si alguno de los usuarios tiene el email que estamos verificando
+    return users.some((user: { email: string }) => user.email === email);
+  } catch (error) {
+    console.error("Error al verificar el email:", error);
+    return false;
+  }
+}
+*/
+
+export  function validateLoginForm (values: ILoginProps) :ILoginErrors {
   const errors: ILoginErrors = {};
 
   if (!values.email) {
@@ -9,6 +24,11 @@ export function validateLoginForm (values: ILoginProps) :ILoginErrors {
   } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(values.email)) {
     errors.email = "El email no tiene un formato válido";
   }
+  
+  /*else if (!(await emailExists(values.email))) {
+    errors.email = "El email no está registrado";
+  }*/ 
+
   // Validación para la contraseña
   if (!values.contrasena) {
     errors.contrasena = "La contraseña es un campo obligatorio";
@@ -23,7 +43,9 @@ export function validateLoginForm (values: ILoginProps) :ILoginErrors {
 };
 
 
-export function validateRegisterForm(values: IRegisterProps): IRegisterErrors {
+
+
+export  function validateRegisterForm(values: IRegisterProps): IRegisterErrors {
   const errors: IRegisterErrors = {};
 
   // Validación del nombre
@@ -40,7 +62,10 @@ export function validateRegisterForm(values: IRegisterProps): IRegisterErrors {
     errors.email = "El email es un campo obligatorio";
   } else if (!/\S+@\S+\.\S+/.test(values.email)) {
     errors.email = "El email no tiene un formato válido";
-  }
+  } 
+  /* else if (await emailExists(values.email)) {
+    errors.email = "El email ya está registrado";
+  }  */
 
   // Validación del teléfono
   if (!values.telefono) {
@@ -79,3 +104,4 @@ export function validateRegisterForm(values: IRegisterProps): IRegisterErrors {
 
   return errors;
 }
+

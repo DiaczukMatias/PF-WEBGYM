@@ -35,7 +35,11 @@ const HomeView = () => {
       </h2>
       <Carrusel categorias={categorias} />
       <Category categories={categoriesData} />
-
+     
+      <div className={styles.title}>
+        <span className={styles.whiteText}>NUESTRAS</span>
+        <span className={styles.greenText}> CLASES MÁS POPULARES</span>
+      </div>
       <div className={styles.container}>
         <ClassCardList classes={clasesData} limit={3} />
         <div className={styles.buttonContainer}>

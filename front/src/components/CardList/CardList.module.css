@@ -1,3 +1,4 @@
+/*
 .container {
   padding: 1rem;
 }
@@ -16,8 +17,8 @@
 }
 
 .title .greenText {
-  color: #b6ff04; /* color verde */
-}
+  color: #b6ff04;  color verde 
+} 
 
 .cardContainer {
   display: flex;
@@ -32,7 +33,7 @@
   height: 250px;
   background-color: black;
   border-radius: 8px;
-  border: 2px solid #b6ff04; /* Borde verde */
+  border: 2px solid #b6ff04;  Borde verde 
   padding: 1rem;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -58,3 +59,4 @@
   color: #b6ff04;
   font-weight: 600;
 }
+*/

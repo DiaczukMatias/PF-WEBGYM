@@ -8,6 +8,8 @@ import { ILoginProps, ILoginErrors } from "@/interfaces/ILogin";
 import Swal from "sweetalert2";
 import { signIn } from "next-auth/react";
 import { useSession } from 'next-auth/react';
+import { useRouter } from "next/navigation";
+
 
 const LoginView: React.FC = () => {
 
@@ -17,12 +19,21 @@ const LoginView: React.FC = () => {
   const [inputBlur, setInputBlur] = useState(initialState);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
+  const router = useRouter();
 
   const { data: session, status } = useSession();
   console.log('sesion de usuario: ' + session?.user?.name);
   console.log('status de la sesion: ' + status);
 
-
+/*    para verificar si existe  un usuario con ese email
+  const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const newFormState = { ...loginForm, [name]: value };
+    setLoginForm(newFormState);
+    const newErrors = await validateLoginForm(newFormState);
+    setErrors(newErrors);
+  };
+  */
 
   // Handlers
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -30,6 +41,7 @@ const LoginView: React.FC = () => {
     setLoginForm({ ...loginForm, [name]: value });
     setErrors(validateLoginForm({ ...loginForm, [name]: value }));
   };
+
 
   const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const { name } = e.target;
@@ -51,7 +63,8 @@ const LoginView: React.FC = () => {
       });
     } else {
       // Redirige al dashboard o donde quieras
-      window.location.href = "/dashboard";
+    //  window.location.href = "/profile";
+    router.push("/profile");
     }
   };
 
