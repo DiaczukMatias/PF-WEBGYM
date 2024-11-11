@@ -3,13 +3,14 @@ import { useState } from "react";
 import Link from "next/link";
 import { FaSearch } from "react-icons/fa";
 import Image from "next/image";
+import { useSession, signOut } from 'next-auth/react';
 
 const Navbar = () => {
+  const { data: session, status } = useSession();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  // Cambiar manual el estado para ver navbar con usuario logeado
-  const [isLogged, setIsLogged] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const userName = "Usuario";
+  const userName = session?.user?.name || "Usuario";
+  const isLogged = status === "authenticated";
 
   return (
     <nav className="bg-primary text-secondary py-4">
@@ -63,7 +64,13 @@ const Navbar = () => {
                   Hola, {userName} {isMenuOpen ? "▵" : "▿"}
                 </button>
                 {isMenuOpen && (
-                  <div className="absolute right-0 bg-white text-black shadow-lg mt-2 rounded-md">
+                  <div
+                    className="absolute right-0 bg-white bg-opacity-90 text-black shadow-lg mt-2 rounded-md transition-transform duration-500 ease-out transform origin-top"
+                    style={{
+                      opacity: isMenuOpen ? 1 : 0,
+                      transform: isMenuOpen ? "scaleY(1)" : "scaleY(0)",
+                    }}
+                  >
                     <Link
                       href="/profile"
                       className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
@@ -84,8 +91,8 @@ const Navbar = () => {
                     </Link>
                     <button
                       onClick={() => {
-                        setIsLogged(false);
-                        setIsMenuOpen(false);
+                        setIsMenuOpen(false); // Cerramos el menú desplegable
+                        signOut({ callbackUrl: "/home" }); // Llamamos a la función de cierre de sesión
                       }}
                       className="block w-full text-left px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
                     >

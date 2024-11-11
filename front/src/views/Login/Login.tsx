@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
 import { signIn } from "next-auth/react";
 import { useSession } from 'next-auth/react';
 
-const LoginView : React.FC = () => {
+const LoginView: React.FC = () => {
 
   const initialState = { email: "", contrasena: "" };
   const [loginForm, setLoginForm] = useState<ILoginProps>(initialState);
@@ -19,10 +19,10 @@ const LoginView : React.FC = () => {
 
 
   const { data: session, status } = useSession();
-  console.log('sesion de usuario: '+session?.user?.name);
-  console.log('status de la sesion: '+status);
-  
- 
+  console.log('sesion de usuario: ' + session?.user?.name);
+  console.log('status de la sesion: ' + status);
+
+
 
   // Handlers
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -77,7 +77,7 @@ const LoginView : React.FC = () => {
             placeholder="johndoe@gmail.com"
             className={styles.inputField}
           />
-          <br/>
+          <br />
           {inputBlur.email && errors.email && <span className={styles.errorText}>*{errors.email}</span>}
         </div>
 
@@ -93,50 +93,31 @@ const LoginView : React.FC = () => {
             placeholder="**********"
             className={styles.inputField}
           />
-          <br/>
+          <br />
           {inputBlur.contrasena && errors.contrasena && <span className={styles.errorText}>*{errors.contrasena}</span>}
         </div>
 
+        <div>
+          <Link href="/register">No tienes una cuenta? Crea una!</Link>
+        </div>
 
-          <div>
-            <label htmlFor="password"></label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              value={loginForm.contrasena}
-              onChange={handleChange}
-              onBlur={handleInputBlur}
-              placeholder="**********"
-              className={styles.inputField}
-            />
-            <br />
-            {inputBlur.contrasena && errors.contrasena && (
-              <span className={styles.errorText}>*{errors.contrasena}</span>
-            )}
-          </div>
+        <button
+          disabled={isSubmitDisabled}
+          type="submit"
+          className={styles.submitButton}
+        >
+          INGRESA
+        </button>
 
-          <div>
-            <Link href="/register">No tienes una cuenta? Crea una!</Link>
-          </div>
+        <button
+          onClick={() => signIn("google")}
+          className="bg-red-500 text-white py-2 px-4 rounded mt-4"
+        >
+          Iniciar sesión con Google
+        </button>
+      </form>
+    </div>
 
-          <button
-            disabled={isSubmitDisabled}
-            type="submit"
-            className={styles.submitButton}
-          >
-            INGRESA
-          </button>
-
-          <button
-            onClick={() => signIn("google")}
-            className="bg-red-500 text-white py-2 px-4 rounded mt-4"
-          >
-            Iniciar sesión con Google
-          </button>
-        </form>
-      </div>
-    </main>
   );
 };
 
