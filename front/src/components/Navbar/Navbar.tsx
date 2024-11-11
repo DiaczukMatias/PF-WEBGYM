@@ -3,25 +3,32 @@ import { useState } from "react";
 import Link from "next/link";
 import { FaSearch } from "react-icons/fa";
 import Image from "next/image";
+import styles from "./Navbar.module.css";
+import { useSession, signOut } from 'next-auth/react';
 
 const Navbar = () => {
+  const { data: session, status } = useSession();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  // Cambiar manual el estado para ver navbar con usuario logeado
-  const [isLogged, setIsLogged] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const userName = "Usuario";
+  const userName = session?.user?.name || "Usuario";
+  const isLogged = status === "authenticated";
 
   return (
-    <nav className="bg-primary text-secondary py-4">
-      <div className="container mx-auto flex items-center px-4">
+    <nav className={`${styles.navbar} bg-primary text-secondary py-4`}>
+      <div className="container mx-auto flex items-center px-2 ">
         <Link href="/home">
           <Image src="/Group.png" alt="Location" width={120} height={100} />
         </Link>
 
-        {/* Contenedor para los enlaces de navegación y la barra de búsqueda (centrado) */}
         <div className="flex items-center space-x-4 mx-auto">
           {!isLogged ? (
             <>
+              <Link
+                href="/planes"
+                className="text-secondary hover:text-[#b6ff04] transition-colors duration-300"
+              >
+                PLANES
+              </Link>
               <Link
                 href="/login"
                 className="text-secondary hover:text-[#b6ff04] transition-colors duration-300"
@@ -63,10 +70,16 @@ const Navbar = () => {
                   Hola, {userName} {isMenuOpen ? "▵" : "▿"}
                 </button>
                 {isMenuOpen && (
-                  <div className="absolute right-0 bg-white text-black shadow-lg mt-2 rounded-md">
+                  <div
+                    className="absolute right-0 bg-white bg-opacity-90 text-black shadow-lg mt-2 rounded-md transition-transform duration-500 ease-out transform origin-top"
+                    style={{
+                      opacity: isMenuOpen ? 1 : 0,
+                      transform: isMenuOpen ? "scaleY(1)" : "scaleY(0)",
+                    }}
+                  >
                     <Link
                       href="/profile"
-                      className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
+                      className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04] transition-colors duration-300"
                     >
                       Mi Perfil
                     </Link>
@@ -84,8 +97,8 @@ const Navbar = () => {
                     </Link>
                     <button
                       onClick={() => {
-                        setIsLogged(false);
-                        setIsMenuOpen(false);
+                        setIsMenuOpen(false); // Cerramos el menú desplegable
+                        signOut({ callbackUrl: "/home" }); // Llamamos a la función de cierre de sesión
                       }}
                       className="block w-full text-left px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
                     >
@@ -98,7 +111,7 @@ const Navbar = () => {
           )}
 
           {/* Barra buscadora */}
-          <div className="flex items-center space-x-2">
+          <div className={`flex items-center space-x-2`}>
             <div
               className={`overflow-hidden transition-all duration-300 ${
                 isSearchOpen ? "w-48 opacity-100 ml-2" : "w-0 opacity-0"

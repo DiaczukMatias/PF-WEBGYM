@@ -14,7 +14,7 @@ export interface IUsuario {
     edad?: number;                    // Edad del usuario (opcional)
     telefono?: number;                // Teléfono del usuario (opcional)
     email: string;                    // Correo electrónico del usuario
-    contrasena: string;               // Contraseña del usuario
+    contrasena?: string;               // Contraseña del usuario
      rol: RolEnum;                    // Rol del usuario (admin, profesor, cliente)
      perfilProfesor?: IProfesor;    //nuevas:
      membresia?: IMembresia;

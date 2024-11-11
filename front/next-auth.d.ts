@@ -1,29 +1,40 @@
-//extiende los types de nextAuth
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import NextAuth from 'next-auth';
 
-import { DefaultSession, DefaultJWT } from "next-auth";
-
-declare module "next-auth" {
-  interface Session {
-    user?: {
-      id?: string;
-      email?: string;
-      name?: string;
-      image?: string;
-      accessToken?: string | null;
-      token?: string | null;
-
-    } & DefaultSession['user'];
-
+declare module 'next-auth' {
+  interface User {
+    usuario: {
+      id: string;
+      email: string;
+      nombre: string;
+      telefono?: string;
+      rol: string;
+    };
+    token: string;
   }
 
-  interface JWT extends DefaultJWT {
-    user?: {
-      id?: string;
-      email?: string;
-      name?: string;
-      image?: string;
+  interface Session {
+    user: {
+      id: string;
+      email: string;
+      name: string;
+      telefono?: string;
+      rol: string;
+      accessToken: string;
     };
-    accessToken?: string | null;
-    token?: string | null;
+  }
+}
+
+declare module 'next-auth/jwt' {
+  interface JWT {
+    user?: {
+
+      id: string;
+      email: string;
+      name: string;
+      telefono?: string;
+      rol: string;
+    };
+    accessToken?: string;
   }
 }
