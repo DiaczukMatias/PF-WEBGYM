@@ -67,6 +67,17 @@ const RegisterView: React.FC = () => {
     }
   };
 
+  /* Para verificar q ya no exista el mail
+  useEffect(() => {
+    const validateForm = async () => {
+      const validationErrors = await validateRegisterForm(dataUser);
+      setErrors(validationErrors);
+    };
+    console.log(dataUser);
+    validateForm();
+  }, [dataUser]);
+*/
+  
   useEffect(() => {
     const errors = validateRegisterForm(dataUser);
     setErrors(errors);

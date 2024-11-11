@@ -1,7 +1,16 @@
+"use client"
 import React from "react";
 import styles from "./ProfileView.module.css";
+import { useSession } from "next-auth/react";
 
 const ProfileView: React.FC = () => {
+  const { data: session} = useSession();
+  const userName = session?.user?.name || "Usuario";
+  const userMail = session?.user?.email || "Email";
+  const userTel = session?.user?.telefono || "telefono";
+
+
+
   return (
     <div className={styles.container}>
       {/* Sección de perfil del entrenador */}
@@ -16,12 +25,12 @@ const ProfileView: React.FC = () => {
         <h2 className={styles.role}>Gym Coach</h2>
         <div className={styles.rating}>⭐⭐⭐⭐⭐</div>
         <h3 className={`${styles.name} ${styles.oswaldText}`}>
-          Jessica Roberts
+           {userName.toUpperCase()}
         </h3>
         <ul className={styles.contactInfo}>
-          <li>📞 +54 1146246237</li>
-          <li>📧 jessicaroberts@gmail.com</li>
-          <li>📸 @jessicacouchgym</li>
+          <li>📞 +{userTel} </li>
+          <li>📧 {userMail}</li>
+          <li>📸 @{userName}couchgym</li>
         </ul>
       </div>
 
