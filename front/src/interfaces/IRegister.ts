@@ -3,8 +3,8 @@ export interface IRegisterErrors {
   email?: string;
   contrasena?: string;
   confirmarContrasena?:string;
-  telefono?: string;
-  edad?: string;
+  telefono?: number |string;
+  edad?: number |string;
 }
 
 export interface IRegisterProps {
@@ -12,8 +12,8 @@ export interface IRegisterProps {
   email: string;
   contrasena: string;
   confirmarContrasena:string;
-  telefono: string;
-  edad: string;
+  telefono: number | string;
+  edad: number | string;
 }
 
 

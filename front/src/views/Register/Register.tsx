@@ -5,8 +5,11 @@ import { IRegisterErrors, IRegisterProps } from "@/interfaces/IRegister";
 import React, { useEffect, useState } from "react";
 import styles from "./Register.module.css";
 import Link from "next/link";
-
+import { registerPost } from "@/helpers/user.fetchFunction";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 const RegisterView: React.FC = () => {
+  const router = useRouter();
   const initialState = {
     nombre: "",
     email: "",
@@ -20,13 +23,15 @@ const RegisterView: React.FC = () => {
   const [errors, setErrors] = useState<IRegisterErrors>(initialState);
   const [inputBlur, setInputBlur] = useState(initialState);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
-
+  
+  
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setDataUser({
       ...dataUser,
       [name]: value,
     });
+    
   };
 
   const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -36,12 +41,36 @@ const RegisterView: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Agregar lógica para el envío de datos de registro aquí
+
+    if (Object.keys(errors).length) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Hay errores en el formulario",
+      });
+      return;
+    }
+    const formattedDataUser = {
+      ...dataUser,
+      edad: Number(dataUser.edad),
+      telefono: Number(dataUser.telefono),
+    };
+    try {
+      const result = await registerPost(formattedDataUser);
+      console.log('console log del resultado: '+result);
+      
+      if (result && result.usuarioId) {
+        router.push("/login"); // Redirige solo si el registro fue exitoso
+      }
+    } catch (error) {
+      console.error("Error en el registro:", error);
+    }
   };
 
   useEffect(() => {
     const errors = validateRegisterForm(dataUser);
     setErrors(errors);
+    console.log(dataUser);
   }, [dataUser]);
 
   useEffect(() => {
