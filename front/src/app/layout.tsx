@@ -6,13 +6,13 @@ import Footer from "@/components/Footer/Footer";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Head from "next/head";
+import { SessionProvider } from "next-auth/react";
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -30,16 +30,18 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <Head>
+      <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap"
           rel="stylesheet"
         />
-      </Head>
+      </head>
       <body className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-grow">{children}</main>
-        <Footer />
+        <SessionProvider>
+          <Navbar />
+          <main className="flex-grow">{children}</main>
+          <Footer />
+        </SessionProvider>
       </body>
     </html>
   );
