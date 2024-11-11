@@ -3,6 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { FaSearch } from "react-icons/fa";
 import Image from "next/image";
+import styles from "./Navbar.module.css";
 import { useSession, signOut } from 'next-auth/react';
 
 const Navbar = () => {
@@ -13,16 +14,27 @@ const Navbar = () => {
   const isLogged = status === "authenticated";
 
   return (
-    <nav className="bg-primary text-secondary py-4">
-      <div className="container mx-auto flex items-center px-4">
+    <nav className={`${styles.navbar} bg-primary text-secondary py-4`}>
+      <div className="container mx-auto flex items-center px-2 ">
         <Link href="/home">
           <Image src="/Group.png" alt="Location" width={120} height={100} />
         </Link>
 
-        {/* Contenedor para los enlaces de navegación y la barra de búsqueda (centrado) */}
         <div className="flex items-center space-x-4 mx-auto">
           {!isLogged ? (
             <>
+              <Link
+                href="/profile"
+                className="text-secondary hover:text-[#b6ff04] transition-colors duration-300"
+              >
+                PERFIL
+              </Link>
+              <Link
+                href="/planes"
+                className="text-secondary hover:text-[#b6ff04] transition-colors duration-300"
+              >
+                PLANES
+              </Link>
               <Link
                 href="/login"
                 className="text-secondary hover:text-[#b6ff04] transition-colors duration-300"
@@ -105,7 +117,7 @@ const Navbar = () => {
           )}
 
           {/* Barra buscadora */}
-          <div className="flex items-center space-x-2">
+          <div className={`flex items-center space-x-2`}>
             <div
               className={`overflow-hidden transition-all duration-300 ${
                 isSearchOpen ? "w-48 opacity-100 ml-2" : "w-0 opacity-0"

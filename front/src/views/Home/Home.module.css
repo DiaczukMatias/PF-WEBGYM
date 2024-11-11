@@ -1,0 +1,67 @@
+/* HomeView.module.css */
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&display=swap");
+
+.title {
+  margin-top: 20px;
+  margin-bottom: 30px;
+  text-align: center;
+  font-size: 2rem;
+  font-family: "Oswald", sans-serif;
+  text-transform: uppercase;
+
+  padding-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.whiteText {
+  color: white;
+}
+
+.greenText {
+  color: #b6ff04;
+}
+
+.container {
+  padding-bottom: 1.5rem;
+}
+
+.button {
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.button:hover {
+  color: var(--secondary2);
+}
+
+.buttonContainer {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.subtitle {
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+  font-family: sans-serif;
+  font-size: 1.25rem;
+  color: var(--accent);
+  margin: 1rem 0;
+}
+
+.carruselContainer {
+  border: 2px solid #b6ff04; /* Borde de color verde */
+  padding: 1rem;
+  border-radius: 8px; /* Opcional, para bordes redondeados */
+}
+
+.carrusel {
+  border: 2px solid #b6ff04; /* Borde verde */
+  border-radius: 8px; /* Bordes redondeados */
+}
