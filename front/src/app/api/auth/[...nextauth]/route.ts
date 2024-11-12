@@ -1,4 +1,3 @@
-
 import NextAuth, { AuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
@@ -19,7 +18,9 @@ export const authOptions: AuthOptions = {
       },
       async authorize(credentials) {
         const { email, contrasena } = credentials!;
-        const res = await fetch(`http://localhost:3010/usuarios/login`, {
+        const res = await fetch(`http://localhost:3010/usuarios/login`, 
+         // const res = await fetch(`http://localhost:3010/auth/google-login`,
+         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, contrasena }),

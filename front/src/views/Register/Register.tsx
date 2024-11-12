@@ -1,11 +1,10 @@
 "use client";
-
+import { registerPost } from "@/helpers/user.fetchFunction";
 import { validateRegisterForm } from "@/helpers/validate";
 import { IRegisterErrors, IRegisterProps } from "@/interfaces/IRegister";
 import React, { useEffect, useState } from "react";
 import styles from "./Register.module.css";
 import Link from "next/link";
-import { registerPost } from "@/helpers/user.fetchFunction";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 const RegisterView: React.FC = () => {
@@ -89,6 +88,7 @@ const RegisterView: React.FC = () => {
   }, [errors]);
 
   return (
+    <main className={styles.main}>
     <div className={styles.formContainer}>
       <div>
         <h2 className={styles.h2}>Regístrate en FORGEFIT</h2>
@@ -180,7 +180,7 @@ const RegisterView: React.FC = () => {
             value={dataUser.telefono}
             onChange={handleChange}
             onBlur={handleInputBlur}
-            placeholder="Teléfono"
+            placeholder="Telefono"
             className={styles.inputField}
           />
           <br/>
@@ -221,6 +221,7 @@ const RegisterView: React.FC = () => {
         </button> 
       </form>
     </div>
+  </main>
   );
 };
 
