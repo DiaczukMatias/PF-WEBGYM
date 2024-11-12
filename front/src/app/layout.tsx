@@ -3,9 +3,6 @@
 import "./globals.css";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
-import { usePathname } from "next/navigation";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { SessionProvider } from "next-auth/react";
 
 export default function RootLayout({
@@ -13,20 +10,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
-  const router = useRouter();
-
-  useEffect(() => {
-    const storedUserData = localStorage.getItem("userSession");
-    if (
-      !storedUserData &&
-      (pathname.includes("/dashboard") ||
-        pathname === "/cart" ||
-        pathname === "/nuevo")
-    ) {
-      router.push("/login");
-    }
-  }, [pathname, router]);
 
   return (
     <html lang="en">
