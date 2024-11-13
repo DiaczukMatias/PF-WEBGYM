@@ -1,7 +1,7 @@
 import ProfileView from "@/views/Proflle/ProfileView";
 import React from "react";
 
-const profile = () => {
+const profile :React.FC = () => {
   return (
     <div>
       <ProfileView />

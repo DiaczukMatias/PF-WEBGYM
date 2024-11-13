@@ -1,7 +1,7 @@
 import React from "react";
 
 
-const Dashboard = () => {
+const Dashboard :React.FC = () => {
     return (
         <h1>Hola soy el dashboard de usuario</h1>
     );

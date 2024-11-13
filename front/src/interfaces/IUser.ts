@@ -15,10 +15,10 @@ export interface IUsuario {
     telefono?: number;                // Teléfono del usuario (opcional)
     email: string;                    // Correo electrónico del usuario
     contrasena?: string;               // Contraseña del usuario
-     rol: RolEnum;                    // Rol del usuario (admin, profesor, cliente)
-     perfilProfesor?: IProfesor;    //nuevas:
-     membresia?: IMembresia;
-     inscripciones?: IInscripcion[];                
-     city?: string;    //agregaron q al editar el perfil del usuario ingresar la informacion de city y adress
-     address?: string;
+    rol: RolEnum;                    // Rol del usuario (admin, profesor, cliente)
+    perfilProfesor?: IProfesor;    //nuevas:
+    membresia?: IMembresia;
+    inscripciones?: IInscripcion[];
+    city?: string;    //agregaron q al editar el perfil del usuario ingresar la informacion de city y adress
+    address?: string;
 }  
