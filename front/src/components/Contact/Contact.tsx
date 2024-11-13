@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import styles from "./ContactForm.module.css";
+import emailjs from "emailjs-com";
 
 const ContactForm: React.FC = () => {
   const [name, setName] = useState("");
@@ -14,11 +15,34 @@ const ContactForm: React.FC = () => {
     e.preventDefault();
 
     if (name && email && message) {
-      setSuccess(true);
-      setError("");
-      setName("");
-      setEmail("");
-      setMessage("");
+      const templateParams = {
+        from_name: name,
+        from_email: email,
+        mensaje: message,
+        user_email: email,
+      };
+
+      emailjs
+        .send(
+          process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+          process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+          templateParams,
+          process.env.NEXT_PUBLIC_EMAILJS_USER_ID!
+        )
+        .then(
+          () => {
+            setSuccess(true);
+            setError("");
+            setName("");
+            setEmail("");
+            setMessage("");
+          },
+          (error) => {
+            console.error("EmailJS error:", error);
+            setError("Hubo un error al enviar el mensaje. Intenta nuevamente.");
+            setSuccess(false);
+          }
+        );
     } else {
       setError("Por favor, completa todos los campos.");
       setSuccess(false);
