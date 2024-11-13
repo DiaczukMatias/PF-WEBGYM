@@ -3,17 +3,35 @@ import NextAuth from 'next-auth';
 
 declare module 'next-auth' {
   interface User {
-    usuario: {
-      id: string;
-      email: string;
-      nombre: string;
-      telefono?: string;
-      rol: string;
-    };
-    token: string;
+    id?: string;
+    sub?: string;  // Google puede usar 'sub' en lugar de 'id'
+   /* email: string;
+    name: string;
+    telefono?: string;
+    picture?: string;
+    rol?: string;
+    token?: string;*/
   }
 
   interface Session {
+    user: User 
+    /*{
+      sub?:string;
+      id?: string;
+      email?: string;
+      name?: string;
+      telefono?: string;
+      picture?: string;
+      rol?: string;
+      accessToken: string | unknow;
+    }*/
+}
+
+//  las q funcionaban en el inicio de sesion con credenciales:
+
+ 
+
+  /*interface Session {
     user: {
       id: string;
       email: string;
@@ -23,18 +41,18 @@ declare module 'next-auth' {
       accessToken: string;
     };
   }
-}
+
 
 declare module 'next-auth/jwt' {
   interface JWT {
-    user?: {
-
+    user:   {
       id: string;
       email: string;
-      name: string;
+      nombre: string;
       telefono?: string;
       rol: string;
-    };
+    }
     accessToken?: string;
   }
-}
+} 
+*/  }

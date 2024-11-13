@@ -5,10 +5,10 @@ import { useSession } from "next-auth/react";
 
 const ProfileView: React.FC = () => {
   const { data: session} = useSession();
-  const userName = session?.user?.name || "Usuario";
-  const userMail = session?.user?.email || "Email";
-  const userTel = session?.user?.telefono || "telefono";
-
+  const userName = session?.user.name || "Usuario";
+  const userMail = session?.user.email ||"Email";
+  const userTel = /*session?.user.telefono ||*/"telefono";
+  const userImagen = /*session?.user.picture ||*/ "/images/profesor/profe3.png"
 
 
   return (
@@ -17,7 +17,7 @@ const ProfileView: React.FC = () => {
       <div className={styles.profileSection}>
         <div className={styles.profilePictureContainer}>
           <img
-            src="/images/profesor/profe3.png"
+            src={userImagen}
             alt="Profile"
             className={styles.profilePicture}
           />
