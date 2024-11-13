@@ -25,7 +25,7 @@ const Category: React.FC<CategoryProps> = ({ categories }) => {
 
   return (
     <div className="relative m-4 py-4">
-        <div className="flex items-center">
+        <div className="flex items-center lg:mx-16">
         <button
           onClick={handleScrollLeft}
           className="flex items-center justify-center w-12 h-12 rounded-full shadow-md hover:bg-accent2"
@@ -43,19 +43,19 @@ const Category: React.FC<CategoryProps> = ({ categories }) => {
               {categories.map((categoria) => (
                 <div 
                 key={categoria.id} 
-                className="flex-none w-1/3 mx-2 flex flex-col items-center relative">
+                className="flex-none w-1/3  flex flex-col items-center relative mr-1">
                 <a href={`/clases/${categoria.nombre}`} className="text-center">
                   <Image
                     src={`/images/categories/${categoria.nombre.toLowerCase()}.png`}  
                     alt={categoria.nombre}
                     width={150}
                     height={150}
-                    className="h-24 w-auto max-w-48 rounded-lg object-contain lg:h-48 lg:max-w-96 border border-accent"
+                    className=" w-auto rounded-lg object-contain sm:min-h-24 sm:max-h-48 md:min-h-28 md:max-h-64 lg:min-h-36 lg:max-h-72 border border-accent"
                   />
-                </a>
-                <h1 className="absolute bottom-0 left-1/2 transform -translate-x-1/2 text-center text-xl font-bebas font-extrabold mb-4 text-white text-shadow-lg">
+                  <h1 className="absolute bottom-0 ml-4 text-center sm:text-lg md:text-xl lg:text-2xl font-semibold mb-4 flex flex-wrap text-white text-shadow-lg fontOswaldSans-serif">
                   {categoria.nombre.toUpperCase()}
                 </h1>
+                </a>
               </div>
             ))}
           </div>

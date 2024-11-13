@@ -67,6 +67,8 @@ const LoginView: React.FC = () => {
   }, [errors]);
 
   return (
+
+    <main className={styles.main}>
     <div className={styles.formContainer}>
       <h2 className={styles.h2}>Ingresa en FORGEFIT</h2>
       <form onSubmit={handleSubmit}>
@@ -126,6 +128,7 @@ const LoginView: React.FC = () => {
         </button>
       </form>
     </div>
+    </main>
   );
 };
 

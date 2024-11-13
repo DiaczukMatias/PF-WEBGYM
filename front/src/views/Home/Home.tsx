@@ -5,11 +5,7 @@ import ClassCardList from "@/components/CardList/CardList";
 import Category from "@/components/Categories/Categories";
 import Profesores from "@/components/Profesor/Profesor";
 import Carrusel from "@/components/Carrusel.tsx/Carrusel";
-import {
-  categoriesData,
-  clasesData,
-  profesoresData,
-} from "@/helpers/datatemporal";
+import { clasesData, profesoresData, categoriesData } from "@/helpers/datatemporalClases";
 import { useRouter } from "next/navigation";
 import styles from "./Home.module.css";
 
@@ -46,8 +42,11 @@ const HomeView = () => {
           <button onClick={handleSeeMoreClick}>Ver más clases</button>
         </div>
       </div>
-
-      <Profesores profesores={profesoresData} />
+      <div className={styles.title}>
+        <span className={styles.whiteText}>NUESTRoS</span>
+        <span className={styles.greenText}>MEJORES ENTRENADORES</span>
+      </div >
+      <Profesores profesores={profesoresData} limit={3} itemsPerPage={3}/>
     </div>
   );
 };
