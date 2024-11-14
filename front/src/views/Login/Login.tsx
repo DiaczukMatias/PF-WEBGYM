@@ -50,7 +50,8 @@ const LoginView: React.FC = () => {
     }
   };
 
-  // useEffect para guardar la sesión en localStorage cuando esté lista
+
+/*  // useEffect para guardar la sesión en localStorage cuando esté lista
   useEffect(() => {
     if (session?.user?.accessToken) {
       const userSession = {
@@ -60,6 +61,26 @@ const LoginView: React.FC = () => {
       localStorage.setItem("userSession", JSON.stringify(userSession));
     }
   }, [session]);
+  */
+
+ // Handler para el inicio de sesión con Google
+ const handleGoogleLogin = async () => {
+  try {
+    const res = await signIn("google", { redirect: false });
+    if (res?.error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Error en el inicio de sesión con Google",
+      });
+    } else {
+      router.push("/profile");
+    }
+  } catch (error) {
+    console.error("Error en el inicio de sesión con Google", error);
+  }
+};
+
 
   // Effect to manage submit button state
   useEffect(() => {
@@ -121,11 +142,12 @@ const LoginView: React.FC = () => {
         </button>
 
         <button
-          onClick={() => signIn("google")}
-          className="bg-red-500 text-white py-2 px-4 rounded mt-4"
-        >
-          Iniciar sesión con Google
-        </button>
+            type="button"
+            onClick={handleGoogleLogin}
+            className=" text-white py-2 px-4 rounded mt-4 border border-white"
+          >
+            Iniciar sesión con Google
+          </button>
       </form>
     </div>
     </main>
