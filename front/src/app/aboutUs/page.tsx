@@ -1,7 +1,7 @@
 import React from "react";
 import AboutUs from "@/views/AboutUs/AboutUs";
 
-const AboutUsPage = () => {
+const AboutUsPage :React.FC = () => {
   return (
     <div>
       <AboutUs />

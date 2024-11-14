@@ -1,47 +1,27 @@
 "use client";
-import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import Link from "next/link";
 import { validateLoginForm } from "@/helpers/validate";
 import styles from "./Login.module.css";
 import { ILoginProps, ILoginErrors } from "@/interfaces/ILogin";
-//import { fetchLogin } from "@/helpers/user.fetchFunction";
 import Swal from "sweetalert2";
-import { signIn } from "next-auth/react";
-import { useSession } from 'next-auth/react';
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-
 const LoginView: React.FC = () => {
-
   const initialState = { email: "", contrasena: "" };
   const [loginForm, setLoginForm] = useState<ILoginProps>(initialState);
   const [errors, setErrors] = useState<ILoginErrors>(initialState);
   const [inputBlur, setInputBlur] = useState(initialState);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
-
+  const { data: session } = useSession();
   const router = useRouter();
 
-  const { data: session, status } = useSession();
-  console.log('sesion de usuario: ' + session?.user?.name);
-  console.log('status de la sesion: ' + status);
-
-/*    para verificar si existe  un usuario con ese email
-  const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const newFormState = { ...loginForm, [name]: value };
-    setLoginForm(newFormState);
-    const newErrors = await validateLoginForm(newFormState);
-    setErrors(newErrors);
-  };
-  */
-
-  // Handlers
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setLoginForm({ ...loginForm, [name]: value });
     setErrors(validateLoginForm({ ...loginForm, [name]: value }));
   };
-
 
   const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const { name } = e.target;
@@ -50,11 +30,14 @@ const LoginView: React.FC = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // Inicia el proceso de signIn
     const res = await signIn("credentials", {
       email: loginForm.email,
       contrasena: loginForm.contrasena,
       redirect: false,
     });
+
     if (res?.error) {
       Swal.fire({
         icon: "error",
@@ -62,11 +45,23 @@ const LoginView: React.FC = () => {
         text: "Credenciales incorrectas",
       });
     } else {
-      // Redirige al dashboard o donde quieras
-    //  window.location.href = "/profile";
-    router.push("/profile");
+      // Redirige al perfil inmediatamente
+      router.push("/profile");
     }
   };
+
+
+/*  // useEffect para guardar la sesión en localStorage cuando esté lista
+  useEffect(() => {
+    if (session?.user?.accessToken) {
+      const userSession = {
+        token: session.user.accessToken,
+        user: session.user,
+      };
+      localStorage.setItem("userSession", JSON.stringify(userSession));
+    }
+  }, [session]);
+  */
 
  // Handler para el inicio de sesión con Google
  const handleGoogleLogin = async () => {
@@ -86,12 +81,14 @@ const LoginView: React.FC = () => {
   }
 };
 
+
   // Effect to manage submit button state
   useEffect(() => {
     setIsSubmitDisabled(Object.keys(errors).length > 0);
   }, [errors]);
 
   return (
+
     <main className={styles.main}>
     <div className={styles.formContainer}>
       <h2 className={styles.h2}>Ingresa en FORGEFIT</h2>
@@ -109,7 +106,9 @@ const LoginView: React.FC = () => {
             className={styles.inputField}
           />
           <br />
-          {inputBlur.email && errors.email && <span className={styles.errorText}>*{errors.email}</span>}
+          {inputBlur.email && errors.email && (
+            <span className={styles.errorText}>*{errors.email}</span>
+          )}
         </div>
 
         <div>
@@ -125,7 +124,9 @@ const LoginView: React.FC = () => {
             className={styles.inputField}
           />
           <br />
-          {inputBlur.contrasena && errors.contrasena && <span className={styles.errorText}>*{errors.contrasena}</span>}
+          {inputBlur.contrasena && errors.contrasena && (
+            <span className={styles.errorText}>*{errors.contrasena}</span>
+          )}
         </div>
 
         <div>

@@ -2,7 +2,7 @@ import HomeView from "@/views/Home/Home";
 import React from "react";
 
 
-const Home = () => {
+const Home :React.FC = () => {
     return (
         <HomeView/>
     );
