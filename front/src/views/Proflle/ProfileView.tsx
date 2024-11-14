@@ -8,7 +8,7 @@ const ProfileView: React.FC = () => {
   const userName = session?.user.name || "Usuario";
   const userMail = session?.user.email ||"Email";
   const userTel = /*session?.user.telefono ||*/"telefono";
-  const userImagen = /*session?.user.picture ||*/ "/images/profesor/profe3.png"
+  const userImagen = session?.user.image || "/images/profesor/profe3.png"
 
 
   return (
