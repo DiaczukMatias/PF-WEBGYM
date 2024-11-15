@@ -1,4 +1,31 @@
-import { NextResponse } from "next/server";
+import { withAuth } from 'next-auth/middleware';
+import { NextRequest, NextResponse } from 'next/server';
+
+export default withAuth(
+  function middleware(req: NextRequest) {
+    // Este middleware actualmente no restringe ninguna ruta.
+    // Puedes agregar aquí lógica adicional en el futuro para proteger rutas según roles o autenticación.
+    
+    // Ejemplo: acceso completo a todas las rutas
+    return NextResponse.next();
+    console.log(req)
+  },
+  {
+    callbacks: {
+      authorized: ({ token }) => {
+        // Permitir acceso a todos los usuarios autenticados
+        return !!token;
+      },
+    },
+  }
+);
+
+// Exportar configuración opcional de rutas protegidas, si se requiere en el futuro
+export const config = {
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+};
+
+/*import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 import type { NextRequest } from "next/server";
 import { RolEnum } from "./interfaces/IUser";
@@ -44,3 +71,4 @@ export const config = {
     // Agrega aquí más rutas que desees proteger
   ],
 };
+*/

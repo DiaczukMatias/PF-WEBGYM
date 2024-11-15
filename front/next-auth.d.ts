@@ -5,6 +5,8 @@ declare module 'next-auth' {
   interface User {
     id?: string;
     sub?: string;  // Google puede usar 'sub' en lugar de 'id'
+    rol?:string;
+    accessToken?: string 
    /* email: string;
     name: string;
     telefono?: string;
