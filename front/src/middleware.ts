@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export function middleware(req: NextRequest) {
   // Permitir acceso sin restricciones
-  console.log(req);
+  ;
   
   return NextResponse.next();
 }
