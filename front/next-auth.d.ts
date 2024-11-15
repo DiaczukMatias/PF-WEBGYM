@@ -3,6 +3,7 @@ import { JWT } from 'next-auth/jwt';//no quitar sino rompe algo en route
 
 declare module 'next-auth' {
   interface User {
+
     id: string;
     email: string;
     name: string;
