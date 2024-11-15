@@ -19,83 +19,93 @@ export const authOptions: AuthOptions = {
         const res = await fetch(`http://localhost:3010/usuarios/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, contrasena, }),
+          body: JSON.stringify({ email, contrasena }),
         });
         const user = await res.json();
 
         if (res.ok && user) {
-          console.log('USER EN AUTHORIZE: user.nombre ' + user.nombre);
-          console.log("USER.name:" + user.name)
-          console.log("USUARIO" + user)
-          
-          return user;
+          // Aquí estamos regresando el usuario y token
+          return {
+            id: user.usuario.id,
+            name: user.usuario.nombre,
+            email: user.usuario.email,
+            telefono: user.usuario.telefono,
+            rol: user.usuario.rol,
+            accessToken: user.token,
+          };
         }
         return null;
       },
     }),
   ],
   callbacks: {
-   
-    async session({ session, token,}) {
-      // Enviar la información del usuario de Google al backend solo si la sesión fue creada por Google
-      if (token.sub) { // 'sub' existe en los tokens de Google
-        await fetch(`http://localhost:3010/auth/google-login`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            id: token.sub,  // Usa `sub` si es un ID de Google
-            nombre: session.user?.name,
-            email: session.user?.email, 
-          }),
-        });
+    async jwt({ token, user, account }) {
+      // Si el usuario ha iniciado sesión y es de Google, prepara los datos
+      if (user) {
+        token.id = user.id;
+        token.name = user.name;
+        token.email = user.email;
+        token.rol = user.rol;
+        token.accessToken = user.accessToken;
+  
+        // Si el inicio de sesión es con Google, envía los datos al backend
+        if (account?.provider === 'google') {
+          try {
+            // Valores dummy para teléfono y edad
+            const dummyTelefono = 1234567890; // Número de teléfono de prueba
+            const dummyEdad = 30; // Edad de prueba
+  
+            // Preparar el objeto para enviar al backend con datos opcionales y valores dummy
+            const googleUserData = {
+              id: token.id, // ID del usuario registrado
+              nombre: user?.name || '',
+              email: user?.email || '',
+              telefono: user?.telefono ? Number(user.telefono) : dummyTelefono, // Enviar un teléfono de prueba
+              edad:  user?.edad ? Number(user.edad) :dummyEdad,         // Enviar una edad de prueba
+              contrasena: '', // No enviar contraseña
+              confirmarContrasena: '', // No enviar confirmarContraseña
+            };
+  
+            const response = await fetch(`http://localhost:3010/auth/google-login`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(googleUserData),
+            });
+  
+            const googleUser = await response.json();
+            console.log('RESPUESTA DE GOOGLE (JSON):', googleUser);
+  
+            if (response.ok && googleUser) {
+              console.log('Datos enviados al backend:', googleUser);
+              token.id = googleUser.usuario.id; // Actualiza el token con datos del backend
+              token.rol = googleUser.usuario.rol; // Guarda el rol en el token
+            } else {
+              console.error('Error del servidor:', googleUser.message);
+            }
+          } catch (error) {
+            console.error('Error enviando datos al backend:', error);
+          }
+        }
       }
-
-
-      // Continuar procesando el token normalmente para que las credenciales también funcionen
-      if (token && token.id /*token.sub!*/) {
-        session.user = {
-          ...session.user,
-         id: token.id as string,
-        /*id: token.user.id,                            prueba de agregar la informacion de usurio credentials a session
-        email: token.user.email,                               probe as con el user y con el userCredentials ninguna funciono
-        name: token.user.name,
-        telefono: token.user.telefono,
-        rol: token.user.rol,
-        accessToken: token.accessToken */
-        };
-        console.log("userCredential devuelto en session:" + session.user.name)
-      console.log("session userCredential info:" + session.user)  
-    }  else {
-      // Manejar el caso donde algunos valores son undefined
-      console.error("Algunas propiedades de token o user son undefined");
-    }
-    console.log('session data:', session);
+  
+      return token;
+    },
+  
+    async session({ session, token }) {
+      // Aquí estamos pasando todos los datos del token a la sesión
+      session.user = {
+        id: token.id,
+        name: token.name,
+        email: token.email,
+        telefono: token.telefono,
+        rol: token.rol, // Guardamos el rol aquí
+        accessToken: token.accessToken,
+      };
       return session;
     },
-
-    async jwt({ token, user,}) {
-      if (user) {
-       token.id = user.id || user.sub; // Google usa 'sub' como ID
-     }
-     /* probe haciendo este if xq sub es un parametro solo de google pero no funciono, tambien ´probe de cambiar el return de las credenciales de user a userCredentials y tampoco funciono
-     if (token.sub!) {
-       token.user = {
-         id: user.id,
-         email: user.email,
-         name: user.name,
-         telefono: user.telefono,
-         rol: user.rol,
-       };
-       token.accessToken = user.token;
-     }*/
-     console.log('token en jwt:', token);
-     console.log("token.user en jwt:", token.user)
-     return token;
-
-   },
-
-
-  },
+  }
+  
+  ,
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: 'jwt',
@@ -104,7 +114,6 @@ export const authOptions: AuthOptions = {
 
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
-
 
 
 /*

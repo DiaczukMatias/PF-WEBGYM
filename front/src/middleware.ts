@@ -1,29 +1,31 @@
-import { withAuth } from 'next-auth/middleware';
+
 import { NextRequest, NextResponse } from 'next/server';
+import { getToken } from 'next-auth/jwt';
 
-export default withAuth(
-  function middleware(req: NextRequest) {
-    // Este middleware actualmente no restringe ninguna ruta.
-    // Puedes agregar aquí lógica adicional en el futuro para proteger rutas según roles o autenticación.
-    
-    // Ejemplo: acceso completo a todas las rutas
-    return NextResponse.next();
-    console.log(req)
-  },
-  {
-    callbacks: {
-      authorized: ({ token }) => {
-        // Permitir acceso a todos los usuarios autenticados
-        return !!token;
-      },
-    },
+export async function middleware(req: NextRequest) {
+  const token = await getToken({ req });
+  const { pathname } = req.nextUrl;
+
+  // Si el usuario está autenticado y quiere entrar al login, redirige a /profile
+  if (token && pathname === '/login') {
+    return NextResponse.redirect(new URL('/profile', req.url));
   }
-);
 
-// Exportar configuración opcional de rutas protegidas, si se requiere en el futuro
+  // Si el usuario no está autenticado e intenta acceder a /profile, redirige a /login
+  if (!token && pathname === '/profile') {
+    return NextResponse.redirect(new URL('/login', req.url));
+  }
+
+  // Permite el acceso a otras rutas
+  return NextResponse.next();
+}
+
+// Configuración del matcher para aplicar el middleware solo en las rutas específicas
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+  matcher: ['/login', '/profile'],
 };
+
+
 
 /*import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";

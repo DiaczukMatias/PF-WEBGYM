@@ -17,6 +17,9 @@ const LoginView: React.FC = () => {
   const { data: session } = useSession();
   const router = useRouter();
 
+  console.log(session?.user);
+  
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setLoginForm({ ...loginForm, [name]: value });
@@ -50,18 +53,6 @@ const LoginView: React.FC = () => {
     }
   };
 
-
-/*  // useEffect para guardar la sesión en localStorage cuando esté lista
-  useEffect(() => {
-    if (session?.user?.accessToken) {
-      const userSession = {
-        token: session.user.accessToken,
-        user: session.user,
-      };
-      localStorage.setItem("userSession", JSON.stringify(userSession));
-    }
-  }, [session]);
-  */
 
  // Handler para el inicio de sesión con Google
  const handleGoogleLogin = async () => {
