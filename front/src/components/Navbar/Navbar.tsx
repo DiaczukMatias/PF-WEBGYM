@@ -13,7 +13,8 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const userName = session?.user?.name || "Usuario";
   const isLogged = status === "authenticated";
-
+  console.log('estado de  la session: '+status);
+  
   if (status === "loading") {
     // Componente de carga mientras se obtiene el estado de la sesión
     return (
