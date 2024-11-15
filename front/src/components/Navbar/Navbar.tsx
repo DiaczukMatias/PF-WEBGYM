@@ -29,7 +29,16 @@ const Navbar = () => {
         <Link href="/home">
           <Image src="/Group.png" alt="Location" width={120} height={100} />
         </Link>
-
+        <button
+  onClick={() => {
+    signOut({ redirect: false }).then(() => {
+      window.location.href = "/home";
+    });
+  }}
+  className="block w-full text-left px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
+>
+  Cerrar Sesión
+</button>
         <div className="flex items-center space-x-4 mx-auto">
           {!isLogged ? (
             <>

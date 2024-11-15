@@ -17,6 +17,9 @@ const LoginView: React.FC = () => {
   const { data: session } = useSession();
   const router = useRouter();
 
+  console.log(session?.user);
+  
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setLoginForm({ ...loginForm, [name]: value });

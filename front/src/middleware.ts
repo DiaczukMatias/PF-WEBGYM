@@ -1,4 +1,17 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
+
+export function middleware(req: NextRequest) {
+  // Permitir acceso sin restricciones
+  console.log(req);
+  
+  return NextResponse.next();
+}
+
+// Exporta la configuración de matcher si es necesario, aunque puedes omitirla para permitir acceso completo
+export const config = {};
+
+
+/*import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 import type { NextRequest } from "next/server";
 import { RolEnum } from "./interfaces/IUser";
@@ -44,3 +57,4 @@ export const config = {
     // Agrega aquí más rutas que desees proteger
   ],
 };
+*/
