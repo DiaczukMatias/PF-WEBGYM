@@ -14,6 +14,8 @@ const Navbar = () => {
   const userName = session?.user?.name || "Usuario";
   const isLogged = status === "authenticated";
   console.log('estado de  la session: '+status);
+  console.log('usuario de  la session: ', session);
+  
   
   if (status === "loading") {
     // Componente de carga mientras se obtiene el estado de la sesión

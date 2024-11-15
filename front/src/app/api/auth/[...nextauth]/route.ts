@@ -39,31 +39,73 @@ export const authOptions: AuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
+      // Si el usuario ha iniciado sesión y es de Google, prepara los datos
       if (user) {
         token.id = user.id;
         token.name = user.name;
         token.email = user.email;
         token.rol = user.rol;
         token.accessToken = user.accessToken;
+  
+        // Si el inicio de sesión es con Google, envía los datos al backend
+        if (account?.provider === 'google') {
+          try {
+            // Valores dummy para teléfono y edad
+            const dummyTelefono = 1234567890; // Número de teléfono de prueba
+            const dummyEdad = 30; // Edad de prueba
+  
+            // Preparar el objeto para enviar al backend con datos opcionales y valores dummy
+            const googleUserData = {
+              id: token.id, // ID del usuario registrado
+              nombre: user?.name || '',
+              email: user?.email || '',
+              telefono: user?.telefono ? Number(user.telefono) : dummyTelefono, // Enviar un teléfono de prueba
+              edad:  user?.edad ? Number(user.edad) :dummyEdad,         // Enviar una edad de prueba
+              contrasena: '', // No enviar contraseña
+              confirmarContrasena: '', // No enviar confirmarContraseña
+            };
+  
+            const response = await fetch(`http://localhost:3010/auth/google-login`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(googleUserData),
+            });
+  
+            const googleUser = await response.json();
+            console.log('RESPUESTA DE GOOGLE (JSON):', googleUser);
+  
+            if (response.ok && googleUser) {
+              console.log('Datos enviados al backend:', googleUser);
+              token.id = googleUser.usuario.id; // Actualiza el token con datos del backend
+              token.rol = googleUser.usuario.rol; // Guarda el rol en el token
+            } else {
+              console.error('Error del servidor:', googleUser.message);
+            }
+          } catch (error) {
+            console.error('Error enviando datos al backend:', error);
+          }
+        }
       }
-      console.log('Token en jwt:', token);
+  
       return token;
     },
-    
+  
     async session({ session, token }) {
+      // Aquí estamos pasando todos los datos del token a la sesión
       session.user = {
         id: token.id,
         name: token.name,
         email: token.email,
         telefono: token.telefono,
-        rol: token.rol,
+        rol: token.rol, // Guardamos el rol aquí
         accessToken: token.accessToken,
       };
-      console.log('Session data:', session);
       return session;
     },
-  },
+  }
+  
+  ,
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: 'jwt',

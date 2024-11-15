@@ -9,6 +9,7 @@ declare module 'next-auth' {
     telefono?: string;
     rol: string;
     accessToken?: string;
+    edad?:string;
   }
 
   interface Session {
