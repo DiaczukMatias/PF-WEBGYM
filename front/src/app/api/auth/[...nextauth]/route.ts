@@ -52,16 +52,15 @@ export const authOptions: AuthOptions = {
         if (account?.provider === 'google') {
           try {
             // Valores dummy para teléfono y edad
-            const dummyTelefono = 1234567890; // Número de teléfono de prueba
-            const dummyEdad = 30; // Edad de prueba
+            
   
             // Preparar el objeto para enviar al backend con datos opcionales y valores dummy
             const googleUserData = {
               id: token.id, // ID del usuario registrado
               nombre: user?.name || '',
               email: user?.email || '',
-              telefono: user?.telefono ? Number(user.telefono) : dummyTelefono, // Enviar un teléfono de prueba
-              edad:  user?.edad ? Number(user.edad) :dummyEdad,         // Enviar una edad de prueba
+              telefono: user?.telefono ? Number(user.telefono) : null, // Enviar un teléfono de prueba
+              edad:  user?.edad ? Number(user.edad) :null,         // Enviar una edad de prueba
               contrasena: '', // No enviar contraseña
               confirmarContrasena: '', // No enviar confirmarContraseña
             };
