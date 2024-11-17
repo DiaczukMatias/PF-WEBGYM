@@ -90,12 +90,13 @@ const ProfileUser: React.FC = () => {
           </div>
         ) : (
           <div className={styles.membershipCard}>
-            <h3>PLAN PREMIUM</h3>
-            <p>💳 Precio: $50 USD/mes</p>
-            <p>📅 Acceso ilimitado a todas las clases</p>
-            <p>📌 Incluye: Planificación personalizada</p>
+            <h3>PRO PLAN</h3>
+            <p>$50 USDT</p>
           </div>
         )}
+        <p className={styles.changeplan}>
+          Si te gustaria cambiar de plan hace click aca
+        </p>
       </div>
     </div>
   );

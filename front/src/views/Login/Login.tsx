@@ -46,7 +46,7 @@ const LoginView: React.FC = () => {
       });
     } else {
       // Redirige al perfil inmediatamente
-      router.push("/profile");
+      router.push("/profileUsers");
     }
   };
 
@@ -73,7 +73,7 @@ const LoginView: React.FC = () => {
           text: "Error en el inicio de sesión con Google",
         });
       } else {
-        router.push("/profile");
+        router.push("/profileUsers");
       }
     } catch (error) {
       console.error("Error en el inicio de sesión con Google", error);

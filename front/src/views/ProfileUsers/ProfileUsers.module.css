@@ -136,6 +136,37 @@
 }
 
 .pagination span {
-  color: #00ff00;
+  color: #b6ff04;
   cursor: pointer;
+}
+
+.membershipCard {
+  margin-top: 40px;
+  margin-left: 60px;
+  border: 2px solid #b6ff04;
+  border-radius: 25px;
+  padding: 18px;
+  width: 300px;
+  display: flex;
+  justify-content: space-between; /* Distribuye los elementos a los extremos */
+  align-items: center; /* Alinea verticalmente al centro */
+  gap: 5px; /* Espacio entre "PRO PLAN" y el precio */
+}
+
+.membershipCard h3 {
+  font-family: "Oswald", sans-serif;
+  font-size: 1.2em;
+  margin: 0;
+}
+
+.membershipCard p {
+  font-size: 1em;
+  margin: 0;
+  color: #b6ff04; /* Si quieres que el precio resalte */
+}
+
+.changeplan {
+  margin-top: 20px;
+  margin-left: 80px;
+  font-size: 13px;
 }
