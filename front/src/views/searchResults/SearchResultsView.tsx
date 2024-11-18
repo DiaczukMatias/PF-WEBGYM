@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { searchClases } from "@/helpers/Fetch/FetchClases";
 import { FaSpinner } from "react-icons/fa";
 import { IClase } from "@/interfaces/IClase";
+import ClassCardList from "@/components/CardList/CardList";
 
 const SearchResultsView: React.FC = () => {
   const searchParams = useSearchParams();
@@ -26,8 +27,7 @@ const SearchResultsView: React.FC = () => {
           perfilProfesorNombre: query,
           descripcion: query,
         });
-        console.log('data de search: ',data);
-        
+
         if (data.length === 0) {
           setError("No se encontraron resultados para tu búsqueda.");
         } else {
@@ -66,17 +66,7 @@ const SearchResultsView: React.FC = () => {
       <h1 className="text-2xl font-bold text-primary mb-4">
         Resultados para `{query}`
       </h1>
-      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {results.map((result) => (
-          <li
-            key={result.id}
-            className="p-4 bg-white border rounded shadow hover:shadow-lg transition-shadow"
-          >
-            <h3 className="text-lg font-semibold text-accent">{result.nombre}</h3>
-            <p className="text-gray-700">{result.descripcion}</p>
-          </li>
-        ))}
-      </ul>
+      <ClassCardList classes={results} /> {/* Aquí se pasa el array de clases */}
     </div>
   );
 };
