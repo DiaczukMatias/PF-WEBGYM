@@ -1,6 +1,7 @@
 import { IClase, ICrearClase } from "@/interfaces/IClase";
-import { getSession } from "next-auth/react";
 import { ISearchParams, ISearchResult } from "@/interfaces/ISearch";
+import { getSession } from "next-auth/react";
+
 
 export const fetchAuthToken = async (): Promise<string | null> => {
   const session = await getSession();
