@@ -72,7 +72,7 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
         <p className="text-sm text-secondary2 mt-2">{descripcion}</p>
         <p className="text-sm text-secondary2 mt-2">Fecha: {formattedHorario}</p>
         <p className="text-sm text-secondary2 mt-2">Cupos disponibles: {disponibilidad}</p>
-       <div className=" flex">
+       
         <div className="mt-4 flex justify-center ">
           {mostrarBotonInscribirse && (
             <button className="submitButton .submitButton:hover ">Inscribirse</button>
@@ -97,7 +97,7 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
             </button>
           </div>
         )}
- </div>
+
         {isDeleteConfirmVisible && (
           <div className="confirmation-modal">
             <p>¿Estás seguro de que quieres eliminar la clase: {nombre}?</p>
