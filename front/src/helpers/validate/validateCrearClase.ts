@@ -1,4 +1,4 @@
-/*import { ICrearClase } from "@/interfaces/IClase"; // Importar la interfaz para validar
+import { ICrearClase } from "@/interfaces/IClase"; // Importar la interfaz para validar
 
 // Validar la información del formulario
 export const validateCrearClase = (nuevaClase: ICrearClase) => {
@@ -61,4 +61,3 @@ const isValidURL = (url: string): boolean => {
 
   return errores;
 };
-*/

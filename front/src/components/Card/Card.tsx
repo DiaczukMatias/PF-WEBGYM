@@ -27,11 +27,13 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
   });
 
   const isClaseDelProfesor = perfilProfesor?.nombre === profesorId;
-  const mostrarBotonInscribirse = rolUsuario === "cliente" || (rolUsuario === "profesor" && !isClaseDelProfesor);
+  //const mostrarBotonInscribirse = rolUsuario === "cliente" || (rolUsuario === "profesor" && !isClaseDelProfesor);
   const mostrarBotonEditarClase = rolUsuario === "admin" || (rolUsuario === "profesor" && isClaseDelProfesor);
 
   const [isDeleteConfirmVisible, setIsDeleteConfirmVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  
 
   // Manejo de eliminación
   const handleDeleteClass = async () => {
@@ -50,12 +52,13 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
   const cancelDelete = () => setIsDeleteConfirmVisible(false);
 
   return (
+    <div>
     <div className="flex max-w-full min-h-80 rounded-lg overflow-hidden shadow-lg border border-accent">
       <div className="w-1/2">
         {imagen && (
           <Image
-            src={imagen}
-            alt={nombre}
+          src={`/images/clases/${clase.nombre.toLowerCase()}.jpg`}  
+          alt={nombre}
             width={350}
             height={200}
             className="w-full object-cover"
@@ -74,9 +77,9 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
         <p className="text-sm text-secondary2 mt-2">Cupos disponibles: {disponibilidad}</p>
        
         <div className="mt-4 flex justify-center ">
-          {mostrarBotonInscribirse && (
+          {/*mostrarBotonInscribirse && (
             <button className="submitButton .submitButton:hover ">Inscribirse</button>
-          )}
+          )*/}
           {mostrarBotonEditarClase && (
             <button
               className="submitButton .submitButton:hover"
@@ -119,6 +122,16 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
           </div>
         )}
       </div>
+      
+    </div >
+    <div className="fles justify-center items-center" >
+    <button
+              className="flex justify-center items-center m-2 p-2  text-white"
+              onClick={() => window.location.href = `/clases`}
+            >
+              Ver Todas las clases
+            </button>
+            </div >
     </div>
   );
 };

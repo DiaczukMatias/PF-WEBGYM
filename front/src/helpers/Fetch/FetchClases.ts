@@ -1,13 +1,13 @@
 import { IClase, ICrearClase } from "@/interfaces/IClase";
-import { getSession } from "next-auth/react";
 import { ISearchParams, ISearchResult } from "@/interfaces/ISearch";
+import { getSession } from "next-auth/react";
 
 
 export const fetchAuthToken = async (): Promise<string | null> => {
   const session = await getSession();
   return session?.user.accessToken || null; // Asegúrate de que `accessToken` esté en la sesión
 };
-const apiUrl = "http://localhost:3010"  // process.env.API_URL 
+const apiUrl = "http://localhost:3010"  // process.env.NEXT_PUBLIC_API_URL
 
 
 
@@ -77,8 +77,8 @@ export const fetchClaseById = async (id: string) => {
 };
 
 
-  export const fetchClases = async (page = 1, limit = 10) => {
-    const response = await fetch(`${apiUrl}/clases?page=${page}&limit=${limit}`);
+  export const fetchClases = async () => {
+    const response = await fetch(`${apiUrl}/clases`);
     if (!response.ok) {
       throw new Error('Error al obtener las clases');
     }
