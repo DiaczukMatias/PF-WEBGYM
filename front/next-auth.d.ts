@@ -1,4 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import NextAuth from 'next-auth'; //no quitar sino rompe algo en route
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { JWT } from 'next-auth/jwt';//no quitar sino rompe algo en route
 
 declare module 'next-auth' {
