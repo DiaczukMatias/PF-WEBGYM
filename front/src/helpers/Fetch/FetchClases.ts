@@ -1,5 +1,6 @@
 import { IClase, ICrearClase } from "@/interfaces/IClase";
 import { getSession } from "next-auth/react";
+import { ISearchParams, ISearchResult } from "@/interfaces/ISearch";
 
 
 export const fetchAuthToken = async (): Promise<string | null> => {
@@ -84,4 +85,25 @@ export const fetchClaseById = async (id: string) => {
     return response.json();
   };
   
+  export const searchClases = async (params: ISearchParams): Promise<ISearchResult[]> => {
+    try {
+      const response = await fetch("http://localhost:3010/clases/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(params),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Error en la API: ${response.statusText}`);
+      }
+  
+      const data: ISearchResult[] = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error al buscar clases:", error);
+      throw new Error("Error en la API de búsqueda.");
+    }
+  };
   

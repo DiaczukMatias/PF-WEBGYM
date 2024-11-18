@@ -1,15 +1,14 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { FaSearch } from "react-icons/fa";
 import Image from "next/image";
 import { useSession, signOut } from 'next-auth/react';
 import { FaSpinner } from "react-icons/fa"; // Icono de carga
 import styles from "./Navbar.module.css";
+import Searchbar from "../SearchBar/SearchBar";
 
 const Navbar = () => {
   const { data: session, status } = useSession();
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const userName = session?.user?.name || "Usuario";
   const isLogged = status === "authenticated";
@@ -127,30 +126,7 @@ const Navbar = () => {
           )}
 
           {/* Barra buscadora */}
-          <div className={`flex items-center space-x-2`}>
-            <div
-              className={`overflow-hidden transition-all duration-300 ${
-                isSearchOpen ? "w-48 opacity-100 ml-2" : "w-0 opacity-0"
-              }`}
-            >
-              <input
-                type="text"
-                placeholder="Search..."
-                className="px-3 py-2 bg-black text-secondary border border-accent rounded-md focus:outline-none focus:border-accent2 w-full transition-transform duration-300 transform"
-                style={{
-                  transform: isSearchOpen
-                    ? "translateX(0)"
-                    : "translateX(100%)",
-                }}
-              />
-            </div>
-            <button
-              onClick={() => setIsSearchOpen(!isSearchOpen)}
-              className="text-accent hover:text-secondary2"
-            >
-              <FaSearch size={20} />
-            </button>
-          </div>
+          <Searchbar />
         </div>
       </div>
     </nav>
