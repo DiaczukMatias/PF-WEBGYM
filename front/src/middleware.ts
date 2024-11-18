@@ -1,4 +1,33 @@
-import { NextResponse } from "next/server";
+
+import { NextRequest, NextResponse } from 'next/server';
+import { getToken } from 'next-auth/jwt';
+
+export async function middleware(req: NextRequest) {
+  const token = await getToken({ req });
+  const { pathname } = req.nextUrl;
+
+  // Si el usuario está autenticado y quiere entrar al login, redirige a /profile
+  if (token && pathname === '/login') {
+    return NextResponse.redirect(new URL('/profile', req.url));
+  }
+
+  // Si el usuario no está autenticado e intenta acceder a /profile, redirige a /login
+  if (!token && pathname === '/profile') {
+    return NextResponse.redirect(new URL('/login', req.url));
+  }
+
+  // Permite el acceso a otras rutas
+  return NextResponse.next();
+}
+
+// Configuración del matcher para aplicar el middleware solo en las rutas específicas
+export const config = {
+  matcher: ['/login', '/profile'],
+};
+
+
+
+/*import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 import type { NextRequest } from "next/server";
 import { RolEnum } from "./interfaces/IUser";
@@ -44,3 +73,4 @@ export const config = {
     // Agrega aquí más rutas que desees proteger
   ],
 };
+*/

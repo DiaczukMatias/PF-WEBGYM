@@ -1,5 +1,8 @@
 "use client";
-import { useState, useEffect } from "react";
+
+/* mati 
+        
+        import { useState, useEffect } from "react";
 import Link from "next/link";
 import { FaSearch } from "react-icons/fa";
 import Image from "next/image";
@@ -127,7 +130,7 @@ const Navbar = () => {
             </>
           )}
 
-          {/* Barra buscadora */}
+          {// Barra buscadora }
           <div className={`flex items-center space-x-2`}>
             <div
               className={`overflow-hidden transition-all duration-300 ${
@@ -160,24 +163,35 @@ const Navbar = () => {
 
 export default Navbar; /*}
 
-/*
-ACA ESTA LA VERSION ANTERIOR, USANDO USESESSION, LOCALSTORAGE SIGUE DEMORANDO
 
-
-"use client";
 import { useState } from "react";
 import Link from "next/link";
-import { FaSearch } from "react-icons/fa";
 import Image from "next/image";
-import styles from "./Navbar.module.css";
 import { useSession, signOut } from 'next-auth/react';
+import { FaSpinner } from "react-icons/fa"; // Icono de carga
+import styles from "./Navbar.module.css";
+import Searchbar from "../SearchBar/SearchBar";
 
 const Navbar = () => {
   const { data: session, status } = useSession();
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const userName = session?.user?.name || "Usuario";
   const isLogged = status === "authenticated";
+  console.log('estado de  la session: '+status);
+  console.log('usuario de  la session: ', session);
+  
+  
+  if (status === "loading") {
+    // Componente de carga mientras se obtiene el estado de la sesión
+    return (
+      <nav className={`${styles.navbar} bg-primary text-secondary py-4`}>
+        <div className="container mx-auto flex items-center justify-center">
+          <FaSpinner className="animate-spin text-secondary" size={24} />
+          <span className="ml-2 text-secondary">Cargando...</span>
+        </div>
+      </nav>
+    );
+  }
 
   return (
     <nav className={`${styles.navbar} bg-primary text-secondary py-4`}>
@@ -264,9 +278,7 @@ const Navbar = () => {
                     <button
                       onClick={() => {
                         setIsMenuOpen(false); // Cerramos el menú desplegable
-                        localStorage.removeItem('userSession')
                         signOut({ callbackUrl: "/home" }); // Llamamos a la función de cierre de sesión
-                        
                       }}
                       className="block w-full text-left px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
                     >
@@ -278,36 +290,14 @@ const Navbar = () => {
             </>
           )}
 
-          {/* Barra buscadora */
-//           <div className={`flex items-center space-x-2`}>
-//             <div
-//               className={`overflow-hidden transition-all duration-300 ${
-//                 isSearchOpen ? "w-48 opacity-100 ml-2" : "w-0 opacity-0"
-//               }`}
-//             >
-//               <input
-//                 type="text"
-//                 placeholder="Search..."
-//                 className="px-3 py-2 bg-black text-secondary border border-accent rounded-md focus:outline-none focus:border-accent2 w-full transition-transform duration-300 transform"
-//                 style={{
-//                   transform: isSearchOpen
-//                     ? "translateX(0)"
-//                     : "translateX(100%)",
-//                 }}
-//               />
-//             </div>
-//             <button
-//               onClick={() => setIsSearchOpen(!isSearchOpen)}
-//               className="text-accent hover:text-secondary2"
-//             >
-//               <FaSearch size={20} />
-//             </button>
-//           </div>
-//         </div>
-//       </div>
-//     </nav>
-//   );
-// };
+          {/* Barra buscadora */}
+          <Searchbar />
+        </div>
+      </div>
+    </nav>
+  );
+};
 
-// export default Navbar;
-// */
+export default Navbar;
+
+
