@@ -93,12 +93,12 @@ const ProfileView: React.FC = () => {
               <h4>Anna Smith</h4>
               <p>📞 (303) 555-0121 📧 annasmith@gmail.com</p>
             </div>
-      {   /*   <button
+      {   /*  <button
               className="submitButton .submitButton:hover"
               onClick={() => window.location.href = `/crearClase`}
             >
               Crear Clase
-            </button> */}
+            </button>*/}
           </div>
         </div>
       </div>
