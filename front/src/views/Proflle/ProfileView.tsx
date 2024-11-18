@@ -7,8 +7,8 @@ const ProfileView: React.FC = () => {
   const { data: session} = useSession();
   const userName = session?.user.name || "Usuario";
   const userMail = session?.user.email ||"Email";
-  const userTel = /*session?.user.telefono ||*/"telefono";
-  const userImagen = session?.user.image || "/images/profesor/profe3.png"
+  const userTel = session?.user.telefono || "telefono";
+  const userImagen = session?.user.image || "/images/profesor/jessicaroberts.png"
 
 
   return (
@@ -46,7 +46,7 @@ const ProfileView: React.FC = () => {
         <div className={styles.studentList}>
           <div className={styles.student}>
             <img
-              src="/images/profesor/profe3.png"
+              src="/images/profesor/sofia.png"
               alt="Student 1"
               className={styles.studentPicture}
             />
@@ -59,7 +59,7 @@ const ProfileView: React.FC = () => {
 
           <div className={styles.student}>
             <img
-              src="/images/profesor/profe2.png"
+              src="/images/profesor/gonzalo.png"
               alt="Student 2"
               className={styles.studentPicture}
             />
@@ -72,7 +72,7 @@ const ProfileView: React.FC = () => {
 
           <div className={styles.student}>
             <img
-              src="/images/profesor/profe1.png"
+              src="/images/profesor/markthompson.png"
               alt="Student 3"
               className={styles.studentPicture}
             />
@@ -85,7 +85,7 @@ const ProfileView: React.FC = () => {
 
           <div className={styles.student}>
             <img
-              src="/images/profesor/profe2.png"
+              src="/images/profesor/sofia.png"
               alt="Student 4"
               className={styles.studentPicture}
             />
@@ -93,6 +93,12 @@ const ProfileView: React.FC = () => {
               <h4>Anna Smith</h4>
               <p>📞 (303) 555-0121 📧 annasmith@gmail.com</p>
             </div>
+      {   /*   <button
+              className="submitButton .submitButton:hover"
+              onClick={() => window.location.href = `/crearClase`}
+            >
+              Crear Clase
+            </button> */}
           </div>
         </div>
       </div>

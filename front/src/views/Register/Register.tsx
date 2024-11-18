@@ -1,6 +1,7 @@
 "use client";
-import { registerPost } from "@/helpers/user.fetchFunction";
-import { validateRegisterForm } from "@/helpers/validate";
+//import { registerPost } from "@/helpers/user.fetchFunction";
+import { registerPost } from "@/helpers/Fetch/FetchUsers";
+import { validateRegisterForm } from "@/helpers/validate/validate";
 import { IRegisterErrors, IRegisterProps } from "@/interfaces/IRegister";
 import React, { useEffect, useState } from "react";
 import styles from "./Register.module.css";

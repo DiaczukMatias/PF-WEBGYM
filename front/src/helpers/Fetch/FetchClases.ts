@@ -1,21 +1,21 @@
-import { IClase } from "@/interfaces/IClase";
-import { ISearchParams, ISearchResult } from "@/interfaces/ISearch";
+import { IClase, ICrearClase } from "@/interfaces/IClase";
 import { getSession } from "next-auth/react";
-
+import { ISearchParams, ISearchResult } from "@/interfaces/ISearch";
 
 export const fetchAuthToken = async (): Promise<string | null> => {
   const session = await getSession();
   return session?.user.accessToken || null; // Asegúrate de que `accessToken` esté en la sesión
 };
-const apiUrl = process.env.API_URL
+const apiUrl = "http://localhost:3010"  // process.env.API_URL 
+
 
 
 // Fetch para crear una nueva clase
-export const createClase = async (nuevaClase: IClase) => {
+export const createClase = async (nuevaClase: ICrearClase) => {
   const token = await fetchAuthToken();
   if (!token) throw new Error('Usuario no autenticado');
 
-  const response = await fetch(`${apiUrl}`, {
+  const response = await fetch(`${apiUrl}/clases`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ export const updateClase = async (id: string, updatedClase: IClase) => {
   const token = await fetchAuthToken();
   if (!token) throw new Error('Usuario no autenticado');
 
-  const response = await fetch(`${apiUrl}/${id}`, {
+  const response = await fetch(`${apiUrl}/clases/${id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ export const deleteClase = async (id: string) => {
   const token = await fetchAuthToken();
   if (!token) throw new Error('Usuario no autenticado');
 
-  const response = await fetch(`${apiUrl}/${id}`, {
+  const response = await fetch(`${apiUrl}/clases/${id}`, {
     method: 'DELETE',
     headers: {
       'Authorization': `Bearer ${token}`,
@@ -67,11 +67,8 @@ export const deleteClase = async (id: string) => {
 
 
 
-//import { IClase } from "@/interfaces/IClase";
-
-
 export const fetchClaseById = async (id: string) => {
-  const response = await fetch(`${apiUrl}/${id}`);
+  const response = await fetch(`${apiUrl}/clases/${id}`);
   if (!response.ok) {
     throw new Error('Error al obtener la clase');
   }
@@ -80,7 +77,7 @@ export const fetchClaseById = async (id: string) => {
 
 
   export const fetchClases = async (page = 1, limit = 10) => {
-    const response = await fetch(`${apiUrl}?page=${page}&limit=${limit}`);
+    const response = await fetch(`${apiUrl}/clases?page=${page}&limit=${limit}`);
     if (!response.ok) {
       throw new Error('Error al obtener las clases');
     }
