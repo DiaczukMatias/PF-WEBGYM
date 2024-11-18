@@ -6,13 +6,14 @@ import { getCategories } from "@/helpers/Fetch/FetchCategorias"; // Fetch de cat
 import { searchClases } from "@/helpers/Fetch/FetchClases"; // Buscar clases con parámetros
 import { fetchClases } from "@/helpers/Fetch/FetchClases"; // Obtener todas las clases
 import { ICategoria } from "@/interfaces/ICategory";
+import { ISearchResult } from "@/interfaces/ISearch";
 
 const ClasesView = () => {
   // Estados para datos dinámicos
   const [categories, setCategories] = useState<ICategoria[]>([]); 
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [errorCategories, setErrorCategories] = useState<string | null>(null);
-  const [filteredClasses, setFilteredClasses] = useState([]);
+  const [filteredClasses, setFilteredClasses] = useState<ISearchResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>("");
 
@@ -29,6 +30,7 @@ const ClasesView = () => {
         const data = await getCategories();
         setCategories(data);
       } catch (error) {
+        console.log('error enn categories', error)
         setErrorCategories("Error al cargar las categorías.");
       } finally {
         setLoadingCategories(false);
