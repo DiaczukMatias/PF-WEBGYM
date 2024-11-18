@@ -1,55 +1,120 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ClassCardList from "@/components/CardList/CardList";
-import { categoriesData, profesoresData, clasesData } from "@/helpers/datatemporalClases";
-import { getDayOfWeek } from "@/helpers/dataconvertir";
+import { profesoresData } from "@/helpers/datatemporalClases"; // Simulación local de clases
+import { getCategories } from "@/helpers/Fetch/FetchCategorias"; // Fetch de categorías
+import { searchClases } from "@/helpers/Fetch/FetchClases"; // Buscar clases con parámetros
+import { fetchClases } from "@/helpers/Fetch/FetchClases"; // Obtener todas las clases
+import { ICategoria } from "@/interfaces/ICategory";
 
 const ClasesView = () => {
-  // Estados para manejar los filtros
+  // Estados para datos dinámicos
+  const [categories, setCategories] = useState<ICategoria[]>([]); 
+  const [loadingCategories, setLoadingCategories] = useState(true);
+  const [errorCategories, setErrorCategories] = useState<string | null>(null);
+  const [filteredClasses, setFilteredClasses] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>("");
+
+  // Estados para filtros
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
-  const [selectedProfesor, setSelectedProfesor] = useState<string | null>(null);
-  const [selectedDay, setSelectedDay] = useState<string | null>(null);
+  const [selectedProfesor, setSelectedProfesor] = useState<string[]>([]); // Cambié a un array para permitir múltiples profesores seleccionados
   const [showFilters, setShowFilters] = useState(false);
 
-  // Función para manejar la selección de categoría
+  // Cargar categorías desde la API
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        setLoadingCategories(true);
+        const data = await getCategories();
+        setCategories(data);
+      } catch (error) {
+        setErrorCategories("Error al cargar las categorías.");
+      } finally {
+        setLoadingCategories(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  // Llamar a la API de clases cuando cambian los filtros o no hay filtros aplicados
+  useEffect(() => {
+    const fetchClassesData = async () => {
+      setLoading(true);
+      setError(null);
+
+      // Si no hay filtros, obtener todas las clases
+      if (selectedCategory.length === 0 && selectedProfesor.length === 0) {
+        try {
+          const data = await fetchClases(); // Llamamos a la API para obtener todas las clases
+          setFilteredClasses(data);
+        } catch (err) {
+          console.error("Error al obtener todas las clases:", err);
+          setError("Hubo un problema al cargar las clases.");
+        }
+      } else {
+        // Si hay filtros, buscar clases con los filtros seleccionados
+        try {
+          const data = await searchClases({
+            claseNombre: "", 
+            categoriaNombre: selectedCategory.join(","),
+            perfilProfesorNombre: selectedProfesor.join(","),
+            descripcion: "",
+          });
+          if (data.length === 0) {
+            setError("No se encontraron resultados para tu búsqueda.");
+          } else {
+            setFilteredClasses(data);
+          }
+        } catch (err) {
+          console.error("Error al obtener resultados:", err);
+          setError("Hubo un problema al cargar los resultados.");
+        }
+      }
+      setLoading(false);
+    };
+
+    fetchClassesData();
+  }, [selectedCategory, selectedProfesor]); // Dependencias para recargar la búsqueda cuando cambian los filtros
+
+  // Función para manejar la selección de categorías
   const handleSelectCategory = (categoryId: string) => {
-    setSelectedCategory((prevState) =>
-      prevState.includes(categoryId)
-        ? prevState.filter((id) => id !== categoryId)
-        : [...prevState, categoryId]
-    );
+    const categoryName = categories.find((cat) => cat.id === categoryId)?.nombre;
+    if (categoryName) {
+      setSelectedCategory((prevState) =>
+        prevState.includes(categoryName)
+          ? prevState.filter((name) => name !== categoryName) // Filtramos el nombre
+          : [...prevState, categoryName] // Agregamos el nombre
+      );
+    }
   };
 
-  // Función para manejar la selección de profesor
-  const handleSelectProfesor = (profesorId: string) => {
-    setSelectedProfesor(profesorId);
+  // Función para manejar la selección de profesores
+  const handleSelectProfesor = (profesorId: string | null) => {
+    if (profesorId === null) {
+      setSelectedProfesor([]); // Limpiamos todos los profesores seleccionados
+    } else {
+      const profesorName = profesoresData.find((prof) => prof.id === profesorId)?.nombre;
+      if (profesorName) {
+        setSelectedProfesor((prevState) =>
+          prevState.includes(profesorName)
+            ? prevState.filter((name) => name !== profesorName) // Si el nombre ya está, lo eliminamos
+            : [...prevState, profesorName] // Si no está, lo agregamos
+        );
+      }
+    }
   };
 
-  // Función para manejar la limpieza de filtros
+  // Función para limpiar filtros
   const handleClearFilters = () => {
     setSelectedCategory([]);
-    setSelectedProfesor(null);
-    setSelectedDay(null);
+    setSelectedProfesor([]);
   };
-
-  // Filtrar las clases según los filtros seleccionados
-  const filteredClasses = clasesData.filter((clase) => {
-    const categoryMatch = selectedCategory.length
-      ? selectedCategory.includes(clase.categoriaId)
-      : true;
-    const profesorMatch = selectedProfesor
-      ? clase.perfilProfesor?.id === selectedProfesor
-      : true;
-    const dayMatch = selectedDay
-      ? getDayOfWeek(String(clase.fecha)) === selectedDay
-      : true;
-
-    return categoryMatch && profesorMatch && dayMatch;
-  });
 
   return (
     <div>
-      {/* Botón para mostrar u ocultar los filtros */}
+      {/* Botón para mostrar/ocultar filtros */}
       <div className="flex justify-start items-center">
         <button
           onClick={() => setShowFilters(!showFilters)}
@@ -59,96 +124,93 @@ const ClasesView = () => {
         </button>
       </div>
 
-      {/* Mostrar filtros solo si el estado showFilters es true */}
+      {/* Filtros */}
       {showFilters && (
-        <div className="flex justify-between items-start my-4">
-          <div className="flex flex-col w-1/2">
-            {/* Filtro de categorías con checkboxes */}
-            <div>
-              <h3 className="text-accent font-bold mb-2">Filtrar por categoría</h3>
-              <div className="flex flex-wrap gap-4">
-                {categoriesData.map((category) => (
-                  <div key={category.id} className="flex items-center">
+        <div className="flex flex-col md:flex-row justify-between my-4 gap-4">
+          {/* Filtro por categorías */}
+          <div className="flex flex-col">
+            <h3 className="text-accent font-bold mb-2">Categorías</h3>
+            {loadingCategories ? (
+              <p>Cargando categorías...</p>
+            ) : errorCategories ? (
+              <p className="text-red-500">{errorCategories}</p>
+            ) : (
+              <div className="flex flex-wrap gap-2">
+                {categories.map((category) => (
+                  <label key={category.id} className="flex items-center">
                     <input
                       type="checkbox"
-                      id={`category-${category.id}`}
-                      checked={selectedCategory.includes(category.id)}
+                      checked={selectedCategory.includes(category.nombre)} // Cambié category.id por category.nombre
                       onChange={() => handleSelectCategory(category.id)}
                       className="mr-2"
                     />
-                    <label htmlFor={`category-${category.id}`} className="text-sm">
-                      {category.nombre}
-                    </label>
-                  </div>
+                    {category.nombre}
+                  </label>
                 ))}
               </div>
-            </div>
+            )}
+          </div>
 
-            {/* Filtro de profesores con checkboxes */}
-            <div className="mt-4">
-              <h3 className="text-accent font-bold mb-2">Filtrar por profesor</h3>
-              <div className="flex flex-wrap gap-4">
-                {profesoresData.map((profesor) => (
-                  <div key={profesor.id} className="flex items-center">
-                    <input
-                      type="checkbox"
-                      id={`profesor-${profesor.id}`}
-                      checked={selectedProfesor === profesor.id}
-                      onChange={() => handleSelectProfesor(profesor.id)}
-                      className="mr-2"
-                    />
-                    <label htmlFor={`profesor-${profesor.id}`} className="text-sm">
-                      {profesor.nombre}
-                    </label>
-                  </div>
-                ))}
-              </div>
+          {/* Filtro por profesores */}
+          <div className="flex flex-col">
+            <h3 className="text-accent font-bold mb-2">Profesores</h3>
+            <div className="flex flex-wrap gap-2">
+              {profesoresData.map((profesor) => (
+                <label key={profesor.id} className="flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={selectedProfesor.includes(profesor.nombre)} // Usamos array para permitir múltiples selecciones
+                    onChange={() => handleSelectProfesor(profesor.id)} // Al hacer click, añadimos o eliminamos el profesor de la lista
+                    className="mr-2"
+                  />
+                  {profesor.nombre}
+                </label>
+              ))}
             </div>
           </div>
 
           {/* Filtros seleccionados */}
-          <div className="w-1/3 p-4 border rounded bg-gray-100 ">
-            {/* Botón "Limpiar filtros" */}
-            <button
-              onClick={handleClearFilters}
-              className=" right-2 top-2 text-white bg-red-500 py-1 px-3 rounded"
-            >
-              Limpiar filtros
-            </button>
+          <div className="w-full md:w-1/3 bg-gray-100 p-4 rounded">
             <h3 className="text-accent font-bold mb-2">Filtros seleccionados</h3>
             <div>
               {selectedCategory.length > 0 && (
                 <p>
                   <strong>Categorías:</strong>{" "}
                   {selectedCategory
-                    .map(
-                      (id) =>
-                        categoriesData.find((category) => category.id === id)?.nombre
-                    )
+                    .map((name) => categories.find((cat) => cat.nombre === name)?.nombre) // Mapeamos los nombres correctamente
                     .join(", ")}
                 </p>
               )}
-              {selectedProfesor && (
+              {selectedProfesor.length > 0 && (
                 <p>
-                  <strong>Profesor:</strong>{" "}
-                  {profesoresData.find((p) => p.id === selectedProfesor)?.nombre}
-                </p>
-              )}
-              {selectedDay && (
-                <p>
-                  <strong>Día:</strong> {selectedDay}
+                  <strong>Profesores:</strong>{" "}
+                  {selectedProfesor.join(", ")}
                 </p>
               )}
             </div>
+            <button
+              onClick={handleClearFilters}
+              className="text-white bg-red-500 py-1 px-3 rounded mt-4"
+            >
+              Limpiar filtros
+            </button>
           </div>
         </div>
       )}
 
-      {/* Listado de clases filtradas */}
-      <h2 className="flex justify-center font-bold font-sans text-xl text-accent m-4">
-        CLASES:
+      {/* Listado de clases */}
+      <h2 className="text-center font-bold text-xl text-accent my-4">
+        Clases Disponibles
       </h2>
-      <ClassCardList classes={filteredClasses} />
+
+      {/* Mostramos las clases dependiendo de si hay filtros o no */}
+      {loading ? (
+        <p>Cargando clases...</p>
+      ) : error ? (
+        <p className="text-red-500">{error}</p>
+      ) : (
+        <ClassCardList classes={filteredClasses} />
+      )}
     </div>
   );
 };
