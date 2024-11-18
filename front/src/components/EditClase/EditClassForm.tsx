@@ -3,8 +3,14 @@
 import React, { useEffect, useState } from 'react';
 import { fetchClaseById, updateClase } from '../../helpers/Fetch/FetchClases';
 import { useSession } from 'next-auth/react';
+import { clasesData } from '@/helpers/datatemporalClases';
 
 const EditClassForm: React.FC = () => {
+  
+  const [loading, setLoading] = useState(true);
+  const [id, setId] = useState<string | null>(null); 
+  const { data: session } = useSession();
+
   const [formData, setFormData] = useState({
     id: '',
     nombre: '',
@@ -15,9 +21,7 @@ const EditClassForm: React.FC = () => {
     categoriaId: '',
     perfilProfesorId: '',
   });
-  const [loading, setLoading] = useState(true);
-  const [id, setId] = useState<string | null>(null); 
-  const { data: session } = useSession();
+  
 
   // Obtén el ID de la URL en el cliente
   useEffect(() => {
@@ -36,6 +40,7 @@ const EditClassForm: React.FC = () => {
             fecha: claseData.fecha.slice(0, 16),
           });
           setLoading(false);
+          console.log("clasesData fetchClasesByID, info clase a editar:", clasesData)
         })
         .catch((error) => {
           console.error('Error al cargar la clase:', error);
@@ -73,10 +78,14 @@ const EditClassForm: React.FC = () => {
   if (loading) return <p>Cargando...</p>;
 
   return (
-    <form onSubmit={handleSubmit}>
-      {/* Contenido del formulario */}
-      <div>
-        <label htmlFor="nombre">Nombre de la clase</label>
+    <div className="flex justify-center min-w-80 flex-col items-center m-4 p-6 rounded-lg border border-accent shadow-md">
+    <h1 className="text-2xl font-bold mb-6 text-center text-accent font-OswaldSans-serif">
+      EDITAR CLASE
+    </h1>   
+     <form onSubmit={handleSubmit}>
+     <div className="mb-4">
+     <label htmlFor="nombre" className="block text-sm font-medium">
+     Nombre de la clase</label>
         <input
           type="text"
           id="nombre"
@@ -84,10 +93,13 @@ const EditClassForm: React.FC = () => {
           value={formData.nombre}
           onChange={handleChange}
           required
+          className="mt-1 p-2 w-full border border-gray-300 rounded-md bg-transparent"
+
         />
       </div>
-      <div>
-        <label htmlFor="descripcion">Descripción</label>
+      <div className="mb-4">
+      <label htmlFor="descripcion" className="block text-sm font-medium">
+      Descripción</label>
         <input
           type="text"
           id="descripcion"
@@ -95,10 +107,13 @@ const EditClassForm: React.FC = () => {
           value={formData.descripcion}
           onChange={handleChange}
           required
+          className="mt-1 p-2 w-full border border-gray-300 rounded-md bg-transparent"
+
         />
       </div>
-      <div>
-        <label htmlFor="fecha">Fecha y Hora</label>
+      <div className="mb-4">
+      <label htmlFor="fecha" className="block text-sm font-medium">
+      Fecha y Hora</label>
         <input
           type="datetime-local"
           id="fecha"
@@ -106,10 +121,12 @@ const EditClassForm: React.FC = () => {
           value={formData.fecha}
           onChange={handleChange}
           required
+          className="mt-1 p-2 w-full border border-gray-300 rounded-md bg-transparent"
         />
       </div>
-      <div>
-        <label htmlFor="disponibilidad">Disponibilidad</label>
+      <div className="mb-4">
+      <label htmlFor="disponibilidad" className="block text-sm font-medium">
+            Cupos disponibles: </label>
         <input
           type="number"
           id="disponibilidad"
@@ -117,10 +134,13 @@ const EditClassForm: React.FC = () => {
           value={formData.disponibilidad}
           onChange={handleChange}
           required
+          className="mt-1 p-2 w-full border border-gray-300 rounded-md bg-transparent"
+
         />
       </div>
-      <div>
-        <label htmlFor="imagen">Imagen</label>
+      <div className="mb-4">
+      <label htmlFor="imagen" className="block text-sm font-medium">
+      Imagen URL:</label>
         <input
           type="text"
           id="imagen"
@@ -128,10 +148,13 @@ const EditClassForm: React.FC = () => {
           value={formData.imagen}
           onChange={handleChange}
           required
+          className="mt-1 p-2 w-full border border-gray-300 rounded-md bg-transparent"
+
         />
       </div>
-      <div>
-        <label htmlFor="categoriaId">Categoría ID</label>
+      <div className="mb-4">
+          <label htmlFor="categoriaID" className="block text-sm font-medium">
+          Categoría ID</label>
         <input
           type="text"
           id="categoriaId"
@@ -139,12 +162,18 @@ const EditClassForm: React.FC = () => {
           value={formData.categoriaId}
           onChange={handleChange}
           required
+          className="mt-1 p-2 w-full border border-gray-300 rounded-md bg-transparent"
+
         />
       </div>
-      <button type="submit" disabled={loading}>
+      <div className="flex justify-center">
+      <button type="submit" disabled={loading}
+          className="px-6 py-2 text-white rounded-md hover:text-accent border border-white">
         Guardar cambios
       </button>
+      </div>
     </form>
+    </div>
   );
 };
 

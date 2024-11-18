@@ -1,6 +1,6 @@
 "use client";
 
-/* mati 
+ /*
         
         import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -161,7 +161,8 @@ const Navbar = () => {
   );
 };
 
-export default Navbar; /*}
+export default Navbar; 
+*/
 
 
 import { useState } from "react";
@@ -290,7 +291,7 @@ const Navbar = () => {
             </>
           )}
 
-          {/* Barra buscadora */}
+          {/* Barra buscadora*/ }
           <Searchbar />
         </div>
       </div>

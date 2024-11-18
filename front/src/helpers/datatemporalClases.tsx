@@ -76,7 +76,7 @@ export const clasesData: IClase[] = [
   },
   {
     id: '2',
-    nombre: 'Gym',
+    nombre: 'Funcional',
     descripcion: 'Entrenamiento funcional',
     fecha: new Date('2024-11-01T14:00:00'),
     categoriaId: "2",
