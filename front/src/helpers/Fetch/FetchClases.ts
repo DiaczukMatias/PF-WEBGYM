@@ -7,8 +7,8 @@ export const fetchAuthToken = async (): Promise<string | null> => {
   const session = await getSession();
   return session?.user.accessToken || null; // Asegúrate de que `accessToken` esté en la sesión
 };
-const apiUrl = "http://localhost:3010"  // process.env.NEXT_PUBLIC_API_URL
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 
 // Fetch para crear una nueva clase
@@ -87,7 +87,7 @@ export const fetchClaseById = async (id: string) => {
   
   export const searchClases = async (params: ISearchParams): Promise<ISearchResult[]> => {
     try {
-        const response = await fetch("http://localhost:3010/clases/search", {
+        const response = await fetch(`${apiUrl}/clases/search`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

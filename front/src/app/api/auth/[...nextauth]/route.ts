@@ -1,7 +1,7 @@
 import NextAuth, { AuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
-
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 export const authOptions: AuthOptions = {
   providers: [
     GoogleProvider({
@@ -16,7 +16,7 @@ export const authOptions: AuthOptions = {
       },
       async authorize(credentials) {
         const { email, contrasena } = credentials!;
-        const res = await fetch(`http://localhost:3010/usuarios/login`, {
+        const res = await fetch(`${apiUrl}/usuarios/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, contrasena }),
@@ -66,7 +66,7 @@ export const authOptions: AuthOptions = {
               imagen: token.picture, // Incluir la imagen al enviar al backend
             };
   
-            const response = await fetch(`http://localhost:3010/auth/google-login`, {
+            const response = await fetch(`${apiUrl}/auth/google-login`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(googleUserData),

@@ -1,10 +1,10 @@
 import { IRegisterProps } from "@/interfaces/IRegister";
 import Swal from "sweetalert2";
 
-
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 export const registerPost = async (userData: IRegisterProps) => {
   try {
-    const response = await fetch(`http://localhost:3010/usuarios/register`, {
+    const response = await fetch(`${apiUrl}/usuarios/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
