@@ -1,27 +1,32 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { FaSearch } from "react-icons/fa";
 import Image from "next/image";
+import { useSession, signOut } from 'next-auth/react';
+import { FaSpinner } from "react-icons/fa"; // Icono de carga
 import styles from "./Navbar.module.css";
-import { signOut } from "next-auth/react";
+import Searchbar from "../SearchBar/SearchBar";
 
 const Navbar = () => {
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const { data: session, status } = useSession();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLogged, setIsLogged] = useState(false);
-  const [userName, setUserName] = useState("Usuario");
-
-  useEffect(() => {
-    const userSession = localStorage.getItem("userSession");
-    if (userSession) {
-      const parsedSession = JSON.parse(userSession);
-      if (parsedSession?.user?.name) {
-        setIsLogged(true);
-        setUserName(parsedSession.user.name);
-      }
-    }
-  }, []);
+  const userName = session?.user?.name || "Usuario";
+  const isLogged = status === "authenticated";
+  console.log('estado de  la session: '+status);
+  console.log('usuario de  la session: ', session);
+  
+  
+  if (status === "loading") {
+    // Componente de carga mientras se obtiene el estado de la sesión
+    return (
+      <nav className={`${styles.navbar} bg-primary text-secondary py-4`}>
+        <div className="container mx-auto flex items-center justify-center">
+          <FaSpinner className="animate-spin text-secondary" size={24} />
+          <span className="ml-2 text-secondary">Cargando...</span>
+        </div>
+      </nav>
+    );
+  }
 
   return (
     <nav className={`${styles.navbar} bg-primary text-secondary py-4`}>
@@ -114,7 +119,6 @@ const Navbar = () => {
                     <button
                       onClick={() => {
                         setIsMenuOpen(false); // Cerramos el menú desplegable
-                        localStorage.removeItem("userSession");
                         signOut({ callbackUrl: "/home" }); // Llamamos a la función de cierre de sesión
                       }}
                       className="block w-full text-left px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
@@ -128,6 +132,7 @@ const Navbar = () => {
           )}
 
           {/* Barra buscadora */}
+<<<<<<< HEAD
           <div className={`flex items-center space-x-2`}>
             <div
               className={`overflow-hidden transition-all duration-300 ${
@@ -152,6 +157,9 @@ const Navbar = () => {
               <FaSearch size={20} />
             </button>
           </div>
+=======
+          <Searchbar />
+>>>>>>> 4cb1ac6204af77c993e437acb14d6443e61a1b64
         </div>
       </div>
     </nav>
@@ -160,6 +168,7 @@ const Navbar = () => {
 
 export default Navbar; /*}
 
+<<<<<<< HEAD
 /*
 ACA ESTA LA VERSION ANTERIOR, USANDO USESESSION, LOCALSTORAGE SIGUE DEMORANDO
 
@@ -311,3 +320,5 @@ const Navbar = () => {
 
 // export default Navbar;
 // */
+=======
+>>>>>>> 4cb1ac6204af77c993e437acb14d6443e61a1b64

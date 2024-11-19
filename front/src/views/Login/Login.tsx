@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import Link from "next/link";
-import { validateLoginForm } from "@/helpers/validate";
+import { validateLoginForm } from "@/helpers/validate/validate";
 import styles from "./Login.module.css";
 import { ILoginProps, ILoginErrors } from "@/interfaces/ILogin";
 import Swal from "sweetalert2";
@@ -16,6 +16,9 @@ const LoginView: React.FC = () => {
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   // const { data: session } = useSession();
   const router = useRouter();
+
+  console.log(session?.user);
+  
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -50,6 +53,7 @@ const LoginView: React.FC = () => {
     }
   };
 
+<<<<<<< HEAD
   /*  // useEffect para guardar la sesión en localStorage cuando esté lista
   useEffect(() => {
     if (session?.user?.accessToken) {
@@ -77,6 +81,21 @@ const LoginView: React.FC = () => {
       }
     } catch (error) {
       console.error("Error en el inicio de sesión con Google", error);
+=======
+
+ // Handler para el inicio de sesión con Google
+ const handleGoogleLogin = async () => {
+  try {
+    const res = await signIn("google", { redirect: false });
+    if (res?.error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Error en el inicio de sesión con Google",
+      });
+    } else {
+      router.push("/profile");
+>>>>>>> 4cb1ac6204af77c993e437acb14d6443e61a1b64
     }
   };
 

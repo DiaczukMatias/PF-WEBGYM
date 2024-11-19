@@ -17,15 +17,15 @@ export const profesoresData: IProfesor[] = [
     nombre: 'Mark Thompson',
     descripcion: 'Especialista en musculación y acondicionamiento físico',
     certificacion: 'Certificación Internacional en Musculación',
-    imagen: '/images/profesor/profe2.png',
+    imagen: '/images/profesor/markthompson.png',
     clases: [], // Referencias por posición
   },
   {
     id: '2',
     nombre: 'Jessica Roberts',
     descripcion: 'Profesora de funcional y ejercicios en gym',
-    certificacion: 'Certificación en Entrenamiento Acuático',
-    imagen: '/images/profesor/profe3.png',
+    certificacion: 'Certificación en Entrenamiento funcional',
+    imagen: '/images/profesor/jessicaroberts.png',
     clases: [],
   },
   {
@@ -33,15 +33,15 @@ export const profesoresData: IProfesor[] = [
     nombre: 'Michael Johnson',
     descripcion: 'Especialista en musculación y acondicionamiento físico',
     certificacion: 'Certificación Internacional en Musculación',
-    imagen: '/images/profesor/profe1.png',
+    imagen: '/images/profesor/michaeljohnson.png',
     clases: [],
   },
   {
     id: '4',
-    nombre: 'Pedro',
+    nombre: 'Pedro Lopez',
     descripcion: 'Instructora de funcional y zumba con 10 años de experiencia',
     certificacion: 'Certificación en funcional y Zumba',
-    imagen: '/images/profesor/pedroLopez.jpg',
+    imagen: '/images/profesor/pedrolopez.jpg',
     clases: [],
   },
   {

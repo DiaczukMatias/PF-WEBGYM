@@ -20,6 +20,7 @@ export const planes = [
     ],
     price: 99,
     buttonText: "ELEGIR PLAN",
+    link: "https://buy.stripe.com/test_dR6cQt5xWgzKbTOcMP",
   },
   {
     id: "2",
@@ -37,6 +38,7 @@ export const planes = [
     ],
     price: 19,
     buttonText: "ELEGIR PLAN",
+    link: "https://buy.stripe.com/test_28o9Ehd0ogzKga4bIN",
   },
   {
     id: "3",
@@ -54,14 +56,19 @@ export const planes = [
     ],
     price: 59,
     buttonText: "ELEGIR PLAN",
+    link: "https://buy.stripe.com/test_eVaeYB9Oc83e8HCcMQ",
   },
 ];
 
 const PlanesView: React.FC = () => {
   const router = useRouter();
 
-  const handleSelectPlan = (planId: string) => {
-    router.push(`/checkout/${planId}`);
+  // const handleSelectPlan = (planId: string) => {
+  //   router.push(`/checkout/${planId}`);
+  // };
+
+  const handleSelectPlan = (planLink: string) => {
+    router.push(planLink);
   };
 
   return (
@@ -89,7 +96,7 @@ const PlanesView: React.FC = () => {
 
             <button
               className={styles.button}
-              onClick={() => handleSelectPlan(plan.id)}
+              onClick={() => handleSelectPlan(plan.link)}
             >
               {plan.buttonText}
             </button>
@@ -101,3 +108,5 @@ const PlanesView: React.FC = () => {
 };
 
 export default PlanesView;
+
+//handleSelectPlan(plan.id)
