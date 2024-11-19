@@ -38,18 +38,7 @@ const Navbar = () => {
         <div className="flex items-center space-x-4 mx-auto">
           {!isLogged ? (
             <>
-              <Link
-                href="/planes"
-                className="text-secondary hover:text-[#b6ff04] transition-colors duration-300"
-              >
-                PLANES
-              </Link>
-              <Link
-                href="/profileUsers"
-                className="text-secondary hover:text-[#b6ff04] transition-colors duration-300"
-              >
-                USUARIO
-              </Link>
+            
               <Link
                 href="/login"
                 className="text-secondary hover:text-[#b6ff04] transition-colors duration-300"
@@ -83,6 +72,12 @@ const Navbar = () => {
               >
                 CLASES
               </Link>
+               <Link
+                href="/planes"
+                className="text-secondary hover:text-[#b6ff04] transition-colors duration-300"
+              >
+                PLANES
+              </Link>
               <div className="relative">
                 <button
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -98,12 +93,19 @@ const Navbar = () => {
                       transform: isMenuOpen ? "scaleY(1)" : "scaleY(0)",
                     }}
                   >
-                    <Link
-                      href="/profile"
-                      className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04] transition-colors duration-300"
-                    >
-                      Mi Perfil
-                    </Link>
+                   
+                     <Link
+                      href="/profileUsers"
+                      className="text-secondary hover:text-[#b6ff04] transition-colors duration-300"
+                      >
+                      Mi perfil
+                     </Link>  ////// ver de poner q si es rol cliente usa esta, si es profesor usa mi perfil
+                 //  <Link
+                 //     href="/profile"
+                 //     className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04] transition-colors duration-300"
+                 //   >
+                 //     Mi Perfil profesor
+                 //   </Link>    
                     <Link
                       href="/agenda"
                       className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
@@ -132,43 +134,16 @@ const Navbar = () => {
           )}
 
           {/* Barra buscadora */}
-<<<<<<< HEAD
-          <div className={`flex items-center space-x-2`}>
-            <div
-              className={`overflow-hidden transition-all duration-300 ${
-                isSearchOpen ? "w-48 opacity-100 ml-2" : "w-0 opacity-0"
-              }`}
-            >
-              <input
-                type="text"
-                placeholder="Search..."
-                className="px-3 py-2 bg-black text-secondary border border-accent rounded-md focus:outline-none focus:border-accent2 w-full transition-transform duration-300 transform"
-                style={{
-                  transform: isSearchOpen
-                    ? "translateX(0)"
-                    : "translateX(100%)",
-                }}
-              />
-            </div>
-            <button
-              onClick={() => setIsSearchOpen(!isSearchOpen)}
-              className="text-accent hover:text-secondary2"
-            >
-              <FaSearch size={20} />
-            </button>
-          </div>
-=======
           <Searchbar />
->>>>>>> 4cb1ac6204af77c993e437acb14d6443e61a1b64
         </div>
       </div>
     </nav>
   );
 };
 
-export default Navbar; /*}
 
-<<<<<<< HEAD
+export default Navbar;
+
 /*
 ACA ESTA LA VERSION ANTERIOR, USANDO USESESSION, LOCALSTORAGE SIGUE DEMORANDO
 
@@ -320,5 +295,4 @@ const Navbar = () => {
 
 // export default Navbar;
 // */
-=======
->>>>>>> 4cb1ac6204af77c993e437acb14d6443e61a1b64
+

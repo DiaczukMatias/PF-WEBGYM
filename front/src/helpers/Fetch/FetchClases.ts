@@ -7,8 +7,8 @@ export const fetchAuthToken = async (): Promise<string | null> => {
   const session = await getSession();
   return session?.user.accessToken || null; // Asegúrate de que `accessToken` esté en la sesión
 };
-const apiUrl = "http://localhost:3010"  // process.env.API_URL 
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 
 // Fetch para crear una nueva clase
@@ -77,8 +77,8 @@ export const fetchClaseById = async (id: string) => {
 };
 
 
-  export const fetchClases = async (page = 1, limit = 10) => {
-    const response = await fetch(`${apiUrl}/clases?page=${page}&limit=${limit}`);
+  export const fetchClases = async () => {
+    const response = await fetch(`${apiUrl}/clases`);
     if (!response.ok) {
       throw new Error('Error al obtener las clases');
     }
@@ -87,23 +87,28 @@ export const fetchClaseById = async (id: string) => {
   
   export const searchClases = async (params: ISearchParams): Promise<ISearchResult[]> => {
     try {
-      const response = await fetch("http://localhost:3010/clases/search", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(params),
-      });
-  
-      if (!response.ok) {
-        throw new Error(`Error en la API: ${response.statusText}`);
-      }
-  
-      const data: ISearchResult[] = await response.json();
-      return data;
+        const response = await fetch(`${apiUrl}/clases/search`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(params),
+        });
+
+        if (response.status === 404) {
+            console.warn("No se encontraron clases para los parámetros dados.");
+            return []; // Retornamos un array vacío para manejarlo en el frontend
+        }
+
+        if (!response.ok) {
+            console.error(`Error en la API: ${response.statusText}`);
+            return []; // Devuelve un array vacío para evitar propagar el error
+        }
+
+        const data: ISearchResult[] = await response.json();
+        return data;
     } catch (error) {
-      console.error("Error al buscar clases:", error);
-      throw new Error("Error en la API de búsqueda.");
+        console.error("Error al buscar clases:", error);
+        return []; // Manejamos cualquier error devolviendo un array vacío
     }
-  };
-  
+};

@@ -53,7 +53,7 @@ const LoginView: React.FC = () => {
     }
   };
 
-<<<<<<< HEAD
+
   /*  // useEffect para guardar la sesión en localStorage cuando esté lista
   useEffect(() => {
     if (session?.user?.accessToken) {
@@ -66,7 +66,7 @@ const LoginView: React.FC = () => {
   }, [session]);
   */
 
-  // Handler para el inicio de sesión con Google
+  // Handler para el inicio de sesión con Google rol cliente
   const handleGoogleLogin = async () => {
     try {
       const res = await signIn("google", { redirect: false });
@@ -81,10 +81,11 @@ const LoginView: React.FC = () => {
       }
     } catch (error) {
       console.error("Error en el inicio de sesión con Google", error);
-=======
 
- // Handler para el inicio de sesión con Google
- const handleGoogleLogin = async () => {
+    }
+
+ // Handler para el inicio de sesión con Google rol profesor
+/* const handleGoogleLogin = async () => {
   try {
     const res = await signIn("google", { redirect: false });
     if (res?.error) {
@@ -95,9 +96,8 @@ const LoginView: React.FC = () => {
       });
     } else {
       router.push("/profile");
->>>>>>> 4cb1ac6204af77c993e437acb14d6443e61a1b64
     }
-  };
+  };  */
 
   // Effect to manage submit button state
   useEffect(() => {

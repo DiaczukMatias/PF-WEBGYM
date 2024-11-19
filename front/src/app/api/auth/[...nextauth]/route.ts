@@ -1,7 +1,7 @@
 import NextAuth, { AuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
-
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 export const authOptions: AuthOptions = {
   providers: [
     GoogleProvider({
@@ -16,7 +16,7 @@ export const authOptions: AuthOptions = {
       },
       async authorize(credentials) {
         const { email, contrasena } = credentials!;
-        const res = await fetch(`http://localhost:3010/usuarios/login`, {
+        const res = await fetch(`${apiUrl}/usuarios/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, contrasena }),
@@ -41,19 +41,19 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async jwt({ token, user, account }) {
       // Si el usuario ha iniciado sesión y es de Google, prepara los datos
+      console.log('datos qeu envian desde google ', user);
+      
       if (user) {
         token.id = user.id;
         token.name = user.name;
         token.email = user.email;
         token.rol = user.rol;
         token.accessToken = user.accessToken;
+        token.picture = user.image || null
   
         // Si el inicio de sesión es con Google, envía los datos al backend
         if (account?.provider === 'google') {
-          try {
-            // Valores dummy para teléfono y edad
-            
-  
+          try {  
             // Preparar el objeto para enviar al backend con datos opcionales y valores dummy
             const googleUserData = {
               id: token.id, // ID del usuario registrado
@@ -63,9 +63,10 @@ export const authOptions: AuthOptions = {
               edad:  user?.edad ? Number(user.edad) :null,         // Enviar una edad de prueba
               contrasena: '', // No enviar contraseña
               confirmarContrasena: '', // No enviar confirmarContraseña
+              imagen: token.picture, // Incluir la imagen al enviar al backend
             };
   
-            const response = await fetch(`http://localhost:3010/auth/google-login`, {
+            const response = await fetch(`${apiUrl}/auth/google-login`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(googleUserData),
@@ -99,6 +100,7 @@ export const authOptions: AuthOptions = {
         telefono: token.telefono,
         rol: token.rol, // Guardamos el rol aquí
         accessToken: token.accessToken,
+        image: token.picture,
       };
       return session;
     },

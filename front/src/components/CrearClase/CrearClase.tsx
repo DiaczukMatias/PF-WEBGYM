@@ -1,4 +1,4 @@
-/*"use client";
+"use client";
 import React, { useState, useEffect } from "react";
 import { validateCrearClase } from "@/helpers/validate/validateCrearClase";
 import { createClase } from "@/helpers/Fetch/FetchClases";
@@ -51,9 +51,15 @@ const CrearClaseForm: React.FC = () => {
       [name]: name === "disponibilidad" ? Math.max(parseInt(value, 10) || 1, 1) : value,
     }));
 
+    // Validar el campo actualizado
+    const nuevosErrores = validateCrearClase({
+      ...nuevaClase,
+      [name]: value,
+    });
+
     setErrores((prevErrores) => ({
       ...prevErrores,
-      [name]: "",
+      [name]: nuevosErrores[name] || "",
     }));
   };
 
@@ -61,11 +67,11 @@ const CrearClaseForm: React.FC = () => {
     e.preventDefault();
 
     console.log("Datos enviados:", nuevaClase); // Verificar qué datos se envían
-    const erroresValidacion = validateCrearClase(nuevaClase);
-    console.log("Errores de validación:", erroresValidacion); // Mostrar los errores de validación si existen
+    const nuevosErrores = validateCrearClase(nuevaClase);
+    setErrores(nuevosErrores);
+    console.log("Errores de validación:", nuevosErrores); // Mostrar los errores de validación si existen
 
-    if (Object.keys(erroresValidacion).length > 0) {
-      setErrores(erroresValidacion);
+    if (Object.keys(nuevosErrores).length > 0) {
       return;
     }
 
@@ -226,4 +232,3 @@ const CrearClaseForm: React.FC = () => {
 };
 
 export default CrearClaseForm;
-*/

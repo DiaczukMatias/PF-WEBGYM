@@ -1,7 +1,10 @@
 import { ICategoria } from "@/interfaces/ICategory";
 import { IClase } from "@/interfaces/IClase";
 
-const apiUrl = "http://localhost:3010" //process.env.API_URL 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+
+
 /**
  * Obtiene todas las categorías (ruta pública)
  * @returns {Promise<ICategoria[]>} Array de categorías
