@@ -14,7 +14,7 @@ const Footer = () => {
       <div className="container mx-auto flex flex-col items-center md:flex-row md:justify-between">
         {/* izquierda */}
         <div className="text-sm mb-4 md:mb-0">
-          © 2024 NOMBREDELGYM. All rights reserved.
+          © 2024 FORGEFIT. Todos los derechos reservados.
         </div>
 
         {/* derecha*/}

@@ -1,7 +1,7 @@
 import PlanesView from "@/views/Planes/PlanesView";
 import React from "react";
 
-const planes = () => {
+const planes:React.FC  = () => {
   return (
     <div>
       <PlanesView />

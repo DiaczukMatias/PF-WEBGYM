@@ -36,15 +36,19 @@ const Carrusel: React.FC<CarouselProps> = ({ categorias }) => {
   return (
     <div className="relative w-[90%] max-w-screen-lg mx-auto">
       <div className="overflow-hidden rounded-lg shadow-lg">
-        <div className="relative h-[50vh]">
+        <div className="flex justify-center relative h-[65vh]">
           {" "}
           {/* Reducimos la altura del carrusel */}
           <Link href={`/clases/${categorias[currentIndex].nombre}`}>
             <img
               src={categorias[currentIndex].imagen}
               alt={`Slide ${categorias[currentIndex].nombre}`}
-              className="w-full h-full object-contain rounded-2xl border-4 border-[#b6ff04]"
+              className="w-full h-full object-contain border-4 border-[#b6ff04]"
+              style={{ borderRadius: "1.8rem" }}
             />
+                  <h1 className="absolute bottom-0 left-1/2  transform -translate-x-1/2 text-center text-3xl font-semibold mb-4 text-white text-shadow-lg fontOswaldSans-serif">
+                  {categorias[currentIndex].nombre.toUpperCase()}
+                </h1>
           </Link>
         </div>
       </div>

@@ -27,7 +27,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/views/AboutUs"
+    "src/views/AboutUs",
+    "src/app/checkout/[planId]"
   ],
   "exclude": ["node_modules"]
 }
