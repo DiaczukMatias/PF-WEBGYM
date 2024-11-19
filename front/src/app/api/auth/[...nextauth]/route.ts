@@ -41,19 +41,19 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async jwt({ token, user, account }) {
       // Si el usuario ha iniciado sesión y es de Google, prepara los datos
+      console.log('datos qeu envian desde google ', user);
+      
       if (user) {
         token.id = user.id;
         token.name = user.name;
         token.email = user.email;
         token.rol = user.rol;
         token.accessToken = user.accessToken;
+        token.picture = user.image || null
   
         // Si el inicio de sesión es con Google, envía los datos al backend
         if (account?.provider === 'google') {
-          try {
-            // Valores dummy para teléfono y edad
-            
-  
+          try {  
             // Preparar el objeto para enviar al backend con datos opcionales y valores dummy
             const googleUserData = {
               id: token.id, // ID del usuario registrado
@@ -63,6 +63,7 @@ export const authOptions: AuthOptions = {
               edad:  user?.edad ? Number(user.edad) :null,         // Enviar una edad de prueba
               contrasena: '', // No enviar contraseña
               confirmarContrasena: '', // No enviar confirmarContraseña
+              imagen: token.picture, // Incluir la imagen al enviar al backend
             };
   
             const response = await fetch(`http://localhost:3010/auth/google-login`, {
@@ -99,6 +100,7 @@ export const authOptions: AuthOptions = {
         telefono: token.telefono,
         rol: token.rol, // Guardamos el rol aquí
         accessToken: token.accessToken,
+        image: token.picture,
       };
       return session;
     },

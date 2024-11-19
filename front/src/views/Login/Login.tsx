@@ -5,7 +5,7 @@ import { validateLoginForm } from "@/helpers/validate/validate";
 import styles from "./Login.module.css";
 import { ILoginProps, ILoginErrors } from "@/interfaces/ILogin";
 import Swal from "sweetalert2";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 const LoginView: React.FC = () => {
@@ -14,7 +14,7 @@ const LoginView: React.FC = () => {
   const [errors, setErrors] = useState<ILoginErrors>(initialState);
   const [inputBlur, setInputBlur] = useState(initialState);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
-  // const { data: session } = useSession();
+  const { data: session } = useSession();
   const router = useRouter();
 
   console.log(session?.user);

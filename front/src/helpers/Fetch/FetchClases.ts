@@ -87,23 +87,28 @@ export const fetchClaseById = async (id: string) => {
   
   export const searchClases = async (params: ISearchParams): Promise<ISearchResult[]> => {
     try {
-      const response = await fetch("http://localhost:3010/clases/search", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(params),
-      });
-  
-      if (!response.ok) {
-        throw new Error(`Error en la API: ${response.statusText}`);
-      }
-  
-      const data: ISearchResult[] = await response.json();
-      return data;
+        const response = await fetch("http://localhost:3010/clases/search", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(params),
+        });
+
+        if (response.status === 404) {
+            console.warn("No se encontraron clases para los parámetros dados.");
+            return []; // Retornamos un array vacío para manejarlo en el frontend
+        }
+
+        if (!response.ok) {
+            console.error(`Error en la API: ${response.statusText}`);
+            return []; // Devuelve un array vacío para evitar propagar el error
+        }
+
+        const data: ISearchResult[] = await response.json();
+        return data;
     } catch (error) {
-      console.error("Error al buscar clases:", error);
-      throw new Error("Error en la API de búsqueda.");
+        console.error("Error al buscar clases:", error);
+        return []; // Manejamos cualquier error devolviendo un array vacío
     }
-  };
-  
+};

@@ -14,6 +14,8 @@ const ClasesView = () => {
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [errorCategories, setErrorCategories] = useState<string | null>(null);
   const [filteredClasses, setFilteredClasses] = useState<ISearchResult[]>([]);
+  console.log('clases filtradas que enviamos a cardlis:',filteredClasses);
+  
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>("");
 
@@ -43,42 +45,41 @@ const ClasesView = () => {
   // Llamar a la API de clases cuando cambian los filtros o no hay filtros aplicados
   useEffect(() => {
     const fetchClassesData = async () => {
-      setLoading(true);
-      setError(null);
+        setLoading(true);
+        setError(null);
 
-      // Si no hay filtros, obtener todas las clases
-      if (selectedCategory.length === 0 && selectedProfesor.length === 0) {
         try {
-          const data = await fetchClases(); // Llamamos a la API para obtener todas las clases
-          setFilteredClasses(data);
+            let data: ISearchResult[];
+
+            if (selectedCategory.length === 0 && selectedProfesor.length === 0) {
+                data = await fetchClases(); // Obtén todas las clases
+            } else {
+                data = await searchClases({
+                    claseNombre: "",
+                    categoriaNombre: selectedCategory.join(","),
+                    perfilProfesorNombre: selectedProfesor.join(","),
+                    descripcion: "",
+                });
+            }
+
+            if (data.length === 0) {
+                setFilteredClasses([]);
+                setError("No se encontraron resultados para tu búsqueda."); // Muestra mensaje amigable
+            } else {
+                setFilteredClasses(data);
+            }
         } catch (err) {
-          console.error("Error al obtener todas las clases:", err);
-          setError("Hubo un problema al cargar las clases.");
+            console.error("Error al obtener resultados:", err); // Log de error para depuración
+            setError("Hubo un problema al cargar las clases. Intenta más tarde."); // Mensaje amigable
+        } finally {
+            setLoading(false);
         }
-      } else {
-        // Si hay filtros, buscar clases con los filtros seleccionados
-        try {
-          const data = await searchClases({
-            claseNombre: "", 
-            categoriaNombre: selectedCategory.join(","),
-            perfilProfesorNombre: selectedProfesor.join(","),
-            descripcion: "",
-          });
-          if (data.length === 0) {
-            setError("No se encontraron resultados para tu búsqueda.");
-          } else {
-            setFilteredClasses(data);
-          }
-        } catch (err) {
-          console.error("Error al obtener resultados:", err);
-          setError("Hubo un problema al cargar los resultados.");
-        }
-      }
-      setLoading(false);
     };
 
     fetchClassesData();
-  }, [selectedCategory, selectedProfesor]); // Dependencias para recargar la búsqueda cuando cambian los filtros
+}, [selectedCategory, selectedProfesor]);
+
+   // Dependencias para recargar la búsqueda cuando cambian los filtros
 
   // Función para manejar la selección de categorías
   const handleSelectCategory = (categoryId: string) => {
@@ -207,12 +208,14 @@ const ClasesView = () => {
 
       {/* Mostramos las clases dependiendo de si hay filtros o no */}
       {loading ? (
-        <p>Cargando clases...</p>
-      ) : error ? (
-        <p className="text-red-500">{error}</p>
-      ) : (
-        <ClassCardList classes={filteredClasses} />
-      )}
+  <p>Cargando clases...</p>
+) : error ? (
+  <p className="text-red-500">{error}</p>
+) : filteredClasses.length === 0 ? (
+  <p className="text-gray-500">No se encontraron resultados para tu búsqueda.</p>
+) : (
+  <ClassCardList classes={filteredClasses} />
+)}
     </div>
   );
 };

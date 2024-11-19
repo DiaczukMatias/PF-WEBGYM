@@ -27,7 +27,7 @@ const ClassCardList: React.FC<ClassCardListProps> = ({ classes, limit }) => {
               <div className="border rounded-lg overflow-hidden shadow-md border-accent">
                 {clase.imagen && (
                   <Image
-                  src={`/images/clases/${clase.nombre.toLowerCase()}.jpg`}  
+                  src={clase.imagen}  
                   alt={clase.nombre}
                     width={350}
                     height={200}

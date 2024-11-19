@@ -17,7 +17,9 @@ const HomeView = () => {
 
   const [clases, setClases] = useState(clasesData); 
   const [categorias, setCategorias] = useState(categoriesData); 
-
+  console.log('clases en el home ', clases);
+  console.log('categorias en el home ', categorias);
+  
   useEffect(() => {
     const fetchData = async () => {
       if (useBackend) {
