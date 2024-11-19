@@ -20,6 +20,7 @@ export const planes = [
     ],
     price: 99,
     buttonText: "ELEGIR PLAN",
+
   },
   {
     id: "2",
@@ -37,6 +38,7 @@ export const planes = [
     ],
     price: 19,
     buttonText: "ELEGIR PLAN",
+
   },
   {
     id: "3",
@@ -54,6 +56,7 @@ export const planes = [
     ],
     price: 59,
     buttonText: "ELEGIR PLAN",
+
   },
 ];
 
@@ -62,6 +65,7 @@ const PlanesView: React.FC = () => {
 
   const handleSelectPlan = (planId: string) => {
     router.push(`/checkout/${planId}`);
+
   };
 
   return (
@@ -101,3 +105,5 @@ const PlanesView: React.FC = () => {
 };
 
 export default PlanesView;
+
+//handleSelectPlan(plan.id)

@@ -5,7 +5,7 @@ import { validateLoginForm } from "@/helpers/validate/validate";
 import styles from "./Login.module.css";
 import { ILoginProps, ILoginErrors } from "@/interfaces/ILogin";
 import Swal from "sweetalert2";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 const LoginView: React.FC = () => {
@@ -14,7 +14,7 @@ const LoginView: React.FC = () => {
   const [errors, setErrors] = useState<ILoginErrors>(initialState);
   const [inputBlur, setInputBlur] = useState(initialState);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
   const router = useRouter();
 
   console.log(session?.user);
@@ -53,6 +53,7 @@ const LoginView: React.FC = () => {
     }
   };
 
+
   /*  // useEffect para guardar la sesión en localStorage cuando esté lista
   useEffect(() => {
     if (session?.user?.accessToken) {
@@ -65,7 +66,7 @@ const LoginView: React.FC = () => {
   }, [session]);
   */
 
-  // Handler para el inicio de sesión con Google
+  // Handler para el inicio de sesión con Google rol cliente
   const handleGoogleLogin = async () => {
     try {
       const res = await signIn("google", { redirect: false });
@@ -82,7 +83,21 @@ const LoginView: React.FC = () => {
       console.error("Error en el inicio de sesión con Google", error);
 
     }
-  };
+
+ // Handler para el inicio de sesión con Google rol profesor
+/* const handleGoogleLogin = async () => {
+  try {
+    const res = await signIn("google", { redirect: false });
+    if (res?.error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Error en el inicio de sesión con Google",
+      });
+    } else {
+      router.push("/profile");
+    }
+  };  */
 
   // Effect to manage submit button state
   useEffect(() => {

@@ -7,8 +7,10 @@ const ProfileUser: React.FC = () => {
   const { data: session } = useSession();
   const userName = session?.user.name || "Usuario";
   const userMail = session?.user.email || "Email";
+
   const userTel = session?.user.telefono || "telefono";
   const userIMG = /*session?.user.image || */"/FOTOPERFIL.png"
+
   // Estado para controlar la pestaña activa
   const [activeTab, setActiveTab] = useState<"MIS_CLASES" | "PLAN_ACTUAL">(
     "MIS_CLASES"

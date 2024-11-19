@@ -62,6 +62,7 @@ const Checkout: React.FC = () => {
 
   const selectedPlan = planes.find((plan) => plan.id === planId);
 
+
   // const handlePayment = async () => {
   //   try {
   //     const response = await fetch("pay/success/checkout/session", {
@@ -83,6 +84,7 @@ const Checkout: React.FC = () => {
   //     console.error("Error al redirigir a Stripe:", error);
   //   }
   // };
+
 
   if (!selectedPlan) {
     return <p>Plan no encontrado</p>;
