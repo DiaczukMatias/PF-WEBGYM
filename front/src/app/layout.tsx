@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
 import { SessionProvider } from "next-auth/react";
+import Chatbot from "../components/Chatbot/chatbot";
 
 export default function RootLayout({
   children,
@@ -23,6 +24,7 @@ export default function RootLayout({
         <SessionProvider>
           <Navbar />
           <main className="flex-grow">{children}</main>
+          <Chatbot/>
           <Footer />
         </SessionProvider>
       </body>
