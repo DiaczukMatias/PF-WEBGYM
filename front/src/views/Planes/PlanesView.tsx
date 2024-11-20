@@ -19,8 +19,8 @@ export const planes = [
       "Análisis de composición corporal",
     ],
     price: 99,
+    link: "https://buy.stripe.com/test_dR6cQt5xWgzKbTOcMP",
     buttonText: "ELEGIR PLAN",
-
   },
   {
     id: "2",
@@ -37,8 +37,8 @@ export const planes = [
       "Revisiones mensuales de estado físico",
     ],
     price: 19,
+    link: "https://buy.stripe.com/test_28o9Ehd0ogzKga4bIN",
     buttonText: "ELEGIR PLAN",
-
   },
   {
     id: "3",
@@ -55,17 +55,20 @@ export const planes = [
       "Técnicas avanzadas de recuperación",
     ],
     price: 59,
+    link: "https://buy.stripe.com/test_eVaeYB9Oc83e8HCcMQ",
     buttonText: "ELEGIR PLAN",
-
   },
 ];
 
 const PlanesView: React.FC = () => {
   const router = useRouter();
 
-  const handleSelectPlan = (planId: string) => {
-    router.push(`/checkout/${planId}`);
+  // const handleSelectPlan = (planId: string) => {
+  //   router.push(/checkout/${planId});
+  // };
 
+  const handleSelectPlan = (planLink: string) => {
+    router.push(planLink);
   };
 
   return (
@@ -93,7 +96,7 @@ const PlanesView: React.FC = () => {
 
             <button
               className={styles.button}
-              onClick={() => handleSelectPlan(plan.id)}
+              onClick={() => handleSelectPlan(plan.link)}
             >
               {plan.buttonText}
             </button>

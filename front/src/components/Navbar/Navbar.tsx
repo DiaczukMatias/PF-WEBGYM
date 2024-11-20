@@ -99,13 +99,8 @@ const Navbar = () => {
                       className="text-secondary hover:text-[#b6ff04] transition-colors duration-300"
                       >
                       Mi perfil
-                     </Link>  ////// ver de poner q si es rol cliente usa esta, si es profesor usa mi perfil
-                 //  <Link
-                 //     href="/profile"
-                 //     className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04] transition-colors duration-300"
-                 //   >
-                 //     Mi Perfil profesor
-                 //   </Link>    
+                     </Link>
+                 
                     <Link
                       href="/agenda"
                       className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
@@ -143,7 +138,6 @@ const Navbar = () => {
 
 
 export default Navbar;
-
 /*
 ACA ESTA LA VERSION ANTERIOR, USANDO USESESSION, LOCALSTORAGE SIGUE DEMORANDO
 
