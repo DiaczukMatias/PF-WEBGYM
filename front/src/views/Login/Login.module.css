@@ -1,0 +1,84 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@400&family=Kantumruy+Pro:wght@700&display=swap");
+
+.main {
+  background-image: url("/background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 85vh;
+  width: 100%;
+}
+
+.formContainer {
+  max-width: 400px;
+  margin: 120px auto;
+  padding: 30px;
+  background-color: rgba(182, 255, 4, 0.08);
+  border-radius: 15px;
+  box-shadow: 0 2px 10px #333333;
+  border: 2px solid #b6ff04;
+  text-align: center;
+}
+
+.inputField {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 2px solid #b6ff04;
+  border-radius: 15px;
+  background-color: transparent;
+  color: white;
+  font-size: 1rem;
+}
+
+.inputField:focus {
+  border-color: #b6ff04;
+  outline: none;
+}
+
+.submitButton {
+  margin-top: 20px;
+  white-space: nowrap;
+  width: 50%;
+  padding: 0.75rem;
+  background-color: #b6ff04;
+  border: none;
+  color: #000000;
+  font-family: "Kantumruy Pro", sans-serif;
+  font-weight: bold;
+  font-size: 1rem;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submitButton:hover {
+  font-weight: 700;
+  color: black;
+  background-color: #b6ff04;
+  transform: translateY(-2px);
+}
+
+.submitButton:disabled {
+  background-color: #b6ff04;
+  cursor: not-allowed;
+}
+
+.h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.whiteText {
+  color: #ffffff;
+}
+
+.greenText {
+  color: #b6ff04;
+  font-family: "Oswald", sans-serif;
+}
