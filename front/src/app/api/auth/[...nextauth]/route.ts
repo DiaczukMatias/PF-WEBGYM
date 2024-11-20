@@ -24,9 +24,6 @@ export const authOptions: AuthOptions = {
         const user = await res.json();
 
         if (res.ok && user) {
-          //almacenar el token en localStorage
-          localStorage.setItem('access_token', user.token);  // agreado ver si funciona rutas protegidas
-          // Aquí estamos regresando el usuario y token
           return {
             id: user.usuario.id,
             name: user.usuario.nombre,
