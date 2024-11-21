@@ -1,104 +1,178 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./ProfileUsers.module.css";
 import { useSession } from "next-auth/react";
+import { IClase } from "@/interfaces/IClase";
+import { IMembresia } from "@/interfaces/IMembresia";
+import { clasesData } from "@/helpers/datatemporalClases";
 
 const ProfileUser: React.FC = () => {
   const { data: session } = useSession();
-  const userName = session?.user.name || "Usuario";
-  const userMail = session?.user.email || "Email";
+  
+  const userName = session?.user?.name || "Usuario";  // Corregido por posible undefined
+  const userMail = session?.user?.email || "Email";
+  const userTel = session?.user?.telefono || "Telefono";
+  const userIMG = session?.user?.image || "/FOTOPERFIL.png"; // Imagen predeterminada
 
-  const userTel = session?.user.telefono || "telefono";
-  const userIMG = session?.user.image || "FOTOPERFIL.png"
+  const [activeTab, setActiveTab] = useState<"MIS_CLASES" | "PLAN_ACTUAL">("MIS_CLASES");
+  const [userClasses, setUserClasses] = useState<IClase[] | null>(null);
+  const [membership, setMembership] = useState<IMembresia | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  // Estado para controlar la pestaña activa
-  const [activeTab, setActiveTab] = useState<"MIS_CLASES" | "PLAN_ACTUAL">(
-    "MIS_CLASES"
-  );
+  const database = false; // Cambia esto entre true/false según la necesidad
+
+  // Función para obtener las clases del usuario y la membresía
+  const fetchUserData = () => {
+    if (database) {
+      // Cuando la base de datos esté habilitada, usamos la información de la sesión del usuario.
+      if (session?.user) {
+        
+        const usuario= session.user ;
+
+        // Asignamos la membresía si existe
+        setMembership(usuario.membresia || null);
+
+        // Filtramos las clases a las que el usuario está inscrito
+        const clasesInscritas = usuario.inscripciones
+          ?.map((inscripcion) => inscripcion.clase)
+          .filter((clase): clase is IClase => clase !== undefined); // Filtra explícitamente los valores undefined        
+
+        setUserClasses(clasesInscritas && clasesInscritas.length > 0 ? clasesInscritas : null);
+      }
+    } else {
+      // Si no hay base de datos (cuando database = false), usamos los datos temporales
+      setMembership({
+        id: "1",
+        nombre: "PRO PLAN",
+        precio: 99,
+        duracionEnMeses: 6,
+        fechaCreacion: new Date(),
+        fechaExpiracion: new Date(new Date().setMonth(new Date().getMonth() + 6)),
+        fechaActualizacion: new Date(),
+        activo: true,
+      });
+
+      // Datos temporales de clases (clasesData)
+      setUserClasses(clasesData);
+
+      setError(null);
+      console.log(error)
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData(); // Llamamos a la función para cargar los datos cuando se monta el componente
+  }, [session]);
+
+   // Funciones para controlar el desplazamiento del carrusel
+   const scrollUp = () => {
+    const carousel = document.getElementById("carousel");
+    if (carousel) {
+      carousel.scrollBy(0, -150); // Cambia el valor para ajustar el desplazamiento
+    }
+  };
+
+  const scrollDown = () => {
+    const carousel = document.getElementById("carousel");
+    if (carousel) {
+      carousel.scrollBy(0, 150); // Cambia el valor para ajustar el desplazamiento
+    }
+  };
+  const renderClasses = () => {
+    if (!userClasses || userClasses.length === 0) {
+      return (
+        <div>
+          <p>No estás inscrito en ninguna clase. Ve a ver nuestras clases disponibles:</p>
+          <button
+            className="flex justify-center items-center m-2 p-2 text-accent border rounded-md border-accent"
+            onClick={() => (window.location.href = `/clases`)}
+          >
+            Explorar clases
+          </button>
+        </div>
+      );
+    }
+
+    return (
+      <div className={styles.carouselContainer}>
+        <div className={styles.carousel}>
+          {userClasses.map((clase) => (
+            <div key={clase.id} className={styles.classItem}>
+             <h4 className={styles.className}>{clase.nombre.toUpperCase()}</h4>
+             <div className={styles.cardClass}>
+              <div className={styles.classImageContainer}>
+                  <img src={clase.imagen || `/images/clases/${clase.nombre.toLowerCase()}.jpg`} alt={clase.nombre} className={styles.classImage} />
+                </div>
+              <div className={styles.classDetails}>
+                <p className={styles.classDate}>{new Date(clase.fecha).toLocaleDateString()}</p>
+                <p className={styles.classProfessor}>
+                    Profesor:  {clase.perfilProfesor?.nombre || "No asignado"}
+                  </p>
+              </div>
+              </div>
+              
+              <hr className={styles.separator} />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className={styles.container}>
-      {/* Sección de perfil del entrenador */}
+      {/* Sección de perfil del cliente */}
       <div className={styles.profileSection}>
         <div className={styles.profilePictureContainer}>
-          <img
-            src={userIMG}
-            alt="Profile"
-            className={styles.profilePicture}
-          />
+          <img src={userIMG} alt="Profile" className={styles.profilePicture} />
         </div>
-
-        <h3 className={`${styles.name} ${styles.oswaldText}`}>
-          {userName.toUpperCase()}
-        </h3>
+        <h3 className={`${styles.name} ${styles.oswaldText}`}>{userName.toUpperCase()}</h3>
         <ul className={styles.contactInfo}>
-          <li>📞 +{userTel} </li>
+          <li>📞 +{userTel}</li>
           <li>📧 {userMail}</li>
-          <li>📸 @{userName}couchgym</li>
         </ul>
       </div>
 
-      {/* Sección de Alumnos y Clases */}
+      {/* Sección de Clases y plan */}
       <div className={styles.studentsSection}>
-        {/* Tabs */}
         <div className={styles.tabs}>
           <span
-            className={`${styles.tab} ${
-              activeTab === "MIS_CLASES" ? styles.activeTab : ""
-            } ${styles.oswaldText}`}
+            className={`${styles.tab} ${activeTab === "MIS_CLASES" ? styles.activeTab : ""} ${styles.oswaldText}`}
             onClick={() => setActiveTab("MIS_CLASES")}
           >
             MIS CLASES
           </span>
           <span className={styles.tabSeparator}>|</span>
           <span
-            className={`${styles.tab} ${
-              activeTab === "PLAN_ACTUAL" ? styles.activeTab : ""
-            } ${styles.oswaldText}`}
+            className={`${styles.tab} ${activeTab === "PLAN_ACTUAL" ? styles.activeTab : ""} ${styles.oswaldText}`}
             onClick={() => setActiveTab("PLAN_ACTUAL")}
           >
             PLAN ACTUAL
           </span>
         </div>
 
-        {/* Contenido basado en la pestaña activa */}
-        {activeTab === "MIS_CLASES" ? (
-          <div className={styles.studentList}>
-            <div className={styles.student}>
-              <img
-                src="/images/profesor/profe2.png"
-                alt="Student 2"
-                className={styles.studentPicture}
-              />
-              <div className={styles.studentInfo}>
-                <h4>CARDIO</h4>
-                <p>📞 (303) 555-0121 📧 devonlane@gmail.com</p>
-              </div>
+        {activeTab === "MIS_CLASES" ? renderClasses() : (
+          <div className={styles.plan}>
+            <button  onClick={() => (window.location.href = `/Mi membrasia`)} className={styles.membershipCard}>
+            <h3>{membership?.nombre || "No tienes plan activo"}</h3>
+            <p>{membership ? `$${membership.precio} USD` : "Hazte socio para poder disfrutar de nuestras clases y todos los beneficios"}</p>
+            <p >
+              {membership ? (
+                <>
+                  Vence: {new Date(membership.fechaExpiracion).toLocaleDateString()}
+                </>
+              ) : ("")}
+            </p>
+           
+          </button> <hr className={styles.separator} />
+            <button
+              className={styles.changeplan}
+              onClick={() => (window.location.href = `/planes`)}
+            >
+              {membership ? "Si te gustaría cambiar de plan haz clic aquí" : "Ver planes"}
+            </button>
             </div>
-            <hr className={styles.separator} />
-
-            <div className={styles.student}>
-              <img
-                src="/images/profesor/profe1.png"
-                alt="Student 3"
-                className={styles.studentPicture}
-              />
-              <div className={styles.studentInfo}>
-                <h4>CROSSFIT</h4>
-                <p>📞 (303) 555-0121 📧 chrisjames@gmail.com</p>
-              </div>
-            </div>
-            <hr className={styles.separator} />
-          </div>
-        ) : (
-          <div className={styles.membershipCard}>
-            <h3>PRO PLAN</h3>
-            <p>$50 USDT</p>
-          </div>
         )}
-        <p className={styles.changeplan}>
-          Si te gustaria cambiar de plan hace click aca
-        </p>
       </div>
     </div>
   );

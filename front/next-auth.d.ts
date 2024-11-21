@@ -13,6 +13,8 @@ declare module 'next-auth' {
     rol: string;
     accessToken?: string;
     edad?:string;
+    membresia?: IMembresia;
+    inscripciones?: IInscripcion[];
   }
 
   interface Session {

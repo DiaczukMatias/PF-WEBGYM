@@ -32,6 +32,8 @@
   width: 100%;
   margin-top: 40px;
   padding: 20px;
+  flex-wrap: wrap;
+
 }
 
 .planContainer h3 {
@@ -44,11 +46,11 @@
   background-color: black;
   border-radius: 35px;
   border: 2px solid #b6ff04;
-  width: 24%;
-  padding: 20px;
+  width: 28%;
+  padding: 10px;
   text-align: center;
   color: white;
-  height: 670px;
+  overflow: hidden; /* Evitar que el contenido se desborde */
   transition: background-color 0.3s ease;
 }
 
@@ -57,7 +59,8 @@
 }
 
 .titulo {
-  font-size: 5em;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
 }
 
 .card h3 {
@@ -65,7 +68,7 @@
   font-size: 1.9rem;
 }
 
-.card p {
+.cardDescription {
   margin-left: 29px;
   font-size: 16px;
   margin-bottom: 20px;
@@ -73,16 +76,15 @@
   text-align: left;
 }
 
-.card ul {
+.cardFeatures {
   list-style-position: inside;
   padding-left: 20px;
   text-align: left;
   font-size: 16px;
-
   margin-bottom: 20px;
 }
 
-.card li {
+.cardFeatures li {
   margin-left: 15px;
   margin-bottom: 10px;
 }
@@ -106,4 +108,8 @@
   border-radius: 25px;
   cursor: pointer;
   transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: rgba(0, 478, 0, 0.8);
 }
