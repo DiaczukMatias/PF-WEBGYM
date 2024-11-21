@@ -19,7 +19,6 @@ export const planes = [
       "Análisis de composición corporal",
     ],
     price: 99,
-    link: "https://buy.stripe.com/test_dR6cQt5xWgzKbTOcMP",
     buttonText: "ELEGIR PLAN",
   },
   {
@@ -37,7 +36,6 @@ export const planes = [
       "Revisiones mensuales de estado físico",
     ],
     price: 19,
-    link: "https://buy.stripe.com/test_28o9Ehd0ogzKga4bIN",
     buttonText: "ELEGIR PLAN",
   },
   {
@@ -55,7 +53,6 @@ export const planes = [
       "Técnicas avanzadas de recuperación",
     ],
     price: 59,
-    link: "https://buy.stripe.com/test_eVaeYB9Oc83e8HCcMQ",
     buttonText: "ELEGIR PLAN",
   },
 ];
@@ -63,12 +60,8 @@ export const planes = [
 const PlanesView: React.FC = () => {
   const router = useRouter();
 
-  // const handleSelectPlan = (planId: string) => {
-  //   router.push(/checkout/${planId});
-  // };
-
-  const handleSelectPlan = (planLink: string) => {
-    router.push(planLink);
+  const handleSelectPlan = (planId: string) => {
+    router.push(`/checkout/${planId}`);
   };
 
   return (
@@ -80,23 +73,20 @@ const PlanesView: React.FC = () => {
       <div className={styles.cardsContainer}>
         {planes.map((plan) => (
           <div key={plan.id} className={styles.card}>
-            <div className={styles.titulo}>
-              <h3>{plan.name}</h3>
-            </div>
-            <p>{plan.description}</p>
+            <div className={styles.titulo}>{plan.name}</div>
+            <p className={styles.cardDescription}>{plan.description}</p>
             <div className={styles.planContainer}>
-              <h3>Caracteristicas</h3>
+              <h3 className={styles.planTitle}>Características</h3>
             </div>
-            <ul>
+            <ul className={styles.cardFeatures}>
               {plan.features.map((feature, index) => (
                 <li key={index}>{feature}</li>
               ))}
             </ul>
             <div className={styles.price}>{plan.price}$</div>
-
             <button
               className={styles.button}
-              onClick={() => handleSelectPlan(plan.link)}
+              onClick={() => handleSelectPlan(plan.id)}
             >
               {plan.buttonText}
             </button>
@@ -108,5 +98,3 @@ const PlanesView: React.FC = () => {
 };
 
 export default PlanesView;
-
-//handleSelectPlan(plan.id)

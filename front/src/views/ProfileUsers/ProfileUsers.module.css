@@ -1,11 +1,53 @@
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap");
 
+
+
+.arrowUp, .arrowDown {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  color: #b6ff04; /* Color accent */
+  position: absolute;
+  top: 50%;
+  z-index: 10;
+  transform: translateY(-50%);
+}
+
+.arrowUp {
+  top: 10px;
+}
+
+.arrowDown {
+  bottom: 10px;
+}
+
+
+
+.classItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  margin: 10px 0;
+  border-bottom: 1px solid #9e9e9ed2;
+}
+
+.cardClass {
+  display: flex;
+  flex-direction: row;
+}
+  
+.plan {
+  margin-left: 60px;
+}
+
 .container {
   display: flex;
   padding: 80px;
   color: white;
   font-family: Arial, sans-serif;
-  gap: 90px;
+  gap: 40px;
   margin-left: 260px;
 }
 
@@ -72,6 +114,7 @@
   cursor: pointer;
   transition: color 0.3s ease;
   gap: 40px;
+  padding-left: 8rem;
 }
 
 .tabs span:hover {
@@ -88,18 +131,46 @@
   color: #444;
 }
 
-.studentList {
-  max-width: 80%;
-  margin-top: 30px;
+.carouselContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width:100%;
+  padding-right: 90px;
 }
 
-.student {
+.carousel {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  height: 300px; /* Ajusta la altura según necesites */
+  padding-top: 20px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  gap: 1rem;
+}
+
+.classes {
   padding: 25px;
   display: flex;
   align-items: center;
   margin-bottom: 15px;
 }
 
+.classImageContainer {
+  width: 60px;
+  height: 60px;
+  overflow: hidden;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.classImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 .studentPicture {
   width: 50px;
   height: 50px;
@@ -108,12 +179,36 @@
   object-fit: cover;
 }
 
-.studentInfo h4 {
-  margin: 0;
-  font-size: 1em;
+.classDetails {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  flex-direction: column;
+  margin-inline: 2rem;
+  gap: 0.3rem;
+}
+
+
+
+.classText {
+  margin-left: 15px;
+  color: white;
+}
+
+.className {
+  margin-right: 16rem;
+  margin-bottom: 1.2rem;
+  font-size: 1.2rem;
   font-family: "Oswald", sans-serif;
   text-transform: uppercase;
 }
+
+.classDate, .classProfessor {
+  font-size: 1rem;
+  color: white;
+}
+
+
 
 .studentInfo p {
   margin: 20px 0 0;
@@ -142,7 +237,7 @@
 
 .membershipCard {
   margin-top: 40px;
-  margin-left: 60px;
+  margin-bottom: 30px;
   border: 2px solid #b6ff04;
   border-radius: 25px;
   padding: 18px;
@@ -150,7 +245,7 @@
   display: flex;
   justify-content: space-between; /* Distribuye los elementos a los extremos */
   align-items: center; /* Alinea verticalmente al centro */
-  gap: 5px; /* Espacio entre "PRO PLAN" y el precio */
+  gap: 10px; /* Espacio entre "PRO PLAN" y el precio */
 }
 
 .membershipCard h3 {
@@ -162,11 +257,15 @@
 .membershipCard p {
   font-size: 1em;
   margin: 0;
-  color: #b6ff04; /* Si quieres que el precio resalte */
+}
+
+
+.membershipCard h3 span:hover {
+  color: #b6ff04;
 }
 
 .changeplan {
   margin-top: 20px;
-  margin-left: 80px;
   font-size: 13px;
 }
+
