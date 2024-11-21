@@ -2,6 +2,18 @@ import { IRegisterProps } from "@/interfaces/IRegister";
 import Swal from "sweetalert2";
 import { IUsuario } from "@/interfaces/IUser";
 import { ILoginProps } from "@/interfaces/ILogin";
+import { FetchError } from "@/interfaces/IErrors";
+
+//funcion para manejerar tipo de error
+function isFetchError(error: unknown): error is FetchError {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "message" in error &&
+    typeof (error as FetchError).message === "string"
+  );
+}
+
 
 // Configuración base
 
@@ -80,11 +92,21 @@ export const registerPost = async (userData: IRegisterProps) => {
         throw new Error("Error: Unexpected response status");
       }
     } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: error.message || "An unknown error occurred",
-      });
+      if (isFetchError(error)) {
+        // Es un FetchError tipado
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error.message || "An unknown error occurred",
+        });
+      } else {
+        // Es otro tipo de error desconocido
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "An unexpected error occurred.",
+        });
+      }
       throw error;
     }
   };

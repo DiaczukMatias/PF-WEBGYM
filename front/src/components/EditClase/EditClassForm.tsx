@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { fetchClaseById, updateClase } from '../../helpers/Fetch/FetchClases';
 import { useSession } from 'next-auth/react';
-import { clasesData } from '@/helpers/datatemporalClases';
+//import { clasesData } from '@/helpers/datatemporalClases';
 
 const EditClassForm: React.FC = () => {
   
@@ -35,12 +35,17 @@ const EditClassForm: React.FC = () => {
     if (id) {
       fetchClaseById(id)
         .then((claseData) => {
-          setFormData({
+          // Asegúrate de que 'perfilProfesorId' esté presente en el objeto
+          const updatedClaseData = {
             ...claseData,
-            fecha: claseData.fecha.slice(0, 16),
-          });
+            perfilProfesorId: claseData.perfilProfesor?.id || '', // Asigna un valor predeterminado si no está presente
+            fecha: typeof claseData.fecha === 'string' ? claseData.fecha.slice(0, 16) : new Date(claseData.fecha).toISOString().slice(0, 16),
+            disponibilidad: claseData.disponibilidad ?? 0, // Asigna 0 si es undefined
+            imagen: claseData.imagen ?? ''
+          };
+          
+          setFormData(updatedClaseData);
           setLoading(false);
-          console.log("clasesData fetchClasesByID, info clase a editar:", clasesData)
         })
         .catch((error) => {
           console.error('Error al cargar la clase:', error);
@@ -48,6 +53,7 @@ const EditClassForm: React.FC = () => {
         });
     }
   }, [id]);
+  
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
