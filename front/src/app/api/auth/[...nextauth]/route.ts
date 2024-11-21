@@ -64,6 +64,7 @@ export const authOptions: AuthOptions = {
               confirmarContrasena: '', // No enviar confirmarContraseña
               imagen: token.picture, // Incluir la imagen al enviar al backend
 
+
             };
   
             const response = await fetch(`${apiUrl}/auth/google-login`, {
@@ -79,6 +80,7 @@ export const authOptions: AuthOptions = {
               console.log('Datos enviados al backend:', googleUser);
               token.id = googleUser.usuario.id; // Actualiza el token con datos del backend
               token.rol = googleUser.usuario.rol; // Guarda el rol en el token
+              token.accessToken =googleUser.usuario.accesToken  // agregado ver si funciona rutas protegidas
               token.accessToken =googleUser.usuario.accesToken  // agregado ver si funciona rutas protegidas
             } else {
               console.error('Error del servidor:', googleUser.message);
@@ -140,6 +142,8 @@ export const authOptions: AuthOptions = {
         const { email, contrasena } = credentials!;
         const res = await fetch(http://localhost:3010/usuarios/login, // url para el post del inicio sesion con credenciales
          // const res = await fetch(http://localhost:3010/auth/google-login, url q debo usar para el post del inicio de sesion de google, donde la pongo?
+        const res = await fetch(http://localhost:3010/usuarios/login, // url para el post del inicio sesion con credenciales
+         // const res = await fetch(http://localhost:3010/auth/google-login, url q debo usar para el post del inicio de sesion de google, donde la pongo?
          {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -168,6 +172,7 @@ export const authOptions: AuthOptions = {
     },
     async session({ session, token }) {
       console.log("token.id:", token.id )
+      // Aseguramos que token.id tiene el tipo adecuado
       // Aseguramos que token.id tiene el tipo adecuado
       session.user.id = token.id as string; // Aserción de tipo
       return session;

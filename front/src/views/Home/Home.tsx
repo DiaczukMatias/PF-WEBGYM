@@ -13,7 +13,7 @@ import styles from './Home.module.css';
 
 const HomeView = () => {
   // Cambia el valor de `useBackend` a `true` para usar el backend o a `false` para usar los datos temporales
-  const [useBackend] = useState(true);
+  const [useBackend] = useState(false);
 
   const [clases, setClases] = useState(clasesData); 
   const [categorias, setCategorias] = useState(categoriesData); 
@@ -42,9 +42,24 @@ const HomeView = () => {
     fetchData();
   }, [useBackend]); // Se ejecuta cuando `useBackend` cambia
 
-  const mappedCategorias = categorias.map((categoria) => ({
+  const normalizeName = (name: string) =>
+    name
+      .toLowerCase()
+      .replace(/á/g, 'a')
+      .replace(/é/g, 'e')
+      .replace(/í/g, 'i')
+      .replace(/ó/g, 'o')
+      .replace(/ú/g, 'u')
+      .replace(/ñ/g, 'n')
+      
+
+
+  const mappedCategorias = categorias
+  .filter((categoria) => categoria.nombre) // Filtra categorías sin nombre
+  .map((categoria) => ({
+    id: categoria.id,
     nombre: categoria.nombre,
-    imagen: `/images/categories/${categoria.nombre.toLowerCase()}.png`,
+    imagen: `/images/categories/${normalizeName(categoria.nombre)}.png`, // Genera la ruta de imagen directamente
   }));
 
   const handleSeeMoreClick = () => {
