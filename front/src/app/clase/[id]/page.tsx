@@ -1,21 +1,32 @@
-// pages/clase/[id].tsx
-import { clasesData } from "@/helpers/datatemporalClases";
+// src/app/clase/[id]/page.tsx
+//import { clasesData } from "@/helpers/datatemporalClases";
 import ClassCard from "@/components/Card/Card";
+import { fetchClaseById } from "@/helpers/Fetch/FetchClases";
+import { FetchError } from "@/interfaces/IErrors";
+
 //import { fetchClaseById } from "@/helpers/Fetch/FetchClases";
 
-const DetailsClass = async ({ params }: { params: { id: string } }) => {
-  const { id } = await params;
+
+const DetailsClass = async ({ params }: { params: Promise<{ id: string }> })  => {
+  const resolvedParams = await params;
+  const { id } = resolvedParams;
 
   // Opción 1: Datos temporales
-  const clase = clasesData.find((clase) => clase.id === id);
-  /*
+  //const clase = clasesData.find((clase) => clase.id === id);
+  
   // Opción 2: Fetch desde el backend
-  try {
-    const clase = await fetchClaseById(id);
-  } catch (error) {
-    return <p>Error al obtener la clase: {error.message}</p>;
+   // Inicializar la variable para almacenar los datos de la clase
+   let clase;
+
+   try {
+    // Fetch de datos desde la API
+    clase = await fetchClaseById(id);
+  } catch (error : unknown) {
+    const fetchError = error as FetchError;
+    // Renderizar mensaje de error si el fetch falla
+    return <p>Error al obtener la clase: {fetchError.message}</p>;
   }
-  */
+  
 
   if (!clase) {
     return <p>Clase no encontrada</p>;

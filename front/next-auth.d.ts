@@ -27,7 +27,7 @@ declare module 'next-auth/jwt' {
     id: string;
     email: string;
     name: string;
-    telefono?: string;
+    telefono?: string | null;
     rol: string;
     accessToken?: string;
   }
