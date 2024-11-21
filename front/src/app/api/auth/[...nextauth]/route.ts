@@ -25,7 +25,7 @@ export const authOptions: AuthOptions = {
 
         if (res.ok && user) {
           //almacenar el token en localStorage
-          localStorage.setItem('access_token', user.token);  // agreado ver si funciona rutas protegidas
+         // localStorage.setItem('access_token', user.token);  // agreado ver si funciona rutas protegidas
           // Aquí estamos regresando el usuario y token
           return {
             id: user.usuario.id,
@@ -34,6 +34,8 @@ export const authOptions: AuthOptions = {
             telefono: user.usuario.telefono,
             rol: user.usuario.rol,
             accessToken: user.token,
+            membresia: user.usuario.membresia,
+            inscripciones: user.usuario.inscripciones,
           };
         }
         return null;
@@ -83,6 +85,7 @@ export const authOptions: AuthOptions = {
               token.id = googleUser.usuario.id; // Actualiza el token con datos del backend
               token.rol = googleUser.usuario.rol; // Guarda el rol en el token
               token.accessToken =googleUser.usuario.accesToken  // agregado ver si funciona rutas protegidas
+              
             } else {
               console.error('Error del servidor:', googleUser.message);
             }
