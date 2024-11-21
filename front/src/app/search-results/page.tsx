@@ -1,9 +1,13 @@
 import SearchResultsView from "@/views/searchResults/SearchResultsView";
-
+import { Suspense } from "react";
 
 const SearchResults :React.FC = () => {
     return (
-        <SearchResultsView/>
+        <Suspense fallback={<div>Cargando...</div>}>
+
+            <SearchResultsView/>
+
+        </Suspense>
     );
   };
   
