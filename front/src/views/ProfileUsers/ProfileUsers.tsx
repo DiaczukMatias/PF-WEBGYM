@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import React, { useState, useEffect } from "react";
 import styles from "./ProfileUsers.module.css";
@@ -8,7 +9,8 @@ import { clasesData } from "@/helpers/datatemporalClases";
 
 const ProfileUser: React.FC = () => {
   const { data: session } = useSession();
-  
+console.log('objeto en session: ', session);
+
   const userName = session?.user?.name || "Usuario";  // Corregido por posible undefined
   const userMail = session?.user?.email || "Email";
   const userTel = session?.user?.telefono || "Telefono";
@@ -56,7 +58,7 @@ const ProfileUser: React.FC = () => {
       setUserClasses(clasesData);
 
       setError(null);
-      console.log(error)
+      console.log('log del error', error)
     }
   };
 
@@ -65,7 +67,7 @@ const ProfileUser: React.FC = () => {
   }, [session]);
 
    // Funciones para controlar el desplazamiento del carrusel
-   const scrollUp = () => {
+   /*const scrollUp = () => {
     const carousel = document.getElementById("carousel");
     if (carousel) {
       carousel.scrollBy(0, -150); // Cambia el valor para ajustar el desplazamiento
@@ -77,7 +79,7 @@ const ProfileUser: React.FC = () => {
     if (carousel) {
       carousel.scrollBy(0, 150); // Cambia el valor para ajustar el desplazamiento
     }
-  };
+  };*/
   const renderClasses = () => {
     if (!userClasses || userClasses.length === 0) {
       return (

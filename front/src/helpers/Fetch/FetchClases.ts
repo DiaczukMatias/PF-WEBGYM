@@ -68,7 +68,7 @@ export const deleteClase = async (id: string) => {
 
 
 
-export const fetchClaseById = async (id: string) => {
+export const fetchClaseById = async (id: string) : Promise<IClase> => {
   const response = await fetch(`${apiUrl}/clases/${id}`);
   if (!response.ok) {
     throw new Error('Error al obtener la clase');

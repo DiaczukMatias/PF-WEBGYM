@@ -70,7 +70,7 @@ export  function validateRegisterForm(values: IRegisterProps): IRegisterErrors {
   // Validación del teléfono
   if (!values.telefono) {
     errors.telefono = "El número de teléfono es un campo obligatorio";
-  } else if (!/^\d{9,12}$/.test(values.telefono)) {
+  } else if (!/^\d{9,12}$/.test(String(values.telefono))) {
     errors.telefono =
       "El número de teléfono debe ser numérico y tener entre 9 y 12 caracteres";
   }
@@ -78,7 +78,7 @@ export  function validateRegisterForm(values: IRegisterProps): IRegisterErrors {
   // Validación de la edad
   if (!values.edad) {
     errors.edad = "La edad es un campo obligatorio";
-  } else if (parseInt(values.edad) < 13) {
+  } else if (parseInt(String(values.edad)) < 13) {
     errors.edad = "Debes ser mayor de 13 años para registrarte";
   }
 

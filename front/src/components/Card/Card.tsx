@@ -57,7 +57,7 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
       <div className="w-1/2">
         {imagen && (
           <Image
-          src={`/images/clases/${clase.nombre.toLowerCase()}.jpg`}  
+          src={`${clase.imagen}`}  
           alt={nombre}
             width={350}
             height={200}
