@@ -1,6 +1,6 @@
-import NextAuth, { AuthOptions } from 'next-auth';
-import GoogleProvider from 'next-auth/providers/google';
-import CredentialsProvider from 'next-auth/providers/credentials';
+import NextAuth, { AuthOptions } from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 export const authOptions: AuthOptions = {
   providers: [
@@ -9,21 +9,22 @@ export const authOptions: AuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
     CredentialsProvider({
-      name: 'Credentials',
+      name: "Credentials",
       credentials: {
-        email: { label: 'Email', type: 'text' },
-        contrasena: { label: 'Password', type: 'password' },
+        email: { label: "Email", type: "text" },
+        contrasena: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         const { email, contrasena } = credentials!;
         const res = await fetch(`${apiUrl}/usuarios/login`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, contrasena }),
         });
         const user = await res.json();
 
         if (res.ok && user) {
+          localStorage.setItem("access_token", user.token);
           // Aquí estamos regresando el usuario y token
           return {
             id: user.usuario.id,
@@ -41,56 +42,56 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async jwt({ token, user, account }) {
       // Si el usuario ha iniciado sesión y es de Google, prepara los datos
-      console.log('datos qeu envian desde google ', user);
-      
+      console.log("datos qeu envian desde google ", user);
+
       if (user) {
         token.id = user.id;
         token.name = user.name;
         token.email = user.email;
         token.rol = user.rol;
         token.accessToken = user.accessToken;
-        token.picture = user.image || null
-  
+        token.picture = user.image || null;
+
         // Si el inicio de sesión es con Google, envía los datos al backend
-        if (account?.provider === 'google') {
-          try {  
+        if (account?.provider === "google") {
+          try {
             // Preparar el objeto para enviar al backend con datos opcionales y valores dummy
             const googleUserData = {
               id: token.id, // ID del usuario registrado
-              nombre: user?.name || '',
-              email: user?.email || '',
+              nombre: user?.name || "",
+              email: user?.email || "",
               telefono: user?.telefono ? Number(user.telefono) : null, // Enviar un teléfono de prueba
-              edad:  user?.edad ? Number(user.edad) :null,         // Enviar una edad de prueba
-              contrasena: '', // No enviar contraseña
-              confirmarContrasena: '', // No enviar confirmarContraseña
+              edad: user?.edad ? Number(user.edad) : null, // Enviar una edad de prueba
+              contrasena: "", // No enviar contraseña
+              confirmarContrasena: "", // No enviar confirmarContraseña
               imagen: token.picture, // Incluir la imagen al enviar al backend
             };
-  
+
             const response = await fetch(`${apiUrl}/auth/google-login`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
               body: JSON.stringify(googleUserData),
             });
-  
+
             const googleUser = await response.json();
-            console.log('RESPUESTA DE GOOGLE (JSON):', googleUser);
-  
+            console.log("RESPUESTA DE GOOGLE (JSON):", googleUser);
+
             if (response.ok && googleUser) {
-              console.log('Datos enviados al backend:', googleUser);
+              console.log("Datos enviados al backend:", googleUser);
               token.id = googleUser.usuario.id; // Actualiza el token con datos del backend
               token.rol = googleUser.usuario.rol; // Guarda el rol en el token
             } else {
-              console.error('Error del servidor:', googleUser.message);
+              console.error("Error del servidor:", googleUser.message);
             }
           } catch (error) {
-            console.error('Error enviando datos al backend:', error);
+            console.error("Error enviando datos al backend:", error);
           }
         }
       }
-  
+
       return token;
     },
-  
+
     async session({ session, token }) {
       // Aquí estamos pasando todos los datos del token a la sesión
       session.user = {
@@ -104,18 +105,16 @@ export const authOptions: AuthOptions = {
       };
       return session;
     },
-  }
-  
-  ,
+  },
+
   secret: process.env.NEXTAUTH_SECRET,
   session: {
-    strategy: 'jwt',
+    strategy: "jwt",
   },
 };
 
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
-
 
 /*
 import NextAuth, { AuthOptions } from 'next-auth';
@@ -172,8 +171,8 @@ export const authOptions: AuthOptions = {
       return session;
     }
   },*/
-  
-  /* funcionaba con el inicio de sesion con credenciales
+
+/* funcionaba con el inicio de sesion con credenciales
   
   callbacks: {
 
@@ -217,7 +216,7 @@ export const authOptions: AuthOptions = {
       },
     */
 
-  /*
+/*
   secret: process.env.NEXTAUTH_SECRET,
   session: {
 

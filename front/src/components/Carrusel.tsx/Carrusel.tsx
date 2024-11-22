@@ -46,9 +46,9 @@ const Carrusel: React.FC<CarouselProps> = ({ categorias }) => {
               className="w-full h-full object-contain border-4 border-[#b6ff04]"
               style={{ borderRadius: "1.8rem" }}
             />
-                  <h1 className="absolute bottom-0 left-1/2  transform -translate-x-1/2 text-center text-3xl font-semibold mb-4 text-white text-shadow-lg fontOswaldSans-serif">
-                  {categorias[currentIndex].nombre.toUpperCase()}
-                </h1>
+            <h1 className="absolute bottom-0 left-1/2  transform -translate-x-1/2 text-center text-3xl font-semibold mb-4 text-white text-shadow-lg fontOswaldSans-serif">
+              {categorias[currentIndex].nombre.toUpperCase()}
+            </h1>
           </Link>
         </div>
       </div>

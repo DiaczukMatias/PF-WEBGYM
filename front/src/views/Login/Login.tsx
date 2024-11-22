@@ -11,62 +11,55 @@ import { useRouter } from "next/navigation";
 const LoginView: React.FC = () => {
   const initialState = { email: "", contrasena: "" };
   const [loginForm, setLoginForm] = useState<ILoginProps>(initialState);
-  const [errors, setErrors] = useState<ILoginErrors>(initialState);
-  const [inputBlur, setInputBlur] = useState(initialState);
+  const [errors, setErrors] = useState<ILoginErrors>({});
+  const [inputBlur, setInputBlur] = useState<{
+    email: boolean;
+    contrasena: boolean;
+  }>({
+    email: false,
+    contrasena: false,
+  });
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
-  // const { data: session } = useSession();
   const router = useRouter();
 
-  console.log(session?.user);
-  
-
+  // Maneja los cambios en los inputs
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setLoginForm({ ...loginForm, [name]: value });
     setErrors(validateLoginForm({ ...loginForm, [name]: value }));
   };
 
+  // Maneja el blur en los inputs
   const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const { name } = e.target;
     setInputBlur({ ...inputBlur, [name]: true });
   };
 
+  // Maneja el envío del formulario
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    // Inicia el proceso de signIn
-    const res = await signIn("credentials", {
-      email: loginForm.email,
-      contrasena: loginForm.contrasena,
-      redirect: false,
-    });
-
-    if (res?.error) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Credenciales incorrectas",
+    try {
+      const res = await signIn("credentials", {
+        email: loginForm.email,
+        contrasena: loginForm.contrasena,
+        redirect: false,
       });
-    } else {
-      // Redirige al perfil inmediatamente
-      router.push("/profileUsers");
+
+      if (res?.error) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Credenciales incorrectas",
+        });
+      } else {
+        router.push("/profileUsers");
+      }
+    } catch (error) {
+      console.error("Error en el inicio de sesión:", error);
     }
   };
 
-
-  /*  // useEffect para guardar la sesión en localStorage cuando esté lista
-  useEffect(() => {
-    if (session?.user?.accessToken) {
-      const userSession = {
-        token: session.user.accessToken,
-        user: session.user,
-      };
-      localStorage.setItem("userSession", JSON.stringify(userSession));
-    }
-  }, [session]);
-  */
-
-  // Handler para el inicio de sesión con Google rol cliente
+  // Maneja el inicio de sesión con Google
   const handleGoogleLogin = async () => {
     try {
       const res = await signIn("google", { redirect: false });
@@ -80,26 +73,11 @@ const LoginView: React.FC = () => {
         router.push("/profileUsers");
       }
     } catch (error) {
-      console.error("Error en el inicio de sesión con Google", error);
-
+      console.error("Error en el inicio de sesión con Google:", error);
     }
+  };
 
- // Handler para el inicio de sesión con Google rol profesor
-/* const handleGoogleLogin = async () => {
-  try {
-    const res = await signIn("google", { redirect: false });
-    if (res?.error) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Error en el inicio de sesión con Google",
-      });
-    } else {
-      router.push("/profile");
-    }
-  };  */
-
-  // Effect to manage submit button state
+  // Actualiza el estado del botón de envío
   useEffect(() => {
     setIsSubmitDisabled(Object.keys(errors).length > 0);
   }, [errors]);
@@ -121,7 +99,6 @@ const LoginView: React.FC = () => {
               placeholder="johndoe@gmail.com"
               className={styles.inputField}
             />
-            <br />
             {inputBlur.email && errors.email && (
               <span className={styles.errorText}>*{errors.email}</span>
             )}
@@ -139,7 +116,6 @@ const LoginView: React.FC = () => {
               placeholder="**********"
               className={styles.inputField}
             />
-            <br />
             {inputBlur.contrasena && errors.contrasena && (
               <span className={styles.errorText}>*{errors.contrasena}</span>
             )}
@@ -160,7 +136,7 @@ const LoginView: React.FC = () => {
           <button
             type="button"
             onClick={handleGoogleLogin}
-            className=" text-white py-2 px-4 rounded mt-4 border border-white"
+            className={`${styles.googleButton} text-white py-2 px-4 rounded mt-4 border border-white`}
           >
             Iniciar sesión con Google
           </button>

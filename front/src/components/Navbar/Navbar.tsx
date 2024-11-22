@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useSession, signOut } from 'next-auth/react';
+import { useSession, signOut } from "next-auth/react";
 import { FaSpinner } from "react-icons/fa"; // Icono de carga
 import styles from "./Navbar.module.css";
 import Searchbar from "../SearchBar/SearchBar";
@@ -12,10 +12,9 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const userName = session?.user?.name || "Usuario";
   const isLogged = status === "authenticated";
-  console.log('estado de  la session: '+status);
-  console.log('usuario de  la session: ', session);
-  
-  
+  console.log("estado de  la session: " + status);
+  console.log("usuario de  la session: ", session);
+
   if (status === "loading") {
     // Componente de carga mientras se obtiene el estado de la sesión
     return (
@@ -38,7 +37,6 @@ const Navbar = () => {
         <div className="flex items-center space-x-4 mx-auto">
           {!isLogged ? (
             <>
-            
               <Link
                 href="/login"
                 className="text-secondary hover:text-[#b6ff04] transition-colors duration-300"
@@ -72,7 +70,7 @@ const Navbar = () => {
               >
                 CLASES
               </Link>
-               <Link
+              <Link
                 href="/planes"
                 className="text-secondary hover:text-[#b6ff04] transition-colors duration-300"
               >
@@ -93,19 +91,13 @@ const Navbar = () => {
                       transform: isMenuOpen ? "scaleY(1)" : "scaleY(0)",
                     }}
                   >
-                   
-                     <Link
+                    <Link
                       href="/profileUsers"
                       className="text-secondary hover:text-[#b6ff04] transition-colors duration-300"
-                      >
+                    >
                       Mi perfil
-                     </Link>  ////// ver de poner q si es rol cliente usa esta, si es profesor usa mi perfil
-                 //  <Link
-                 //     href="/profile"
-                 //     className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04] transition-colors duration-300"
-                 //   >
-                 //     Mi Perfil profesor
-                 //   </Link>    
+                    </Link>
+
                     <Link
                       href="/agenda"
                       className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
@@ -141,9 +133,7 @@ const Navbar = () => {
   );
 };
 
-
 export default Navbar;
-
 /*
 ACA ESTA LA VERSION ANTERIOR, USANDO USESESSION, LOCALSTORAGE SIGUE DEMORANDO
 
@@ -295,4 +285,3 @@ const Navbar = () => {
 
 // export default Navbar;
 // */
-

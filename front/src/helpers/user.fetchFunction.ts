@@ -43,7 +43,6 @@ export const registerPost = async (userData: IRegisterProps) => {
     Swal.fire({
       icon: "error",
       title: "Oops...",
-      text: error.message || "An unknown error occurred",
     });
     throw error;
   }

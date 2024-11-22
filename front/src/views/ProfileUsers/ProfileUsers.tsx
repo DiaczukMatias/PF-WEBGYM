@@ -9,7 +9,7 @@ const ProfileUser: React.FC = () => {
   const userMail = session?.user.email || "Email";
 
   const userTel = session?.user.telefono || "telefono";
-  const userIMG = /*session?.user.image || */"/FOTOPERFIL.png"
+  const userIMG = /*session?.user.image || */ "/FOTOPERFIL.png";
 
   // Estado para controlar la pestaña activa
   const [activeTab, setActiveTab] = useState<"MIS_CLASES" | "PLAN_ACTUAL">(
@@ -21,11 +21,7 @@ const ProfileUser: React.FC = () => {
       {/* Sección de perfil del entrenador */}
       <div className={styles.profileSection}>
         <div className={styles.profilePictureContainer}>
-          <img
-            src={userIMG}
-            alt="Profile"
-            className={styles.profilePicture}
-          />
+          <img src={userIMG} alt="Profile" className={styles.profilePicture} />
         </div>
 
         <h3 className={`${styles.name} ${styles.oswaldText}`}>
