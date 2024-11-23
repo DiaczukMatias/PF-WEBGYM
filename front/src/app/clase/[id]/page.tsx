@@ -35,10 +35,12 @@ const DetailsClass = async ({ params }: { params: Promise<{ id: string }> })  =>
   // Eliminar circularidad si existe
   const claseSinCircularidad = {
     ...clase,
-    perfilProfesor: clase.perfilProfesor
+    perfilProfesor: clase.perfilProfesor && typeof clase.perfilProfesor === 'object' && !Array.isArray(clase.perfilProfesor)
       ? { ...clase.perfilProfesor, clases: undefined }
       : undefined,
   };
+  
+  
 
   return (
     <div className="container mx-auto p-4">

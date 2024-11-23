@@ -12,7 +12,7 @@ export interface IClase {
   categoriaId: ICategoria["id"]; //nuevo
   categoria?: ICategoria;         // Categoría a la que pertenece la clase (opcional)
   inscripciones?: IInscripcion[]; //nuevo
-  perfilProfesor?: IProfesor | string;  //cada clase tiene 1 profesor pero cada rpofesor puede tener multiples clases
+  perfilProfesor?: IProfesor ;  //cada clase tiene 1 profesor pero cada rpofesor puede tener multiples clases
 }
 
 export interface ICrearClase {

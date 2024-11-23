@@ -15,18 +15,12 @@ const ClasesView = () => {
   const [filteredClasses, setFilteredClasses] = useState<ISearchResult[]>([]);
   const [professorsInFilteredClases, setProfessorsInFilteredClases] = useState<IProfesor[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>("");
+  const [error, setError] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedProfesor, setSelectedProfesor] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
-  console.log('categories: ', categories);
-  console.log('errorCategories: ', errorCategories);
-  console.log('filteredClasses: ', filteredClasses);
-  console.log('professorsInFilteredClases: ', professorsInFilteredClases);
-  console.log('error: ', error);
-  console.log('selectedProfesor: ', selectedProfesor);
-  console.log('selectedCategory: ', selectedCategory);
 
+  // Fetch categories
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -34,7 +28,8 @@ const ClasesView = () => {
         const data = await getCategories();
         setCategories(data);
       } catch (error) {
-        setErrorCategories("Error al cargar las categorías.");
+        console.error(error)
+        setErrorCategories("Hubo un problema al cargar las categorías. Intenta más tarde.");
       } finally {
         setLoadingCategories(false);
       }
@@ -43,6 +38,7 @@ const ClasesView = () => {
     fetchCategories();
   }, []);
 
+  // Fetch classes data
   useEffect(() => {
     const fetchClassesData = async () => {
       setLoading(true);
@@ -65,16 +61,16 @@ const ClasesView = () => {
         if (data.length === 0) {
           setFilteredClasses([]);
           setProfessorsInFilteredClases([]);
-          setError("No se encontraron resultados para tu búsqueda.");
+          setError("No se encontraron clases con los parámetros dados.");
         } else {
           setFilteredClasses(data);
-
           const professors = data
             .map((clase) => clase.perfilProfesor)
-            .filter((profesor) => profesor !== null); // Asegura que no haya nulos
-          setProfessorsInFilteredClases(professors as IProfesor[]); // Asegura que sea de tipo IProfesor
+            .filter((profesor) => profesor !== null);
+          setProfessorsInFilteredClases(professors as IProfesor[]);
         }
       } catch (err) {
+        console.error(err)
         setError("Hubo un problema al cargar las clases. Intenta más tarde.");
       } finally {
         setLoading(false);
@@ -114,7 +110,7 @@ const ClasesView = () => {
                 value={selectedCategory || ""}
                 onChange={(e) => {
                   setSelectedCategory(e.target.value || null);
-                  setSelectedProfesor(null);  // Resetea el profesor cuando cambias de categoría
+                  setSelectedProfesor(null);
                 }}
                 className="border border-accent bg-secondary2 text-primary rounded px-2 py-1 focus:ring-accent focus:border-accent transition"
               >
@@ -130,34 +126,30 @@ const ClasesView = () => {
 
           {/* Dropdown para Profesores */}
           {selectedCategory && professorsInFilteredClases.length > 0 && (
-  <div className="flex flex-col">
-    <h3 className="text-accent font-bold mb-2">Profesores</h3>
-    <select
-      value={selectedProfesor || ""}
-      onChange={(e) => setSelectedProfesor(e.target.value || null)}
-      className="border border-accent bg-secondary2 text-primary rounded px-2 py-1 focus:ring-accent focus:border-accent transition"
-    >
-      <option value="">Selecciona un profesor</option>
-      {professorsInFilteredClases
-        .filter((profesor) => profesor?.id) // Asegura que profesor tenga un id válido
-        .reduce((unique, profesor) => {
-          // Agregar profesor solo si no existe en el array (eliminando duplicados por id)
-          if (!unique.some((p) => p.id === profesor.id)) {
-            unique.push(profesor);
-          }
-          return unique;
-        }, [] as IProfesor[]) // Inicia el array vacío de IProfesor
-        .map((profesor) => (
-          <option key={profesor.id} value={profesor.nombre}>
-            {profesor.nombre}
-          </option>
-        ))}
-    </select>
-  </div>
-)}
-
-
-
+            <div className="flex flex-col">
+              <h3 className="text-accent font-bold mb-2">Profesores</h3>
+              <select
+                value={selectedProfesor || ""}
+                onChange={(e) => setSelectedProfesor(e.target.value || null)}
+                className="border border-accent bg-secondary2 text-primary rounded px-2 py-1 focus:ring-accent focus:border-accent transition"
+              >
+                <option value="">Selecciona un profesor</option>
+                {professorsInFilteredClases
+                  .filter((profesor) => profesor?.id)
+                  .reduce((unique, profesor) => {
+                    if (!unique.some((p) => p.id === profesor.id)) {
+                      unique.push(profesor);
+                    }
+                    return unique;
+                  }, [] as IProfesor[])
+                  .map((profesor) => (
+                    <option key={profesor.id} value={profesor.nombre}>
+                      {profesor.nombre}
+                    </option>
+                  ))}
+              </select>
+            </div>
+          )}
 
           {/* Filtros seleccionados */}
           <div className="w-full md:w-1/3 text-primary p-4 rounded shadow-md">
@@ -200,6 +192,7 @@ const ClasesView = () => {
     </div>
   );
 };
+
 
 export default ClasesView;
 

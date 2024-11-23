@@ -10,5 +10,5 @@ export interface ISearchParams {
   
   export interface ISearchResult extends Omit<IClase, "inscripciones" | "perfilProfesor"> {
     // Opcional: Excluir propiedades que no siempre vengan en la búsqueda
-    perfilProfesor?: IProfesor | string; // Opcional si solo se requiere el nombre del profesor
+    perfilProfesor?: IProfesor; // Opcional si solo se requiere el nombre del profesor
   }

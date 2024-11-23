@@ -87,28 +87,32 @@ export const fetchClaseById = async (id: string) : Promise<IClase> => {
   
   export const searchClases = async (params: ISearchParams): Promise<ISearchResult[]> => {
     try {
-        const response = await fetch(`${apiUrl}/clases/search`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(params),
-        });
-
-        if (response.status === 404) {
-            console.warn("No se encontraron clases para los parámetros dados.");
-            return []; // Retornamos un array vacío para manejarlo en el frontend
-        }
-
-        if (!response.ok) {
-            console.error(`Error en la API: ${response.statusText}`);
-            return []; // Devuelve un array vacío para evitar propagar el error
-        }
-
-        const data: ISearchResult[] = await response.json();
-        return data;
-    } catch (error) {
-        console.error("Error al buscar clases:", error);
-        return []; // Manejamos cualquier error devolviendo un array vacío
+      const response = await fetch(`${apiUrl}/clases/search`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(params),
+      });
+  
+      if (response.status === 404) {
+        console.warn("No se encontraron clases para los parámetros dados.");
+        return []; // Retornamos un array vacío para manejarlo en el frontend
+      }
+  
+      if (!response.ok) {
+        console.error(`Error en la API: ${response.statusText}`);
+        return []; // Devuelve un array vacío para evitar propagar el error
+      }
+  
+      const data: ISearchResult[] = await response.json();
+      return data;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Error al buscar clases:", error.message);
+      } else {
+        console.error("Error desconocido al buscar clases");
+      }
+      return []; // Manejamos cualquier error devolviendo un array vacío
     }
-};
+  };
