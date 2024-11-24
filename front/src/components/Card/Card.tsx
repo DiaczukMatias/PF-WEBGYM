@@ -15,7 +15,7 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
 
   const { data: session } = useSession();
   const rolUsuario = session?.user?.rol;
-  const profesorId = session?.user?.name || "";
+  const profesorId = session?.user?.id || "";
 
   const formattedHorario = new Date(fecha).toLocaleString("es-ES", {
     weekday: "long",
@@ -26,8 +26,8 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
     minute: "2-digit",
   });
 
-  const isClaseDelProfesor = perfilProfesor?.nombre === profesorId;
-  //const mostrarBotonInscribirse = rolUsuario === "cliente" || (rolUsuario === "profesor" && !isClaseDelProfesor);
+  const isClaseDelProfesor = perfilProfesor?.usuarioId === profesorId;
+  const mostrarBotonInscribirse = rolUsuario === "cliente" || (rolUsuario === "profesor" && !isClaseDelProfesor);
   const mostrarBotonEditarClase = rolUsuario === "admin" || (rolUsuario === "profesor" && isClaseDelProfesor);
 
   const [isDeleteConfirmVisible, setIsDeleteConfirmVisible] = useState(false);
@@ -57,7 +57,7 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
       <div className="w-1/2">
         {imagen && (
           <Image
-          src={`/images/clases/${clase.nombre.toLowerCase()}.jpg`}  
+          src={`${clase.imagen}`}  
           alt={nombre}
             width={350}
             height={200}
@@ -77,9 +77,9 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
         <p className="text-sm text-secondary2 mt-2">Cupos disponibles: {disponibilidad}</p>
        
         <div className="mt-4 flex justify-center ">
-          {/*mostrarBotonInscribirse && (
+          {mostrarBotonInscribirse && (
             <button className="submitButton .submitButton:hover ">Inscribirse</button>
-          )*/}
+          )}
           {mostrarBotonEditarClase && (
             <button
               className="submitButton .submitButton:hover"

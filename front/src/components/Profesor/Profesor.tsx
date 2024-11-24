@@ -62,7 +62,7 @@ const Profesores: React.FC<ProfesorProps> = ({ profesores, itemsPerPage, limit }
                 className="flex-none w-full flex flex-col items-center border-b-2 border-accent"
                 style={{ width: `${100 / itemsPerPage}%`, marginLeft: "1rem", marginRight: "1rem"}} // Ancho dinámico basado en itemsPerPage
               >
-                <a href={`/clases/${profesor.nombre}`} className="text-center">
+                <a href={`/clases`} className="text-center">
                   {profesor.imagen ? (
                     <Image
                       src={profesor.imagen}

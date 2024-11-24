@@ -20,7 +20,7 @@ const CrearClaseForm: React.FC = () => {
     descripcion: "",
     fecha: "",
     categoriaId: "",
-    imagen: "",
+    imagen: "/images/clases/zumba.jpg",
     disponibilidad: 1,
     perfilProfesorId: profesorId, // Establecido desde la sesión
   });
@@ -83,7 +83,7 @@ const CrearClaseForm: React.FC = () => {
         descripcion: "",
         fecha: "",
         categoriaId: "",
-        imagen: "",
+        imagen: "/images/clases/zumba.jpg",
         disponibilidad: 1,
         perfilProfesorId: profesorId,
       });
@@ -177,7 +177,7 @@ const CrearClaseForm: React.FC = () => {
           )}
         </div>
 
-        <div className="mb-4">
+     {/*   <div className="mb-4">
           <label htmlFor="imagen" className="block text-sm font-medium">
             Imagen URL:
           </label>
@@ -185,14 +185,14 @@ const CrearClaseForm: React.FC = () => {
             type="text"
             id="imagen"
             name="imagen"
-            value={nuevaClase.imagen}
+            value= {nuevaClase.imagen}
             onChange={handleChange}
             placeholder="URL de la imagen"
             className="mt-1 p-2 w-full border border-gray-300 rounded-md bg-transparent"
           />
           {errores.imagen && <div className="text-red-500 text-sm mt-1">{errores.imagen}</div>}
         </div>
-
+*/}
         <div className="mb-4">
           <label htmlFor="disponibilidad" className="block text-sm font-medium">
             Cupos disponibles:

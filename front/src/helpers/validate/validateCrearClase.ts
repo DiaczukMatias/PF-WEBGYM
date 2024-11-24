@@ -37,7 +37,7 @@ export const validateCrearClase = (nuevaClase: ICrearClase) => {
   } 
 
     // Validar imagen URL
-const isValidURL = (url: string): boolean => {
+/*const isValidURL = (url: string): boolean => {
     try {
       new URL(url);
       return true;
@@ -50,7 +50,7 @@ const isValidURL = (url: string): boolean => {
     errores.imagen = "La URL de la imagen es obligatoria.";
   } else if (!isValidURL(nuevaClase.imagen)) {
     errores.imagen = "La URL de la imagen no es válida.";
-  }
+  }*/
 
   // Validar disponibilidad
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment

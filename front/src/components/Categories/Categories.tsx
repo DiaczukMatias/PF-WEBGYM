@@ -44,7 +44,7 @@ const Category: React.FC<CategoryProps> = ({ categories }) => {
                 <div 
                 key={categoria.id} 
                 className="flex-none w-1/3  flex flex-col items-center relative mr-1">
-                <a href={`/clases/${categoria.nombre}`} className="text-center">
+                <a href={`/clases`} className="text-center">
                   <Image
                     src={`/images/categories/${categoria.nombre.toLowerCase()}.png`}  
                     alt={categoria.nombre}

@@ -6,7 +6,7 @@ export interface IInscripcion {
     id: string;
     fechaInscripcion: Date;
     fechaVencimiento: Date;
-    clase?: IClase;
-    membresia?: IMembresia;
-    usuario?: IUsuario;
+    clase?: IClase[];
+    membresia?: IMembresia[];
+    usuario?: IUsuario[];
 }

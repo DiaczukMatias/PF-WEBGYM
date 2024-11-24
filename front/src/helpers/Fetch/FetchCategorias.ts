@@ -1,5 +1,7 @@
 import { ICategoria } from "@/interfaces/ICategory";
 import { IClase } from "@/interfaces/IClase";
+import { Token } from "../accestoke";
+
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -56,14 +58,13 @@ export const getCategoryById = async (id: string): Promise<ICategoria> => {
  */
 export const createCategory = async (
   categoryData: ICategoria,
-  token: string
 ): Promise<ICategoria> => {
   try {
     const response = await fetch(`${apiUrl}/categorias`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${Token}`,
       },
       body: JSON.stringify(categoryData),
     });
@@ -85,20 +86,18 @@ export const createCategory = async (
  * Actualiza una categoría existente por ID (ruta protegida)
  * @param {string} id - ID de la categoría
  * @param {ICategoria} categoryData - Nuevos datos de la categoría
- * @param {string} token - Token de autenticación
  * @returns {Promise<ICategoria>} Categoría actualizada
  */
 export const updateCategory = async (
   id: string,
   categoryData: ICategoria,
-  token: string
 ): Promise<ICategoria> => {
   try {
     const response = await fetch(`${apiUrl}/categorias/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${Token}`,
       },
       body: JSON.stringify(categoryData),
     });
@@ -119,15 +118,14 @@ export const updateCategory = async (
 /**
  * Elimina una categoría por ID (ruta protegida)
  * @param {string} id - ID de la categoría
- * @param {string} token - Token de autenticación
  * @returns {Promise<void>} Confirmación de eliminación
  */
-export const deleteCategory = async (id: string, token: string): Promise<void> => {
+export const deleteCategory = async (id: string): Promise<void> => {
   try {
     const response = await fetch(`${apiUrl}/categorias/${id}`, {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${Token}`,
       },
     });
     if (!response.ok) {
