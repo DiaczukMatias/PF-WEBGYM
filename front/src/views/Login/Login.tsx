@@ -49,7 +49,7 @@ const LoginView: React.FC = () => {
           text: "Credenciales incorrectas",
         });
       } else {
-        router.push("/profileUsers");
+        router.push("/profile");
       }
     } catch (error) {
       console.error("Error en el inicio de sesión:", error);
@@ -67,7 +67,7 @@ const LoginView: React.FC = () => {
           text: "Error en el inicio de sesión con Google",
         });
       } else {
-        router.push("/profileUsers");
+        router.push("/profile");
       }
     } catch (error) {
       console.error("Error en el inicio de sesión con Google:", error);
