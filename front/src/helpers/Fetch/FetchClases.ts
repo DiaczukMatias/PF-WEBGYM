@@ -1,23 +1,8 @@
 
 import { IClase, ICrearClase } from "@/interfaces/IClase";
 import { ISearchParams, ISearchResult } from "@/interfaces/ISearch";
-//import { getSession } from "next-auth/react";
-import { useSession } from "next-auth/react";
+import { Token } from "../accestoke";
 
-
-const  Token = ( )=> {
-const { data: session } = useSession();
-const token = session?.user?.accessToken;
-  return token
-}
-
-
-/*export const fetchAuthToken = async (): Promise<string | null> => {
-  const session = await getSession();
-  console.log("fetchAuthToke getSession", getSession)
-  return session?.user.accessToken || null; // Asegúrate de que `accessToken` esté en la sesión
-};
-*/
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 
@@ -34,8 +19,10 @@ export const createClase = async (nuevaClase: ICrearClase) => {
     body: JSON.stringify(nuevaClase),
   });
   if (!response.ok) {
+    console.log("token:", Token)
     throw new Error('Error al crear la clase');
   }
+  console.log("toke:", Token)
   return response.json();
 };
 

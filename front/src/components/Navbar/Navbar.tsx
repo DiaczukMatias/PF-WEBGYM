@@ -73,7 +73,7 @@ const Navbar = () => {
               >
                 CLASES
               </Link>
-              {(esCliente || !rolUsuario) && (
+              {(esCliente || !rolUsuario || esAdmin) && (
                 <Link
                   href="/planes"
                   className="text-secondary hover:text-[#b6ff04] transition-colors duration-300"
@@ -96,32 +96,8 @@ const Navbar = () => {
                         href="/profile"
                         className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
                       >
-                        PERFIL
+                      Mi Perfil
                       </Link>
-                    {(esCliente) && (
-                      <Link
-                        href="/profileUsers"
-                        className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
-                      >
-                        Mi perfil
-                      </Link>
-                    )}
-                    {esProfesor && (
-                      <Link
-                        href="/profile"
-                        className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
-                      >
-                        Mi Perfil profesor
-                      </Link>
-                    )}
-                      {esAdmin && (
-                      <Link
-                        href="/profileAdmin"
-                        className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
-                      >
-                        Mi Perfil Admin
-                      </Link>
-                    )}
                      {(esCliente || esProfesor) && (
                     <Link
                       href="/agenda"

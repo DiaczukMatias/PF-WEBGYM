@@ -4,7 +4,6 @@ import ClassCard from "@/components/Card/Card";
 import { fetchClaseById } from "@/helpers/Fetch/FetchClases";
 import { FetchError } from "@/interfaces/IErrors";
 
-//import { fetchClaseById } from "@/helpers/Fetch/FetchClases";
 
 
 const DetailsClass = async ({ params }: { params: Promise<{ id: string }> })  => {
