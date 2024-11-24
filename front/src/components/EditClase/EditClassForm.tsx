@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import { fetchClaseById, updateClase } from '../../helpers/Fetch/FetchClases';
 import { useSession } from 'next-auth/react';
-//import { clasesData } from '@/helpers/datatemporalClases';
 
 const EditClassForm: React.FC = () => {
   

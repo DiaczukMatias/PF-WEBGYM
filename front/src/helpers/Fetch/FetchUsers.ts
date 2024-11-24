@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import { IUsuario } from "@/interfaces/IUser";
 import { ILoginProps } from "@/interfaces/ILogin";
 import { FetchError } from "@/interfaces/IErrors";
+import { Token } from "../accestoke";
 
 //funcion para manejerar tipo de error
 function isFetchError(error: unknown): error is FetchError {
@@ -18,12 +19,10 @@ function isFetchError(error: unknown): error is FetchError {
 // Configuración base
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-// Función para obtener el token de autenticación
-const getToken = () => localStorage.getItem('token');
 
 // Función para configurar los headers de autorización
 const authHeader = () => ({
-  Authorization: `Bearer ${getToken()}`,
+  Authorization: `Bearer ${Token}`,
   'Content-Type': 'application/json',
 });
 

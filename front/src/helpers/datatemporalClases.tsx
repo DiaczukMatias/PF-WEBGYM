@@ -19,6 +19,11 @@ export const profesoresData: IProfesor[] = [
     certificacion: 'Certificación Internacional en CrossFit Nivel 2',
     imagen: '/images/profesor/markthompson.png',
     clases: [], // Referencias por posición
+    perfilProfesor: {
+      id: "11",
+      nombre: 'Mark Thompson',
+      usuarioId: "1"
+    },
   },
   {
     id: '2',
@@ -27,6 +32,11 @@ export const profesoresData: IProfesor[] = [
     certificacion: 'Certificación en Entrenamiento funcional y en yoga-pilates',
     imagen: '/images/profesor/jessicaroberts.png',
     clases: [],
+    perfilProfesor: {
+      id: "12",
+      nombre: 'Jessica Roberts',
+      usuarioId: "2"
+    },
   },
   {
     id: '3',
@@ -35,6 +45,11 @@ export const profesoresData: IProfesor[] = [
     certificacion: 'Entrenador Personal Certificado',
     imagen: '/images/profesor/michaeljohnson.png',
     clases: [],
+    perfilProfesor: {
+      id: "13",
+      nombre: 'Michael Johnson',
+      usuarioId: "3"
+    },
   },
   {
     id: '4',
@@ -43,6 +58,11 @@ export const profesoresData: IProfesor[] = [
     certificacion: 'Entrenador Personal Certificado',
     imagen: '/images/profesor/pedrolopez.jpg',
     clases: [],
+    perfilProfesor: {
+      id: "14",
+      nombre: 'Pedro Lopez',
+      usuarioId: " 4"
+    },
   },
   {
     id: '5',
@@ -51,6 +71,11 @@ export const profesoresData: IProfesor[] = [
     certificacion: 'Certificación en Aeróbica y Zumba',
     imagen: '/images/profesor/sofia.png',
     clases: [],
+    perfilProfesor: {
+      id: "15",
+      nombre: 'Sofia',
+      usuarioId: "5"
+    },
   },
   {
     id: '6',
@@ -59,6 +84,11 @@ export const profesoresData: IProfesor[] = [
     certificacion: 'Certificación en Entrenamiento Acuático',
     imagen: '/images/profesor/gonzalo.png',
     clases: [],
+    perfilProfesor: {
+      id: "16",
+      nombre: 'Michael Johnson',
+      usuarioId: "6"
+    },
   },
 ];
 
@@ -72,7 +102,7 @@ export const clasesData: IClase[] = [
     categoriaId: "1",
     categoria: categoriesData[0],
     imagen: '/images/clases/crossfit.jpg',
-    perfilProfesor: profesoresData[0],
+    perfilProfesor: profesoresData[0].perfilProfesor,
   },
   {
     id: '2',
@@ -82,7 +112,7 @@ export const clasesData: IClase[] = [
     categoriaId: "2",
     categoria: categoriesData[1],
     imagen: '/images/clases/funcional.jpg',
-    perfilProfesor:  profesoresData[2],
+    perfilProfesor:  profesoresData[2].perfilProfesor,
   },
   {
     id: '3',
@@ -92,7 +122,7 @@ export const clasesData: IClase[] = [
     categoriaId: "3",
     categoria: categoriesData[1],
     imagen: '/images/clases/natacion.jpg',
-    perfilProfesor: profesoresData[5],
+    perfilProfesor: profesoresData[5].perfilProfesor,
   },
   {
     id: '4',
@@ -102,7 +132,7 @@ export const clasesData: IClase[] = [
     categoriaId: "1",
     categoria: categoriesData[0],
     imagen: '/images/clases/yoga.jpg',
-    perfilProfesor: profesoresData[4],
+    perfilProfesor: profesoresData[4].perfilProfesor,
   },
   {
     id: '5',
@@ -112,7 +142,7 @@ export const clasesData: IClase[] = [
     categoriaId: "2",
     categoria: categoriesData[1],
     imagen: '/images/clases/pilates.png',
-    perfilProfesor: profesoresData[1],
+    perfilProfesor: profesoresData[1].perfilProfesor,
   },
   {
     id: '6',
@@ -122,7 +152,7 @@ export const clasesData: IClase[] = [
     categoriaId: "4",
     categoria: categoriesData[3],
     imagen: '/images/clases/zumba.jpg',
-    perfilProfesor:  profesoresData[3],
+    perfilProfesor:  profesoresData[3].perfilProfesor,
   },
 ];
 

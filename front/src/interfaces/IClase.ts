@@ -1,5 +1,5 @@
 import { ICategoria } from "./ICategory";
-import { IProfesor } from "./IProfesor";
+import { IPerfilProfesor, IProfesor} from "./IProfesor";
 import { IInscripcion } from "./IInscripcion";
 
 export interface IClase {
@@ -12,7 +12,7 @@ export interface IClase {
   categoriaId: ICategoria["id"]; //nuevo
   categoria?: ICategoria;         // Categoría a la que pertenece la clase (opcional)
   inscripciones?: IInscripcion[]; //nuevo
-  perfilProfesor?: IProfesor ;  //cada clase tiene 1 profesor pero cada rpofesor puede tener multiples clases
+  perfilProfesor?: IPerfilProfesor | IProfesor;  //IProfesor puede ser // cada clase tiene 1 profesor pero cada rpofesor puede tener multiples clases
 }
 
 export interface ICrearClase {
@@ -21,6 +21,6 @@ export interface ICrearClase {
   fecha: string;      //se modifico      example: 2024-10-10T14:00:00Z       // Fecha y hora de la clase
   disponibilidad: number;         // Disponibilidad de espacios (opcional)
   imagen: string;                 // URL o ruta de la imagen de la clase (opcional)
-  categoriaId: string;         // Categoría a la que pertenece la clase (opcional)
-  perfilProfesorId: string | undefined;
+  categoriaId: ICategoria["id"];         // Categoría a la que pertenece la clase (opcional)
+  perfilProfesorId: IPerfilProfesor["id"];
 }

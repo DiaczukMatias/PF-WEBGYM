@@ -42,6 +42,10 @@
   margin-left: 60px;
 }
 
+.plan h3{
+  border-right: 1px solid #9e9e9ed2 ;
+}
+
 .container {
   display: flex;
   padding: 80px;
@@ -267,5 +271,6 @@
 .changeplan {
   margin-top: 20px;
   font-size: 13px;
+  margin-left: 110px;
 }
 

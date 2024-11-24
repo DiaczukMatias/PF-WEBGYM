@@ -3,6 +3,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { JWT } from "next-auth/jwt";
 import { AdapterUser } from 'next-auth/adapters';
+
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 export const authOptions: AuthOptions = {
   providers: [
@@ -37,6 +38,7 @@ export const authOptions: AuthOptions = {
             accessToken: user.token,
             membresia: user.usuario.membresia,
             inscripciones: user.usuario.inscripciones,
+            picture: user.usuario.imagen
           };
         }
         return null;
@@ -55,6 +57,10 @@ export const authOptions: AuthOptions = {
         token.rol = user.rol || token.rol;
         token.telefono = user.telefono || null;
         token.picture = user.image || null;
+        token.accessToken = user.accessToken;
+        token.membresia =  user.membresia;
+        token.inscripciones = user.inscripciones;
+        
     
         // Lógica adicional si el usuario inició sesión con Google
         if (account?.provider === "google") {
@@ -86,6 +92,7 @@ export const authOptions: AuthOptions = {
               token.id = googleUser.usuario.id;
               token.rol = googleUser.usuario.rol;
               token.accessToken = googleUser.accessToken; // Si se retorna un token desde el backend
+
             } else {
               console.error("Error del backend al sincronizar:", googleUser.message);
             }
@@ -109,6 +116,9 @@ export const authOptions: AuthOptions = {
         rol: token.rol!,
         accessToken: token.accessToken!,
         image: token.picture!,
+        membresia: token.membresia,
+        inscripciones: token.inscripciones,
+
       };
       return session;
     },

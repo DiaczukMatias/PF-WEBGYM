@@ -73,7 +73,7 @@ const Navbar = () => {
               >
                 CLASES
               </Link>
-              {(esCliente || !rolUsuario) && (
+              {(esCliente || !rolUsuario || esAdmin) && (
                 <Link
                   href="/planes"
                   className="text-secondary hover:text-[#b6ff04] transition-colors duration-300"
@@ -92,39 +92,22 @@ const Navbar = () => {
                   <div
                     className="absolute right-0 bg-white bg-opacity-90 text-black shadow-lg mt-2 rounded-md transition-transform duration-500 ease-out transform origin-top"
                   >
-                    {(esCliente || !rolUsuario) && (
-                      <Link
-                        href="/profileUsers"
-                        className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
-                      >
-                        Mi perfil
-                      </Link>
-                    )}
-                    {esProfesor && (
-                      <Link
+                    <Link
                         href="/profile"
                         className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
                       >
-                        Mi Perfil profesor
+                      Mi Perfil
                       </Link>
-                    )}
-                      {esAdmin && (
-                      <Link
-                        href="/profileAdmin"
-                        className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
-                      >
-                        Mi Perfil Admin
-                      </Link>
-                    )}
+                     {(esCliente || esProfesor) && (
                     <Link
                       href="/agenda"
                       className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
                     >
                       Mi Agenda
-                    </Link>
+                    </Link>)}
                     {esCliente && (
                       <Link
-                        href="/subscription"
+                        href="/miMembresia"
                         className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
                       >
                         Mi Membresia
