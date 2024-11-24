@@ -10,7 +10,7 @@ const Profile :React.FC = () => {
   const { data: session } = useSession();
 
   const rolUsuario = session?.user?.rol;
-  const esCliente = rolUsuario === "cliente" || undefined ;
+  const esCliente = rolUsuario === "cliente" ;
   const esAdmin = rolUsuario === "admin";
   const esProfesor = rolUsuario === "profesor";
 
