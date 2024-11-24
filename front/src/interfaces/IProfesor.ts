@@ -10,3 +10,12 @@ export interface IProfesor {
     clases?: IClase[];              // Lista de clases asociadas al profesor
     usuario?: IUsuario;
 }
+
+export interface IPerfilProfesor {
+    id: string;
+    nombre: string;
+   descripcion: string;
+   certificacion: string;
+   imagen: string;
+   usuarioId: string;
+}

@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { IClase } from "@/interfaces/IClase";
 import { IMembresia } from "@/interfaces/IMembresia";
 import { clasesData } from "@/helpers/datatemporalClases";
+import { IInscripcion } from "@/interfaces/IInscripcion";
 
 const ProfileUser: React.FC = () => {
   const { data: session } = useSession();
@@ -16,12 +17,14 @@ console.log('objeto en session: ', session);
   const userTel = session?.user?.telefono || "Telefono";
   const userIMG = session?.user?.image || "/FOTOPERFIL.png"; // Imagen predeterminada
 
+
+  
   const [activeTab, setActiveTab] = useState<"MIS_CLASES" | "PLAN_ACTUAL">("MIS_CLASES");
   const [userClasses, setUserClasses] = useState<IClase[] | null>(null);
   const [membership, setMembership] = useState<IMembresia | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const database = false; // Cambia esto entre true/false según la necesidad
+  const database = true; // Cambia esto entre true/false según la necesidad
 
   // Función para obtener las clases del usuario y la membresía
   const fetchUserData = () => {
@@ -34,11 +37,10 @@ console.log('objeto en session: ', session);
         // Asignamos la membresía si existe
         setMembership(usuario.membresia || null);
 
-        // Filtramos las clases a las que el usuario está inscrito
-        const clasesInscritas = usuario.inscripciones
-          ?.map((inscripcion) => inscripcion.clase)
-          .filter((clase): clase is IClase => clase !== undefined); // Filtra explícitamente los valores undefined        
-
+        //  clases a las que el usuario está inscrito
+        const clasesInscritas: IClase[] | null = 
+            usuario?.inscripciones?.flatMap((inscripcion: IInscripcion) => inscripcion.clase) || null;
+       
         setUserClasses(clasesInscritas && clasesInscritas.length > 0 ? clasesInscritas : null);
       }
     } else {
@@ -66,31 +68,23 @@ console.log('objeto en session: ', session);
     fetchUserData(); // Llamamos a la función para cargar los datos cuando se monta el componente
   }, [session]);
 
-   // Funciones para controlar el desplazamiento del carrusel
-   /*const scrollUp = () => {
-    const carousel = document.getElementById("carousel");
-    if (carousel) {
-      carousel.scrollBy(0, -150); // Cambia el valor para ajustar el desplazamiento
-    }
-  };
-
-  const scrollDown = () => {
-    const carousel = document.getElementById("carousel");
-    if (carousel) {
-      carousel.scrollBy(0, 150); // Cambia el valor para ajustar el desplazamiento
-    }
-  };*/
+  
   const renderClasses = () => {
     if (!userClasses || userClasses.length === 0) {
       return (
         <div>
-          <p>No estás inscrito en ninguna clase. Ve a ver nuestras clases disponibles:</p>
-          <button
+          <div className=" m-4 p-4">
+            <p className="flex0 justify-center  text-center mt-4">No estás inscrito en ninguna clase.</p>
+          <p className="flex text-center  justify-center m-2">  Ve a ver nuestras clases disponibles:</p></div>
+          
+          <div className="flex justify-center items-center m-4">
+            <button
             className="flex justify-center items-center m-2 p-2 text-accent border rounded-md border-accent"
             onClick={() => (window.location.href = `/clases`)}
           >
             Explorar clases
           </button>
+            </div>
         </div>
       );
     }
@@ -155,7 +149,7 @@ console.log('objeto en session: ', session);
 
         {activeTab === "MIS_CLASES" ? renderClasses() : (
           <div className={styles.plan}>
-            <button  onClick={() => (window.location.href = `/Mi membrasia`)} className={styles.membershipCard}>
+            <button  onClick={() => (window.location.href = `/miMembrasia`)} className={styles.membershipCard}>
             <h3>{membership?.nombre || "No tienes plan activo"}</h3>
             <p>{membership ? `$${membership.precio} USD` : "Hazte socio para poder disfrutar de nuestras clases y todos los beneficios"}</p>
             <p >

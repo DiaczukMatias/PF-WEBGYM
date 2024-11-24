@@ -1,5 +1,5 @@
 import { ICategoria } from "./ICategory";
-import { IProfesor } from "./IProfesor";
+import { IPerfilProfesor, IProfesor } from "./IProfesor";
 import { IInscripcion } from "./IInscripcion";
 
 export interface IClase {
@@ -12,7 +12,7 @@ export interface IClase {
   categoriaId: ICategoria["id"]; //nuevo
   categoria?: ICategoria;         // Categoría a la que pertenece la clase (opcional)
   inscripciones?: IInscripcion[]; //nuevo
-  perfilProfesor?: IProfesor;  //cada clase tiene 1 profesor pero cada rpofesor puede tener multiples clases
+  perfilProfesor?: IPerfilProfesor;  //cada clase tiene 1 profesor pero cada rpofesor puede tener multiples clases
 }
 
 export interface ICrearClase {

@@ -13,7 +13,7 @@ import styles from './Home.module.css';
 
 const HomeView = () => {
   // Cambia el valor de `useBackend` a `true` para usar el backend o a `false` para usar los datos temporales
-  const [useBackend] = useState(false);
+  const [useBackend] = useState(true);
 
   const [clases, setClases] = useState(clasesData); 
   const [categorias, setCategorias] = useState(categoriesData); 

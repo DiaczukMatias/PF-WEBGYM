@@ -92,7 +92,13 @@ const Navbar = () => {
                   <div
                     className="absolute right-0 bg-white bg-opacity-90 text-black shadow-lg mt-2 rounded-md transition-transform duration-500 ease-out transform origin-top"
                   >
-                    {(esCliente || !rolUsuario) && (
+                    <Link
+                        href="/profile"
+                        className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
+                      >
+                        PERFIL
+                      </Link>
+                    {(esCliente) && (
                       <Link
                         href="/profileUsers"
                         className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
@@ -116,15 +122,16 @@ const Navbar = () => {
                         Mi Perfil Admin
                       </Link>
                     )}
+                     {(esCliente || esProfesor) && (
                     <Link
                       href="/agenda"
                       className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
                     >
                       Mi Agenda
-                    </Link>
+                    </Link>)}
                     {esCliente && (
                       <Link
-                        href="/subscription"
+                        href="/miMembresia"
                         className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
                       >
                         Mi Membresia

@@ -1,26 +1,35 @@
+
 import { IClase, ICrearClase } from "@/interfaces/IClase";
 import { ISearchParams, ISearchResult } from "@/interfaces/ISearch";
-import { getSession } from "next-auth/react";
+//import { getSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 
-export const fetchAuthToken = async (): Promise<string | null> => {
+const  Token = ( )=> {
+const { data: session } = useSession();
+const token = session?.user?.accessToken;
+  return token
+}
+
+
+/*export const fetchAuthToken = async (): Promise<string | null> => {
   const session = await getSession();
+  console.log("fetchAuthToke getSession", getSession)
   return session?.user.accessToken || null; // Asegúrate de que `accessToken` esté en la sesión
 };
-
+*/
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 
 // Fetch para crear una nueva clase
 export const createClase = async (nuevaClase: ICrearClase) => {
-  const token = await fetchAuthToken();
-  if (!token) throw new Error('Usuario no autenticado');
+  if (!Token) throw new Error('Usuario no autenticado');
 
   const response = await fetch(`${apiUrl}/clases`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
+      'Authorization': `Bearer ${Token}`,
     },
     body: JSON.stringify(nuevaClase),
   });
@@ -32,14 +41,13 @@ export const createClase = async (nuevaClase: ICrearClase) => {
 
 // Fetch para actualizar una clase existente
 export const updateClase = async (id: string, updatedClase: IClase) => {
-  const token = await fetchAuthToken();
-  if (!token) throw new Error('Usuario no autenticado');
+  if (!Token) throw new Error('Usuario no autenticado');
 
   const response = await fetch(`${apiUrl}/clases/${id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
+      'Authorization': `Bearer ${Token}`,
     },
     body: JSON.stringify(updatedClase),
   });
@@ -51,13 +59,12 @@ export const updateClase = async (id: string, updatedClase: IClase) => {
 
 // Fetch para eliminar una clase
 export const deleteClase = async (id: string) => {
-  const token = await fetchAuthToken();
-  if (!token) throw new Error('Usuario no autenticado');
+  if (!Token) throw new Error('Usuario no autenticado');
 
   const response = await fetch(`${apiUrl}/clases/${id}`, {
     method: 'DELETE',
     headers: {
-      'Authorization': `Bearer ${token}`,
+      'Authorization': `Bearer ${Token}`,
     },
   });
   if (!response.ok) {

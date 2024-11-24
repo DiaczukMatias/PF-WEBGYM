@@ -3,7 +3,7 @@ import React from "react";
 import styles from "./ProfileView.module.css";
 import { useSession } from "next-auth/react";
 
-const ProfileView: React.FC = () => {
+const ProfileProfesor: React.FC = () => {
   const { data: session} = useSession();
   const userName = session?.user.name || "Usuario";
   const userMail = session?.user.email ||"Email";
@@ -93,12 +93,12 @@ const ProfileView: React.FC = () => {
               <h4>Anna Smith</h4>
               <p>📞 (303) 555-0121 📧 annasmith@gmail.com</p>
             </div>
-      {   /*  <button
+            <button
               className="submitButton .submitButton:hover"
               onClick={() => window.location.href = `/crearClase`}
             >
               Crear Clase
-            </button>*/}
+            </button>
           </div>
         </div>
       </div>
@@ -106,4 +106,4 @@ const ProfileView: React.FC = () => {
   );
 };
 
-export default ProfileView;
+export default ProfileProfesor;
