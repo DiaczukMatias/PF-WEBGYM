@@ -1,6 +1,5 @@
 "use client"
 import { useState } from "react";
-import { useSession } from "next-auth/react";
 import { createCategoria } from "@/helpers/Fetch/FetchCategorias";
 import { validateNombre } from "@/helpers/validate/validateCrearCategoria";
 import Swal from "sweetalert2";
