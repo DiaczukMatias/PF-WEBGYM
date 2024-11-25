@@ -1,4 +1,5 @@
 import { IClase } from "./IClase";
+import { IProfesor } from "./IProfesor";
 
 export interface ISearchParams {
     claseNombre?: string;
@@ -9,5 +10,5 @@ export interface ISearchParams {
   
   export interface ISearchResult extends Omit<IClase, "inscripciones" | "perfilProfesor"> {
     // Opcional: Excluir propiedades que no siempre vengan en la búsqueda
-    perfilProfesorNombre?: string; // Opcional si solo se requiere el nombre del profesor
+    perfilProfesor?: IProfesor; // Opcional si solo se requiere el nombre del profesor
   }
