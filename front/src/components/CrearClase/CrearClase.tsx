@@ -5,39 +5,44 @@ import { createClase } from "@/helpers/Fetch/FetchClases";
 import { ICrearClase } from "@/interfaces/IClase";
 import { ICategoria } from "@/interfaces/ICategory";
 import { getCategories } from "@/helpers/Fetch/FetchCategorias";
-import { useSession } from "next-auth/react";
+import { fetchPerfilProfesores } from "@/helpers/Fetch/FetchProfesores";
+import { IPerfilProfesor } from "@/interfaces/IProfesor";
 
 
 const CrearClaseForm: React.FC = () => {
   const [categories, setCategories] = useState<ICategoria[]>([]);
-  const { data: session } = useSession();
-  const profesorId = session?.user?.id || "";
+  const [profesores, setProfesores] = useState<IPerfilProfesor[]>([]); // Para almacenar los profesores
 
-  console.log("Sesión actual:", session); // Para verificar si la sesión se carga correctamente
 
   const [nuevaClase, setNuevaClase] = useState<ICrearClase>({
     nombre: "",
     descripcion: "",
     fecha: "",
     categoriaId: "",
-    imagen: "/images/clases/zumba.jpg",
+    imagen: "",
     disponibilidad: 1,
-    perfilProfesorId: profesorId, // Establecido desde la sesión
+    perfilProfesorId: "", 
   });
 
   const [errores, setErrores] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchCategoriesYProfesores = async () => {
       try {
-        const data = await getCategories();
-        console.log("Categorías obtenidas:", data); // Para verificar si las categorías se cargan correctamente
-        setCategories(data);
+        const categoriasData = await getCategories();
+        console.log("Categorías obtenidas:", categoriasData); // Para verificar si las categorías se cargan correctamente
+        const profesoresData = await fetchPerfilProfesores(); // Llamar a la función para obtener los profesores
+        setCategories(categoriasData);
+        setProfesores(profesoresData);
+        console.log("profesoresdata:",profesoresData)
+        console.log("categoriesdata:", categoriasData)
+
       } catch (error) {
-        console.error("Error al obtener las categorías:", error);
+        console.error("Error al obtener las categorías o perfil profesores:", error);
       }
     };
-    fetchCategories();
+    
+    fetchCategoriesYProfesores();
   }, []);
 
   const handleChange = (
@@ -85,11 +90,14 @@ const CrearClaseForm: React.FC = () => {
         categoriaId: "",
         imagen: "/images/clases/zumba.jpg",
         disponibilidad: 1,
-        perfilProfesorId: profesorId,
+        perfilProfesorId: "",
       });
       setErrores({});
     } catch (error) {
       console.error("Error al crear la clase:", error);
+      console.log("Datos a enviar:", nuevaClase);
+console.log("Errores de validación:", errores);
+
       alert("Error al crear la clase");
     }
   };
@@ -177,7 +185,7 @@ const CrearClaseForm: React.FC = () => {
           )}
         </div>
 
-     {/*   <div className="mb-4">
+      <div className="mb-4">
           <label htmlFor="imagen" className="block text-sm font-medium">
             Imagen URL:
           </label>
@@ -192,7 +200,37 @@ const CrearClaseForm: React.FC = () => {
           />
           {errores.imagen && <div className="text-red-500 text-sm mt-1">{errores.imagen}</div>}
         </div>
-*/}
+
+
+<div className="mb-4">
+          <label htmlFor="perfilProfesorId" className="block text-sm font-medium">
+            Seleccionar Profesor:
+          </label>
+          <select
+            id="perfilProfesorId"
+            name="perfilProfesorId"
+            value={nuevaClase.perfilProfesorId}
+            onChange={handleChange}
+            className="mt-1 p-2 w-full border border-white rounded-md bg-transparent text-white hover:border-green-500 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-opacity-50"
+          >
+            <option value="" className="bg-gray-700 text-white">
+              Selecciona un profesor
+            </option>
+            {profesores.map((profesores) => (
+              <option
+                key={profesores.id}
+                value={profesores.id}
+                className="bg-transparent text-white hover:text-green-500"
+              >
+                {profesores.nombre}
+              </option>
+            ))}
+          </select>
+          {errores.perfilProfesorId && (
+            <div className="text-red-500 text-sm mt-1">{errores.perfilProfesorId}</div>
+          )}
+        </div>
+
         <div className="mb-4">
           <label htmlFor="disponibilidad" className="block text-sm font-medium">
             Cupos disponibles:
@@ -220,7 +258,8 @@ const CrearClaseForm: React.FC = () => {
               !nuevaClase.descripcion ||
               !nuevaClase.fecha ||
               !nuevaClase.categoriaId ||
-              !nuevaClase.imagen
+              !nuevaClase.imagen||
+              !nuevaClase.perfilProfesorId
             }
           >
             Crear Clase

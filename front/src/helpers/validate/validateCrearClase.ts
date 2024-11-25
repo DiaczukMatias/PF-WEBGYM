@@ -1,5 +1,32 @@
 import { ICrearClase } from "@/interfaces/IClase"; // Importar la interfaz para validar
 
+export const validateCrearClase = (clase: ICrearClase) => {
+  const errores: { [key: string]: string } = {};
+
+  if (!clase.nombre || clase.nombre.length < 3) {
+    errores.nombre = "El nombre debe tener al menos 3 caracteres.";
+  }
+
+  if (!clase.descripcion) {
+    errores.descripcion = "La descripción es obligatoria.";
+  }
+
+  if (!clase.fecha) {
+    errores.fecha = "La fecha es obligatoria.";
+  }
+
+  if (!clase.categoriaId) {
+    errores.categoriaId = "Selecciona una categoría.";
+  }
+
+  if (!clase.perfilProfesorId) {
+    errores.perfilProfesorId = "Selecciona un profesor.";
+  }
+
+  return errores;
+};
+
+/*
 // Validar la información del formulario
 export const validateCrearClase = (nuevaClase: ICrearClase) => {
   const errores: { [key: string]: string } = {};
@@ -37,7 +64,7 @@ export const validateCrearClase = (nuevaClase: ICrearClase) => {
   } 
 
     // Validar imagen URL
-/*const isValidURL = (url: string): boolean => {
+const isValidURL = (url: string): boolean => {
     try {
       new URL(url);
       return true;
@@ -50,7 +77,7 @@ export const validateCrearClase = (nuevaClase: ICrearClase) => {
     errores.imagen = "La URL de la imagen es obligatoria.";
   } else if (!isValidURL(nuevaClase.imagen)) {
     errores.imagen = "La URL de la imagen no es válida.";
-  }*/
+  }
 
   // Validar disponibilidad
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -61,3 +88,4 @@ export const validateCrearClase = (nuevaClase: ICrearClase) => {
 
   return errores;
 };
+*/

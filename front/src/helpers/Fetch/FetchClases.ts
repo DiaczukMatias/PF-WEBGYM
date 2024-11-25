@@ -12,15 +12,12 @@ export const createClase = async (nuevaClase: ICrearClase) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${Token}`,
     },
-    body: JSON.stringify(nuevaClase),
+    body: JSON.stringify({nuevaClase}),
   });
   if (!response.ok) {
-    console.log("token:", Token);
     throw new Error("Error al crear la clase");
   }
-  console.log("toke:", Token);
   return response.json();
 };
 

@@ -56,16 +56,15 @@ export const getCategoryById = async (id: string): Promise<ICategoria> => {
 *  @returns {Promise<ICategoria>} Categoría creada
  */
 export const createCategoria = async (
-  nombre: string,
+  nombre: string, 
 ): Promise<ICategoria> => {
   try {
     const response = await fetch(`${apiUrl}/categorias`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${Token}`,
       },
-      body: JSON.stringify(nombre),
+      body: JSON.stringify({nombre}),
     });
     if (!response.ok) {
       throw new Error("Error al crear la categoría.");
@@ -75,7 +74,6 @@ export const createCategoria = async (
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.log(error.message);
-      console.log("token enviado crear categoria", Token)
       throw error;
     }
     return {} as ICategoria; // Retorna un objeto vacío en caso de error

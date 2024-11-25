@@ -6,11 +6,9 @@ import Swal from "sweetalert2";
 import { FetchError } from "@/interfaces/IErrors";
 
 const CrearCategoria = () => {
- // const { data: session } = useSession();
   const [nombre, setNombre] = useState("");
   const [error, setError] = useState("");
 
-  //const token = session?.user?.accessToken
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
