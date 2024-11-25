@@ -43,7 +43,10 @@ const CrearClaseForm: React.FC = () => {
     };
     
     fetchCategoriesYProfesores();
-  }, []);
+  }, []);    
+
+
+
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>

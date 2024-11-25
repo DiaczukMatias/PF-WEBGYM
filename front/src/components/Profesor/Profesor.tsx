@@ -38,6 +38,17 @@ const Profesores: React.FC<ProfesorProps> = ({ profesores, itemsPerPage, limit }
     return 0;
   };
 
+  const normalizeName = (name: string) =>
+    name
+      .toLowerCase()
+      .replace(/á/g, 'a')
+      .replace(/é/g, 'e')
+      .replace(/í/g, 'i')
+      .replace(/ó/g, 'o')
+      .replace(/ú/g, 'u')
+      .replace(/ñ/g, 'n')
+      .replace(/\s+/g, ''); // Elimina todos los espacios
+
   return (
     <div className="relative m-4 p-4">
       <div className="flex items-center justify-center">
@@ -65,7 +76,7 @@ const Profesores: React.FC<ProfesorProps> = ({ profesores, itemsPerPage, limit }
                 <a href={`/clases`} className="text-center">
                   {profesor.imagen ? (
                     <Image
-                      src={profesor.imagen}
+                      src={ `/images/profesor/${normalizeName(profesor.nombre)}.png`}
                       alt={profesor.nombre}
                       width={300}
                       height={400}
