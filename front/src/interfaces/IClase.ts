@@ -1,5 +1,5 @@
 import { ICategoria } from "./ICategory";
-import { IPerfilProfesor } from "./IProfesor";
+import { IPerfilProfesor, IProfesor} from "./IProfesor";
 import { IInscripcion } from "./IInscripcion";
 
 export interface IClase {
@@ -12,8 +12,8 @@ export interface IClase {
   categoriaId: ICategoria["id"]; //nuevo
   categoria?: ICategoria; // Categoría a la que pertenece la clase (opcional)
   inscripciones?: IInscripcion[]; //nuevo
-  perfilProfesor?: IPerfilProfesor;
-  estado?: "activa" | "suspendida"; //cada clase tiene 1 profesor pero cada rpofesor puede tener multiples clases
+  perfilProfesor?: IPerfilProfesor | IProfesor;  //IProfesor puede ser // cada clase tiene 1 profesor pero cada rpofesor puede tener multiples clases
+  estado?: "activa" | "suspendida";   //  ver de q al hacer los get de clases filtrarlas y mostrar solo las activas
 }
 
 export interface ICrearClase {

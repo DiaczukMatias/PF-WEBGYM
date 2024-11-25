@@ -24,6 +24,7 @@ export const getCategories = async (): Promise<ICategoria[]> => {
       console.error(error.message);
       throw error;
     }
+    console.error("Error desconocido al obtener categorías");
     return []; // Retorna un array vacío en caso de error
   }
 };

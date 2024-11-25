@@ -10,6 +10,8 @@ import { IProfesor } from "@/interfaces/IProfesor";
 
 const ProfileProfesor: React.FC = () => {
   const { data: session} = useSession();
+  console.log('session en profileProfesor', session);
+  
   const userName = session?.user.name || "Usuario";
   const userMail = session?.user.email ||"Email";
   const userTel = session?.user.telefono || "telefono";

@@ -25,7 +25,9 @@ export const authOptions: AuthOptions = {
           body: JSON.stringify({ email, contrasena }),
         });
         const user = await res.json();
-
+        console.log('res en authorize', res);
+        console.log('user en authorize', user);
+        
         if (res.ok && user) {
          
           // Aquí estamos regresando el usuario y token
@@ -46,64 +48,71 @@ export const authOptions: AuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user, account }: { token: JWT; user?: User| AdapterUser; account?: Account | null }) {
-      console.log('Datos proporcionados por Google:', user);
-    
+    async jwt({ token, user, account }: { token: JWT; user?: User | AdapterUser; account?: Account | null }) {
+      // Si hay un usuario, actualiza el token con los datos correspondientes
       if (user) {
-        // Actualizamos los datos básicos en el token
-        token.id = user.id || token.id;
-        token.name = user.name || token.name;
-        token.email = user.email || token.email;
-        token.rol = user.rol || token.rol;
+        token.id = user.id;
+        token.name = user.name;
+        token.email = user.email;
+        token.rol = user.rol;
         token.telefono = user.telefono || null;
         token.picture = user.image || null;
         token.accessToken = user.accessToken;
-        token.membresia =  user.membresia;
-        token.inscripciones = user.inscripciones;
-        
+        token.membresia = user.membresia || null;
+        token.inscripciones = user.inscripciones || null;
     
-        // Lógica adicional si el usuario inició sesión con Google
-        if (account?.provider === "google") {
+        console.log("Token actualizado: ", token);
+    
+        // Si el flujo proviene de Google
+        if (account?.provider === 'google') {
+          console.log('datos de account', account);
+          console.log('Datos proporcionados por Google:', user);
+          
+    
           try {
-            // Preparar datos para enviar al backend
             const googleUserData = {
+              id: "", // Garantiza que sea string o un valor por defecto
               nombre: user.name || "",
               email: user.email || "",
-              telefono: null, // Opcional
-              edad: null, // Opcional
-              contrasena: "", // No se usa con Google
-              confirmarContrasena: "", // No se usa con Google
+              telefono: null,
+              edad: null,
+              contrasena: "",
+              confirmarContrasena: "",
               imagen: user.image || null,
             };
+            
+            console.log('Valor de id enviado al backend:', googleUserData.id);
+            console.log('Datos enviados al backend:', googleUserData);
     
-            // Enviar datos al backend
             const response = await fetch(`${apiUrl}/auth/google-login`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify(googleUserData),
             });
     
-            // Manejar respuesta del backend
             const googleUser = await response.json();
-            if (response.ok && googleUser) {
-              console.log("Usuario sincronizado con backend:", googleUser);
+            console.log("Usuario sincronizado con backend:", googleUser);
     
-              // Actualizar el token con datos del backend
+            if (response.ok && googleUser) {
               token.id = googleUser.usuario.id;
               token.rol = googleUser.usuario.rol;
-              token.accessToken = googleUser.accessToken; // Si se retorna un token desde el backend
-
+              token.accessToken = googleUser.token;
             } else {
               console.error("Error del backend al sincronizar:", googleUser.message);
             }
           } catch (error) {
             console.error("Error enviando datos al backend:", error);
           }
+        } else {
+          // Log específico para credenciales
+          console.log('Datos proporcionados por credenciales:', user);
         }
       }
-    
+      console.log('este es el token final antes de retornar: ', token);
+      
       return token;
     }
+    
     ,
   
     async session({ session, token }) {
@@ -120,6 +129,7 @@ export const authOptions: AuthOptions = {
         inscripciones: token.inscripciones,
 
       };
+      console.log('session del usuario desde auth.ts: ', session.user);
       return session;
     },
   }
