@@ -4,13 +4,13 @@ import "./globals.css";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
 import { SessionProvider } from "next-auth/react";
+import Chatbot from "@/components/chatbot/Chatbot";
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-
   return (
     <html lang="en">
       <head>
@@ -23,6 +23,7 @@ export default function RootLayout({
         <SessionProvider>
           <Navbar />
           <main className="flex-grow">{children}</main>
+          <Chatbot />
           <Footer />
         </SessionProvider>
       </body>
