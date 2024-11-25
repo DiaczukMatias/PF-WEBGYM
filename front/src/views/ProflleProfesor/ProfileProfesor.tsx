@@ -199,7 +199,16 @@ const ProfileProfesor: React.FC = () => {
         </div>
 
         {activeTab === "CLASES" ? renderClasses() : (renderAlumnos()) }
-        </div>
+       
+        <div className="flex justify-center items-center m-4">
+           <button
+            className="submitButton .submitButton:hover"
+            onClick={() => window.location.href = `/crearCategoria`}
+          >
+            Crear Categoria
+          </button>
+          </div>  
+         </div>
         </div>
   ); 
  

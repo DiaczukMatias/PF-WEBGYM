@@ -1,7 +1,7 @@
 import { ICategoria } from "@/interfaces/ICategory";
 import { IClase } from "@/interfaces/IClase";
 import { Token } from "../accestoke";
-
+import { FetchError } from "@/interfaces/IErrors";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -50,37 +50,35 @@ export const getCategoryById = async (id: string): Promise<ICategoria> => {
   }
 };
 
-/**
- * Crea una nueva categoría (ruta protegida)
- * @param {ICategoria} categoryData - Datos de la categoría
- * @param {string} token - Token de autenticación
- * @returns {Promise<ICategoria>} Categoría creada
- */
-export const createCategory = async (
-  categoryData: ICategoria,
-): Promise<ICategoria> => {
+
+
+export const createCategoria = async (nombre: string): Promise<void> => {
   try {
-    const response = await fetch(`${apiUrl}/categorias`, {
+    const response = await fetch("/categorias", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${Token}`,
       },
-      body: JSON.stringify(categoryData),
+      body: JSON.stringify({ nombre }),
     });
+
     if (!response.ok) {
-      throw new Error("Error al crear la categoría.");
+      const errorData = await response.json();
+      console.log("console error data fetch crear categoria:", errorData)
+      console.log("token enviado crear categoria", Token)
+      throw {
+        message: errorData.message || "Error al crear la categoría",
+        status: response.status,
+        error: errorData.error,
+      } as FetchError;
     }
-    const data = await response.json();
-    return data;
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.error(error.message);
-      throw error;
-    }
-    return {} as ICategoria; // Retorna un objeto vacío en caso de error
+  } catch (error) {
+    throw error;
   }
 };
+
+
 
 /**
  * Actualiza una categoría existente por ID (ruta protegida)
