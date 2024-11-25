@@ -30,7 +30,7 @@ const CrearCategoria = () => {
     } catch (err) {
       const error = err as FetchError;
       Swal.fire("Error", error.message, "error");
-      console.error("error al crear categoria:", error);
+      console.log("error al crear categoria:", error);
     }
   };
 

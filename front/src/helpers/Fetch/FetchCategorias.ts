@@ -52,7 +52,8 @@ export const getCategoryById = async (id: string): Promise<ICategoria> => {
 
 
 
-export const createCategoria = async (nombre: string): Promise<void> => {
+
+/*export const createCategoria = async (nombre: string): Promise<void> => {
   try {
     const response = await fetch("/categorias", {
       method: "POST",
@@ -77,8 +78,38 @@ export const createCategoria = async (nombre: string): Promise<void> => {
     throw error;
   }
 };
-
-
+*/
+/**
+ * Crea una nueva categoría (ruta protegida)
+ * @param {string} nombre- Datos de la categoría
+*  @returns {Promise<ICategoria>} Categoría creada
+ */
+export const createCategoria = async (
+  nombre: string,
+): Promise<ICategoria> => {
+  try {
+    const response = await fetch(`${apiUrl}/categorias`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Token}`,
+      },
+      body: JSON.stringify(nombre),
+    });
+    if (!response.ok) {
+      throw new Error("Error al crear la categoría.");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.log(error.message);
+      console.log("token enviado crear categoria", Token)
+      throw error;
+    }
+    return {} as ICategoria; // Retorna un objeto vacío en caso de error
+  }
+};
 
 /**
  * Actualiza una categoría existente por ID (ruta protegida)
