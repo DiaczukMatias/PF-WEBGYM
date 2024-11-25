@@ -1,5 +1,5 @@
 "use client"
-import ProfileProfesor from "@/views/Proflle/ProfileProfesor";
+import ProfileProfesor from "@/views/ProflleProfesor/ProfileProfesor";
 import React from "react";
 import { useSession} from "next-auth/react";
 import ProfileUsers from "@/views/ProfileUsers/ProfileUsers";
