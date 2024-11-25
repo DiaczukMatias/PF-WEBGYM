@@ -10,7 +10,7 @@ import { IInscripcion } from "@/interfaces/IInscripcion";
 
 const ProfileUser: React.FC = () => {
   const { data: session } = useSession();
-console.log('objeto en session: ', session);
+  console.log('session en profileUser', session);
 
   const userName = session?.user?.name || "Usuario";  // Corregido por posible undefined
   const userMail = session?.user?.email || "Email";

@@ -8,8 +8,10 @@ import { FaSpinner } from "react-icons/fa";
 import styles from "./Navbar.module.css";
 import Searchbar from "../SearchBar/SearchBar";
 
+
 const Navbar = () => {
   const { data: session, status } = useSession();
+ 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const userName = session?.user?.name || "Usuario";
   const isLogged = status === "authenticated";
