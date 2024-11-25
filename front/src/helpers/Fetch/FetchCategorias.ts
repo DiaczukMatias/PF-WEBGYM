@@ -1,7 +1,6 @@
 import { ICategoria } from "@/interfaces/ICategory";
 import { IClase } from "@/interfaces/IClase";
 import { Token } from "../accestoke";
-import { FetchError } from "@/interfaces/IErrors";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
