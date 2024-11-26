@@ -202,12 +202,10 @@ const ProfileProfesor: React.FC = () => {
         </div>
 
         {activeTab === "CLASES" ? renderClasses() : (renderAlumnos())}
-
         
       </div>
     </div>
   );
 
-};
 
 export default ProfileProfesor;

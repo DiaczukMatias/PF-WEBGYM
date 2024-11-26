@@ -43,7 +43,6 @@ const DetailsClass = async ({ params }: { params: Promise<{ id: string }> })  =>
 
   return (
     <div className="container mx-auto p-4">
-      <p> clase prueba children</p>
       <ClassCard clase={claseSinCircularidad} />
     </div>
   );
