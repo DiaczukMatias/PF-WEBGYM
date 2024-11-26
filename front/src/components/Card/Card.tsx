@@ -158,12 +158,8 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
       </div>
 
       <div className="flex justify-center items-center">
-        <button
-          className="flex justify-center items-center m-2 p-2 text-white"
-          onClick={() => window.history.back()}
-        >
-          Ver Todas las clases
-        </button>
+      
+      
       </div>
     </div>
   );
