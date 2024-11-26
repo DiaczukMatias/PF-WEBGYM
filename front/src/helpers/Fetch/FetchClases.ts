@@ -13,7 +13,7 @@ export const createClase = async (nuevaClase: ICrearClase) => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({nuevaClase}),
+    body: JSON.stringify({ nuevaClase }),
   });
   if (!response.ok) {
     throw new Error("Error al crear la clase");
@@ -33,6 +33,7 @@ export const updateClase = async (id: string, updatedClase: IClase) => {
     },
     body: JSON.stringify(updatedClase),
   });
+
   if (!response.ok) {
     throw new Error("Error al actualizar la clase");
   }
@@ -64,45 +65,66 @@ export const fetchClaseById = async (id: string): Promise<IClase> => {
   return response.json();
 };
 
-export const fetchClases = async (page = 1, limit = 10) => {
-  const response = await fetch(`${apiUrl}/clases?page=${page}&limit=${limit}`); // es nesecasio poner el page y el limit x como esta configurado el back, si no se rompe xq al no pasarlo pone de skip null o undefides y si o si tiene q ser nuemrico
-  //export const fetchClases = async () => {
-    //const response = await fetch(`${apiUrl}/clases`);
-    if (!response.ok) {
-      throw new Error('Error al obtener las clases');
-    }
-    return response.json();
-  };
-  
-  export const searchClases = async (params: ISearchParams): Promise<ISearchResult[]> => {
-    try {
-      const response = await fetch(`${apiUrl}/clases/search`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(params),
-      });
-  
-      if (response.status === 404) {
-        console.warn("No se encontraron clases para los parámetros dados.");
-        return []; // Retornamos un array vacío para manejarlo en el frontend
-      }
-  
-      if (!response.ok) {
-        console.error(`Error en la API: ${response.statusText}`);
-        return []; // Devuelve un array vacío para evitar propagar el error
-      }
-  
-      const data: ISearchResult[] = await response.json();
-      return data;
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error("Error al buscar clases:", error.message);
-      } else {
-        console.error("Error desconocido al buscar clases");
-      }
-      return []; // Manejamos cualquier error devolviendo un array vacío
-    }
-  };
+// export const fetchClases = async (page = 1, limit = 10) => {
+//   const response = await fetch(`${apiUrl}/clases?page=${page}&limit=${limit}`); // es nesecasio poner el page y el limit x como esta configurado el back, si no se rompe xq al no pasarlo pone de skip null o undefides y si o si tiene q ser nuemrico
+//   //export const fetchClases = async () => {
+//   // const response = await fetch(`${apiUrl}/clases`);
+//   console.log("CLASES:", response.json());
+//   if (!response.ok) {
+//     throw new Error('Error al obtener las clases');
+//   }
+//   return response.json();
+// };
 
+export const fetchClases = async (page = 1, limit = 10) => {
+  try {
+    const response = await fetch(
+      `${apiUrl}/clases?page=${page}&limit=${limit}`
+    );
+    if (!response.ok) {
+      throw new Error(
+        `Error al obtener las clases: ${response.status} ${response.statusText}`
+      );
+    }
+    const data = await response.json();
+    console.log("CLASES:", data);
+    return data;
+  } catch (error) {
+    console.error("Error en fetchClases:", error);
+    throw error;
+  }
+};
+
+export const searchClases = async (
+  params: ISearchParams
+): Promise<ISearchResult[]> => {
+  try {
+    const response = await fetch(`${apiUrl}/clases/search`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(params),
+    });
+
+    if (response.status === 404) {
+      console.warn("No se encontraron clases para los parámetros dados.");
+      return []; // Retornamos un array vacío para manejarlo en el frontend
+    }
+
+    if (!response.ok) {
+      console.error(`Error en la API: ${response.statusText}`);
+      return []; // Devuelve un array vacío para evitar propagar el error
+    }
+
+    const data: ISearchResult[] = await response.json();
+    return data;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Error al buscar clases:", error.message);
+    } else {
+      console.error("Error desconocido al buscar clases");
+    }
+    return []; // Manejamos cualquier error devolviendo un array vacío
+  }
+};
