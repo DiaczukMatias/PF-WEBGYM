@@ -73,13 +73,7 @@ const HomeView = () => {
     imagen: `/images/categories/${normalizeName(categoria.nombre)}.png`, // Genera la ruta de imagen directamente
   }));
 
- /* const mappedProfesores = profesores
-  .map((profesor) => ({
-    id: profesor.id,
-    nombre: profesor.nombre,
-    imagen: `/images/profesor/${normalizeName(profesor.nombre)}.png`, // Genera la ruta de imagen directamente
-     
-  }));*/
+ 
   const handleSeeMoreClick = () => {
     window.location.href = '/clases';
   };
