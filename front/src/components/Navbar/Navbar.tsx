@@ -131,6 +131,14 @@ const Navbar = () => {
           )}
           <Searchbar />
         </div>
+        <div>
+        <button
+          className="flex justify-end items-end m-2 p-2 text-white"
+          onClick={() => window.history.back()}
+        >
+          Volver
+        </button>
+        </div>
       </div>
     </nav>
   );

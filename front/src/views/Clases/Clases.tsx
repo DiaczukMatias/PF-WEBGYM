@@ -1,4 +1,5 @@
 "use client";
+import { usePathname } from "next/navigation"; // Importa el hook
 import { useState, useEffect } from "react";
 import ClassCardList from "@/components/CardList/CardList";
 import { getCategories } from "@/helpers/Fetch/FetchCategorias"; // Fetch de categorías
@@ -9,6 +10,10 @@ import { ISearchResult } from "@/interfaces/ISearch";
 import { IProfesor } from "@/interfaces/IProfesor";
 
 const ClasesView = () => {
+  const pathname = usePathname(); // Obtén la ruta actual
+  const isAdminRoute = pathname === "/admin/clases"; // Detecta si es admin
+
+
   const [categories, setCategories] = useState<ICategoria[]>([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [errorCategories, setErrorCategories] = useState<string | null>(null);
@@ -189,32 +194,23 @@ const ClasesView = () => {
       ) : (
         <ClassCardList classes={filteredClasses} />
       )}
+
+       {/* Botones adicionales para admin */}
+       {isAdminRoute && (
+        <div className="flex justify-center items-center m-4 gap-6">
+          <button
+            className="submitButton .submitButton:hover"
+            onClick={() => window.location.href = `/crearClase`}
+          >
+            Crear Clase
+          </button>
+        </div>
+      )}
     </div>
   );
 };
 
 
 export default ClasesView;
-
-/* import ClassCardList from "@/components/CardList/CardList";
-import Category from "@/components/Categories/Categories";
-import { clasesData, categoriesData, profesoresData } from "@/helpers/datatemporalClases";
-import Profesores from "@/components/Profesor/Profesor";
-
-
-const ClasesView= () => {
-    return (
-      <div>
-             <Category categories={categoriesData} />   
-             <h2 className="flex justify-center font-bold font-sans text-xl text-accent m-4">CLASES:</h2>   
-             <ClassCardList classes={clasesData} />
-             <Profesores profesores={profesoresData} itemsPerPage={5}/>
-         
-      </div>
-    );
-  };
-  
-  export default ClasesView
-  */
 
 

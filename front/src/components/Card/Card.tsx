@@ -6,11 +6,13 @@ import Image from "next/image";
 import { IClase } from "@/interfaces/IClase";
 import { suspendClase } from "@/helpers/Fetch/FetchClases";
 
+
 interface ClassCardProps {
   clase: IClase;
 }
 
 const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
+
   const {
     nombre,
     descripcion,
@@ -158,7 +160,7 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
       <div className="flex justify-center items-center">
         <button
           className="flex justify-center items-center m-2 p-2 text-white"
-          onClick={() => (window.location.href = `/clases`)}
+          onClick={() => window.history.back()}
         >
           Ver Todas las clases
         </button>
