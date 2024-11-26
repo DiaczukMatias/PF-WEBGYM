@@ -19,7 +19,7 @@ const CrearClaseForm: React.FC = () => {
     descripcion: "",
     fecha: "",
     categoriaId: "",
-    imagen: "",
+    imagen: null ,
     disponibilidad: 1,
     perfilProfesorId: "", 
   });
@@ -48,7 +48,7 @@ const CrearClaseForm: React.FC = () => {
 
 
 
-  const handleChange = (
+  const handleChange = async (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
@@ -60,7 +60,7 @@ const CrearClaseForm: React.FC = () => {
     }));
 
     // Validar el campo actualizado
-    const nuevosErrores = validateCrearClase({
+    const nuevosErrores = await validateCrearClase({
       ...nuevaClase,
       [name]: value,
     });
@@ -70,12 +70,29 @@ const CrearClaseForm: React.FC = () => {
       [name]: nuevosErrores[name] || "",
     }));
   };
-
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 10 * 1024 * 1024) { // 10MB
+        setErrores((prevErrores) => ({
+          ...prevErrores,
+          imagen: "El archivo es demasiado grande (máximo 10MB).",
+        }));
+        return;
+      }
+      setNuevaClase((prevClase) => ({
+        ...prevClase,
+        imagen: file,
+      }));
+      setErrores((prevErrores) => ({ ...prevErrores, imagen: "" }));
+    }
+  };
+  
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log("Datos enviados:", nuevaClase); // Verificar qué datos se envían
-    const nuevosErrores = validateCrearClase(nuevaClase);
+    console.log("Datos enviados: ", nuevaClase); // Verificar qué datos se envían
+    const nuevosErrores = await validateCrearClase(nuevaClase);
     setErrores(nuevosErrores);
     console.log("Errores de validación:", nuevosErrores); // Mostrar los errores de validación si existen
 
@@ -84,14 +101,29 @@ const CrearClaseForm: React.FC = () => {
     }
 
     try {
-      await createClase(nuevaClase);
+      	//damos el formato correcto para enviar archivos
+        const formData = new FormData();
+        formData.append("nombre", nuevaClase.nombre);
+    formData.append("descripcion", nuevaClase.descripcion);
+    formData.append("fecha", new Date(nuevaClase.fecha).toISOString())
+    formData.append("categoriaId", nuevaClase.categoriaId);
+    formData.append("disponibilidad", nuevaClase.disponibilidad.toString());
+    formData.append("perfilProfesorId", nuevaClase.perfilProfesorId);
+    if (nuevaClase.imagen instanceof File) {
+      formData.append("imagen", nuevaClase.imagen);
+    }
+
+    const response = await createClase(formData);
+    if (!response.ok) {
+      throw new Error("Error al crear la clase");
+    }
       alert("Clase creada con éxito");
       setNuevaClase({
         nombre: "",
         descripcion: "",
         fecha: "",
         categoriaId: "",
-        imagen: "/images/clases/zumba.jpg",
+        imagen: null,
         disponibilidad: 1,
         perfilProfesorId: "",
       });
@@ -110,7 +142,7 @@ console.log("Errores de validación:", errores);
       <h1 className="text-2xl font-bold mb-6 text-center text-accent font-OswaldSans-serif">
         CREAR CLASE
       </h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} >
         <div className="mb-4">
           <label htmlFor="nombre" className="block text-sm font-medium">
             Nombre:
@@ -188,21 +220,21 @@ console.log("Errores de validación:", errores);
           )}
         </div>
 
-      <div className="mb-4">
-          <label htmlFor="imagen" className="block text-sm font-medium">
-            Imagen URL:
-          </label>
-          <input
-            type="text"
-            id="imagen"
-            name="imagen"
-            value= {nuevaClase.imagen}
-            onChange={handleChange}
-            placeholder="URL de la imagen"
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md bg-transparent"
-          />
-          {errores.imagen && <div className="text-red-500 text-sm mt-1">{errores.imagen}</div>}
-        </div>
+        <div className="mb-4">
+  <label htmlFor="imagen" className="block text-sm font-medium">
+    Seleccionar imagen:
+  </label>
+  <input
+    type="file"
+    id="imagen"
+    name="imagen"
+    accept="image/*"
+    onChange={handleFileChange}
+    className="mt-1 p-2 w-full border border-gray-300 rounded-md bg-transparent"
+  />
+  {errores.imagen && <div className="text-red-500 text-sm mt-1">{errores.imagen}</div>}
+</div>
+
 
 
 <div className="mb-4">
