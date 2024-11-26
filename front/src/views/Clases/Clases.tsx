@@ -1,10 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
 import ClassCardList from "@/components/CardList/CardList";
-import { profesoresData } from "@/helpers/datatemporalClases"; // Simulación local de clases
-import { getCategories } from "@/helpers/Fetch/FetchCategorias"; // Fetch de categorías
-import { searchClases } from "@/helpers/Fetch/FetchClases"; // Buscar clases con parámetros
-import { fetchClases } from "@/helpers/Fetch/FetchClases"; // Obtener todas las clases
+import { profesoresData } from "@/helpers/datatemporalClases"; 
+import { getCategories } from "@/helpers/Fetch/FetchCategorias"; 
+import { searchClases } from "@/helpers/Fetch/FetchClases"; 
+import { fetchClases } from "@/helpers/Fetch/FetchClases";
 import { ICategoria } from "@/interfaces/ICategory";
 import { ISearchResult } from "@/interfaces/ISearch";
 

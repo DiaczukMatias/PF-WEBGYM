@@ -9,4 +9,15 @@ export interface IProfesor {
     imagen?: string;                 // URL de la imagen del profesor
     clases?: IClase[];              // Lista de clases asociadas al profesor
     usuario?: IUsuario;
+    usuarioId?: IUsuario["id"];
+    perfilProfesor: IPerfilProfesor;
+}
+
+export interface IPerfilProfesor {
+    id: string;
+    nombre: string;
+   descripcion?: string;
+   certificacion?: string;
+   imagen?: string;
+   usuarioId: IUsuario["id"];
 }

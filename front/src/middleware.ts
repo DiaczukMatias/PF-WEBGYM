@@ -6,13 +6,13 @@ export async function middleware(req: NextRequest) {
   const token = await getToken({ req });
   const { pathname } = req.nextUrl;
 
-  // Si el usuario está autenticado y quiere entrar al login, redirige a /profileUsers
+  // Si el usuario está autenticado y quiere entrar al login, redirige a /profile
   if (token && pathname === '/login') {
-    return NextResponse.redirect(new URL('/profileUsers', req.url));
+    return NextResponse.redirect(new URL('/profile', req.url));
   }
 
   // Si el usuario no está autenticado e intenta acceder a /profile, redirige a /login
-  if (!token && pathname === '/profileUsers') {
+  if (!token && pathname === '/profile') {
     return NextResponse.redirect(new URL('/login', req.url));
   }
 
@@ -22,7 +22,7 @@ export async function middleware(req: NextRequest) {
 
 // Configuración del matcher para aplicar el middleware solo en las rutas específicas
 export const config = {
-  matcher: ['/login', '/profileUsers'],
+  matcher: ['/login', '/profile'],
 };
 
 

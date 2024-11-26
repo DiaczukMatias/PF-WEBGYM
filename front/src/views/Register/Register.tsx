@@ -1,6 +1,6 @@
 "use client";
-//import { registerPost } from "@/helpers/user.fetchFunction";
-import { registerPost } from "@/helpers/Fetch/FetchUsers";
+import { registerPost } from "@/helpers/user.fetchFunction";
+//import { registerPost } from "@/helpers/Fetch/FetchUsers";
 import { validateRegisterForm } from "@/helpers/validate/validate";
 import { IRegisterErrors, IRegisterProps } from "@/interfaces/IRegister";
 import React, { useEffect, useState } from "react";
@@ -67,6 +67,7 @@ const RegisterView: React.FC = () => {
         router.push("/login"); // Redirige solo si el registro fue exitoso
       }
     } catch (error) {
+      console.log( "errores en el registro", error)
       console.error("Error en el registro:", error);
     } finally {
       setIsSubmitting(false); // Reactivar el botón después del envío

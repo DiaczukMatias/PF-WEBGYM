@@ -5,8 +5,8 @@ interface ModalProps {
   children: React.ReactNode;
   onClose: () => void;
 }
-
-const Modal: React.FC<ModalProps> = ({ title, children, onClose }) => {
+//aca borre el onClose que viene como props, para buildear
+const Modal: React.FC<ModalProps> = ({ title, children }) => {
   return (
     <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-lg p-6 w-96">

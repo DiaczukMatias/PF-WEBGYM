@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { useRouter } from "next/navigation";
+import { loadStripe } from "@stripe/stripe-js";
 import styles from "./PlanesView.module.css";
 
 export const planes = [
@@ -20,7 +20,6 @@ export const planes = [
     ],
     price: 99,
     buttonText: "ELEGIR PLAN",
-
   },
   {
     id: "2",
@@ -38,7 +37,6 @@ export const planes = [
     ],
     price: 19,
     buttonText: "ELEGIR PLAN",
-
   },
   {
     id: "3",
@@ -56,16 +54,43 @@ export const planes = [
     ],
     price: 59,
     buttonText: "ELEGIR PLAN",
-
   },
 ];
 
 const PlanesView: React.FC = () => {
-  const router = useRouter();
+  const handleSelectPlan = async (planId: string) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3010/stripe/create-checkout-session`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ planId }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Error al crear la sesión de Stripe");
+      }
+      const { sessionId, url } = await response.json();
 
-  const handleSelectPlan = (planId: string) => {
-    router.push(`/checkout/${planId}`);
+      console.log("URL", url);
+      console.log("Session ID", sessionId);
 
+      const stripe = await loadStripe(
+        process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+      );
+      console.log("SDK STRIPE:", stripe);
+      if (!stripe) {
+        throw new Error("No se pudo cargar el SDK de Stripe");
+      }
+      window.open(url, "_blank");
+      // const result = await stripe.redirectToCheckout({ sessionId });
+      // if (result.error) {
+      //   console.error("Error al redirigir al checkout:", result.error);
+      // }
+    } catch (error) {
+      console.error("Error al redirigir a Stripe:", error);
+    }
   };
 
   return (
@@ -77,20 +102,17 @@ const PlanesView: React.FC = () => {
       <div className={styles.cardsContainer}>
         {planes.map((plan) => (
           <div key={plan.id} className={styles.card}>
-            <div className={styles.titulo}>
-              <h3>{plan.name}</h3>
-            </div>
-            <p>{plan.description}</p>
+            <div className={styles.titulo}>{plan.name}</div>
+            <p className={styles.cardDescription}>{plan.description}</p>
             <div className={styles.planContainer}>
-              <h3>Caracteristicas</h3>
+              <h3 className={styles.planTitle}>Características</h3>
             </div>
-            <ul>
+            <ul className={styles.cardFeatures}>
               {plan.features.map((feature, index) => (
                 <li key={index}>{feature}</li>
               ))}
             </ul>
             <div className={styles.price}>{plan.price}$</div>
-
             <button
               className={styles.button}
               onClick={() => handleSelectPlan(plan.id)}
@@ -105,5 +127,3 @@ const PlanesView: React.FC = () => {
 };
 
 export default PlanesView;
-
-//handleSelectPlan(plan.id)
