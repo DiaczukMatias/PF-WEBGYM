@@ -8,7 +8,10 @@ import Carrusel from '@/components/Carrusel.tsx/Carrusel';
 import { clasesData, profesoresData, categoriesData } from '@/helpers/datatemporalClases';
 import { fetchClases } from '@/helpers/Fetch/FetchClases';
 import { getCategories } from '@/helpers/Fetch/FetchCategorias';
+//import { fetchPerfilProfesores } from '@/helpers/Fetch/FetchProfesores';
+import { fetchProfesoresConClases } from '@/helpers/Fetch/FetchProfesores';
 import styles from './Home.module.css';
+//import { IPerfilProfesor } from '@/inte//rfaces/IProfesor';
 
 
 const HomeView = () => {
@@ -17,6 +20,8 @@ const HomeView = () => {
 
   const [clases, setClases] = useState(clasesData); 
   const [categorias, setCategorias] = useState(categoriesData); 
+  const [profesores, setProfesores] = useState(profesoresData); // Para almacenar los profesores
+
   console.log('clases en el home ', clases);
   console.log('categorias en el home ', categorias);
   
@@ -27,9 +32,14 @@ const HomeView = () => {
         try {
           const fetchedClases = await fetchClases();
           const fetchedCategorias = await getCategories();
+          const fetchedProfesores = await fetchProfesoresConClases(); // Llamar a la función para obtener los profesores
+
           setClases(fetchedClases);
           setCategorias(fetchedCategorias);
+          setProfesores(fetchedProfesores);
+
           console.log("set clases home:", setClases)
+
         } catch (error) {
           console.error('Error al obtener datos del backend:', error);
         }
@@ -37,6 +47,7 @@ const HomeView = () => {
         // Si `useBackend` es false, se usan los datos temporales
         setClases(clasesData);
         setCategorias(categoriesData);
+        setProfesores(profesoresData);
       }
     };
     fetchData();
@@ -62,6 +73,7 @@ const HomeView = () => {
     imagen: `/images/categories/${normalizeName(categoria.nombre)}.png`, // Genera la ruta de imagen directamente
   }));
 
+ 
   const handleSeeMoreClick = () => {
     window.location.href = '/clases';
   };
@@ -90,7 +102,7 @@ const HomeView = () => {
         <span className={styles.whiteText}>NUESTROs</span>
         <span className={styles.greenText}>MEJORES ENTRENADORES</span>
       </div>
-      <Profesores profesores={profesoresData} limit={3} itemsPerPage={3} />
+      <Profesores profesores={profesores} limit={3} itemsPerPage={3} />
     </div>
   );
 };

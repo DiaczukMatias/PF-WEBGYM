@@ -1,0 +1,65 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap");
+
+
+
+.container {
+  display: flex;
+  padding: 80px;
+  color: white;
+  font-family: Arial, sans-serif;
+  gap: 40px;
+  margin-left: 260px;
+}
+
+.profileSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-right: 1px solid #444;
+  padding-right: 20px;
+}
+
+.profilePictureContainer {
+  border: 4px solid #b6ff04;
+  border-radius: 50%;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.profilePicture {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.name {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.oswaldText {
+  font-family: "Oswald", sans-serif;
+  text-transform: uppercase;
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.contactInfo {
+  list-style: none;
+  padding: 0;
+  margin-top: 15px;
+}
+
+.contactInfo li {
+  margin: 17px 0;
+  font-size: 0.9em;
+}
+
+.studentsSection {
+  flex: 2;
+  display: contents;
+}
+

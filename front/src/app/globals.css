@@ -32,7 +32,7 @@ body {
 .submitButton {
   margin-top: 20px;
   white-space: nowrap;
-  width: 50%;
+  width: fit-content;
   padding: 0.75rem;
   background-color: #b6ff04;
   border: none;
