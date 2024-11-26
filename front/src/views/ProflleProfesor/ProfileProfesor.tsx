@@ -35,11 +35,11 @@ const ProfileProfesor: React.FC = () => {
     /*  if (session?.user) {
         
         const usuario= session.user ;
+   // get perfilprofesor segun usuarioId
+        // Asignamos los clases del profesor si existe
+        setMembership(perfilProfesor.clases || null);
 
-        // Asignamos la membresía si existe
-        setMembership(usuario.membresia || null);
-
-        //  clases a las que el usuario está inscrito
+        //  usuarios inscritos a las clases del profesor
         const clasesInscritas: IClase[] | null = 
             usuario?.inscripciones?.flatMap((inscripcion: IInscripcion) => inscripcion.clase) || null;
        
