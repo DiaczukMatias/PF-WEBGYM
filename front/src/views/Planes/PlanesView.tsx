@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { useRouter } from "next/navigation";
+import { loadStripe } from "@stripe/stripe-js";
 import styles from "./PlanesView.module.css";
 
 export const planes = [
@@ -58,10 +58,39 @@ export const planes = [
 ];
 
 const PlanesView: React.FC = () => {
-  const router = useRouter();
+  const handleSelectPlan = async (planId: string) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3010/stripe/create-checkout-session`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ planId }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Error al crear la sesión de Stripe");
+      }
+      const { sessionId, url } = await response.json();
 
-  const handleSelectPlan = (planId: string) => {
-    router.push(`/checkout/${planId}`);
+      console.log("URL", url);
+      console.log("Session ID", sessionId);
+
+      const stripe = await loadStripe(
+        process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+      );
+      console.log("SDK STRIPE:", stripe);
+      if (!stripe) {
+        throw new Error("No se pudo cargar el SDK de Stripe");
+      }
+      window.open(url, "_blank");
+      // const result = await stripe.redirectToCheckout({ sessionId });
+      // if (result.error) {
+      //   console.error("Error al redirigir al checkout:", result.error);
+      // }
+    } catch (error) {
+      console.error("Error al redirigir a Stripe:", error);
+    }
   };
 
   return (
