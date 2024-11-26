@@ -1,25 +1,28 @@
-import { IClase, ICrearClase } from "@/interfaces/IClase";
+import { IClase } from "@/interfaces/IClase";
 import { ISearchParams, ISearchResult } from "@/interfaces/ISearch";
 import { Token } from "../accestoke";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 // Fetch para crear una nueva clase
-export const createClase = async (nuevaClase: ICrearClase) => {
+export const createClase = async (formData: FormData) => {
   if (!Token) throw new Error("Usuario no autenticado");
 
   const response = await fetch(`${apiUrl}/clases`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      // No necesitamos especificar Content-Type cuando usamos FormData
+      // El navegador se encarga de añadir el encabezado adecuado
     },
-    body: JSON.stringify({nuevaClase}),
+    body: formData, // Directamente el FormData aquí
   });
+
   if (!response.ok) {
     throw new Error("Error al crear la clase");
   }
   return response.json();
 };
+
 
 // Fetch para actualizar una clase existente
 export const updateClase = async (id: string, updatedClase: IClase) => {
