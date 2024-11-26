@@ -206,6 +206,5 @@ const ProfileProfesor: React.FC = () => {
       </div>
     </div>
   );
-
-
+}
 export default ProfileProfesor;
