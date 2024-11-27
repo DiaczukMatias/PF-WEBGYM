@@ -4,6 +4,7 @@ import { IUsuario } from "@/interfaces/IUser";
 import { ILoginProps } from "@/interfaces/ILogin";
 import { FetchError } from "@/interfaces/IErrors";
 import { Token } from "../accestoke";
+import { IEditUserProps } from "@/interfaces/IEditUser";
 
 //funcion para manejerar tipo de error
 function isFetchError(error: unknown): error is FetchError {
@@ -130,11 +131,16 @@ export const fetchUsers = async (page = 1, limit = 5) => {
 
 // 4. Obtener un usuario por ID (Protegida, solo admin)
 export const fetchUserById = async (id: string) => {
+  if (!id) {
+    throw new Error("El ID proporcionado es inválido");
+  }
   try {
     const response = await fetch(`${apiUrl}/usuarios/${id}`, {
       headers: authHeader(),
     });
-
+    console.log(`URL Fetch: ${apiUrl}/usuarios/${id}`);
+    console.log(authHeader());
+    
     if (!response.ok) throw new Error(await response.text());
 
     return await response.json();
@@ -147,7 +153,7 @@ export const fetchUserById = async (id: string) => {
 };
 
 // 5. Actualizar un usuario por ID (Protegida)
-export const updateUser = async (id: string, updatedUser: IUsuario) => {
+export const updateUser = async (id: string, updatedUser: IEditUserProps) => {
   try {
     const response = await fetch(`${apiUrl}/usuarios/${id}`, {
       method: 'PUT',
