@@ -42,7 +42,7 @@ export const updateClase = async (id: string, updatedClase: IClase) => {
   return response.json();
 };
 
-/*export const suspendClase = async (id: string) => {
+export const suspendClase = async (id: string) => {
   if (!Token) throw new Error("Usuario no autenticado");
 
   const response = await fetch(`${apiUrl}/clases/suspend/${id}`, {
@@ -57,7 +57,7 @@ export const updateClase = async (id: string, updatedClase: IClase) => {
   }
 
   return response.json();
-};*/
+};
 
 export const fetchClaseById = async (id: string): Promise<IClase> => {
   const response = await fetch(`${apiUrl}/clases/${id}`);
@@ -69,8 +69,7 @@ export const fetchClaseById = async (id: string): Promise<IClase> => {
 
 export const fetchClases = async (page = 1, limit = 10) => {
   const response = await fetch(`${apiUrl}/clases?page=${page}&limit=${limit}`); // es nesecasio poner el page y el limit x como esta configurado el back, si no se rompe xq al no pasarlo pone de skip null o undefides y si o si tiene q ser nuemrico
-  //export const fetchClases = async () => {
-    //const response = await fetch(`${apiUrl}/clases`);
+
     if (!response.ok) {
       throw new Error('Error al obtener las clases');
     }
