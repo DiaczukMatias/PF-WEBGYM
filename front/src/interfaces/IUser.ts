@@ -21,4 +21,5 @@ export interface IUsuario {
     inscripciones?: IInscripcion[];
     city?: string;    //agregaron q al editar el perfil del usuario ingresar la informacion de city y adress
     address?: string;
+    estado?: "activa" | "suspendida";   //  ver de q al hacer los get de clases filtrarlas y mostrar solo las activas
 }  

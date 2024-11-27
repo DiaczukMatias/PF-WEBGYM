@@ -186,7 +186,7 @@ const ClasesView = () => {
       </h2>
 
       {loading ? (
-        <p className="text-primary">Cargando clases...</p>
+        <p className="text-white">Cargando clases...</p>
       ) : error ? (
         <p className="text-red-500">{error}</p>
       ) : filteredClasses.length === 0 ? (

@@ -12,4 +12,6 @@ export interface IMembresia {
     activo: boolean;
     usuario?: IUsuario;
     inscripciones?: IInscripcion[];
+    estado?: "activa" | "suspendida";   //  ver de q al hacer los get de clases filtrarlas y mostrar solo las activas
+
 }
