@@ -5,9 +5,8 @@ import styles from "./ProfileView.module.css";
 import { useSession } from "next-auth/react";
 import { IClase } from "@/interfaces/IClase";
 import { clasesData } from "@/helpers/datatemporalClases";
-//import { IUsuario } from "@/interfaces/IUser";
-import { profesoresData } from "@/helpers/datatemporalClases";
-import { IProfesor } from "@/interfaces/IProfesor";
+import { fetchPerfilProfesorById /*fetchClasesPorProfesor*/ } from "@/helpers/Fetch/FetchProfesores";
+import { IUsuario, RolEnum } from "@/interfaces/IUser";
 
 const ProfileProfesor: React.FC = () => {
   const { data: session } = useSession();
@@ -21,47 +20,88 @@ const ProfileProfesor: React.FC = () => {
 
   const [activeTab, setActiveTab] = useState<"ALUMNOS" | "CLASES">("ALUMNOS");
   const [userClasses, setUserClasses] = useState<IClase[] | null>(null);
-  const [userAlumnos, setUserAlumnos] = useState<IProfesor[] | null>(null);
-
+  const [userAlumnos, setUserAlumnos] = useState<IUsuario[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const database = true; // Cambia esto entre true/false según la necesidad
+  const database = true; 
   // Si no hay base de datos (cuando database = false), usamos los datos temporales
 
 
-  // obetener clases del profesor cambiar para  fetchCLasesPROfesor
-
-  const fetchUserData = () => {
+  useEffect(() => {
+  const fetchUserData = async () => {
     if (database) {
-      // Cuando la base de datos esté habilitada, usamos la información de la sesión del usuario.
-    /*  if (session?.user) {
-        
-        const usuario= session.user ;
-   // get perfilprofesor segun usuarioId
-        // Asignamos los clases del profesor si existe
-        setMembership(perfilProfesor.clases || null);
+        try {
+          if (!session?.user.id) {
+            setError('No se encontró el ID del usuario en la sesión.');
+            return;
+          }
+          const usuarioId = session?.user.id;
 
-        //  usuarios inscritos a las clases del profesor
-        const clasesInscritas: IClase[] | null = 
-            usuario?.inscripciones?.flatMap((inscripcion: IInscripcion) => inscripcion.clase) || null;
-       
-        setUserClasses(clasesInscritas && clasesInscritas.length > 0 ? clasesInscritas : null);
-      }
-   } else {  //hacer fetch de los alumnos  del profesor, de inscriptos en la clase del profesor
-     */ setUserAlumnos(profesoresData);
+          const fetchedPerfilProfesor = await   fetchPerfilProfesorById(usuarioId);  //para obtener el perfilprofesorID con el  id usuario
+           console.log("perfilprofesor:", fetchedPerfilProfesor)
 
-      // Datos temporales de clases (clasesData)
-      setUserClasses(clasesData);
+            // Extraer las clases del objeto perfil del profesor
+          const clasesProfesor = fetchedPerfilProfesor.clases || [];
+
+          if (!clasesProfesor) {
+            setError('No se encontró el perfilProfesorId.');
+            return;
+          }
+
+         // Obtener las clases del profesor usando perfilProfesorId
+        // const fetchedClasesProfesor = await fetchClasesPorProfesor(perfilProfesorId);
+        // console.log('Clases del profesor:', fetchedClasesProfesor);
+
+           // Guardar las clases en el estado
+           setUserClasses(clasesProfesor);
+           setError(null); // Limpiar errores
+ 
+     //   const fetchedAlumnosProfesor = await  /// falta fetch de obtener inscritos a las clases de un profesor ///
+         //  setUserAlumnos(fetchedAlumnosProfesor); // aca cambiarlo x la respuesta del fetch de los incritos
+
+          } catch (error) {
+            console.error('Error al obtener datos del backend:', error);
+            setError('Ocurrió un error al obtener los datos.');
+          }
+   } else {
+
+      // Si `database` es falso, usar datos temporales
+        setUserClasses(clasesData); // Reemplaza `clasesData` por tus datos temporaleszzzzzz      setUserAlumnos(
+
+      setUserAlumnos(
+     [  {
+    id: "1",
+    nombre: "alumno1",
+    edad: 30,
+    email: "alumno@mail.com",
+    telefono: 123456789,
+    rol: RolEnum.CLIENTE, 
+       },
+       {
+        id: "2",
+        nombre: "alumno2",
+        edad: 32,
+        email: "alumno@mail.com",
+        telefono: 123456789,
+        rol: RolEnum.CLIENTE, 
+           },
+           {
+            id: "3",
+            nombre: "alumno3",
+            edad: 33,
+            email: "alumno@mail.com",
+            telefono: 123456789,
+            rol: RolEnum.CLIENTE, 
+               },
+      ]); 
 
       setError(null);
       console.log('log del error', error)
     }
   };
-
-
-  useEffect(() => {
     fetchUserData(); // Llamamos a la función para cargar los datos cuando se monta el componente
-  }, [session]);
+  }, [database, session]);
+
 
   const renderClasses = () => {
     if (!userClasses || userClasses.length === 0) {
@@ -139,17 +179,17 @@ const ProfileProfesor: React.FC = () => {
     return (
       <div className={styles.carouselContainer}>
         <div className={styles.carousel}>
-          {userAlumnos.map((profesor /*usuario */) => (
-            <div key={profesor.id} className={styles.classItem}>
-              <h4 className={styles.className}>{profesor.nombre.toUpperCase() /*usuario.nomnre */}</h4>
+          {userAlumnos.map((usuario ) => (
+            <div key={usuario.id} className={styles.classItem}>
+              <h4 className={styles.className}>{usuario.nombre.toUpperCase() /*usuario.nomnre */}</h4>
               <div className={styles.cardClass}>
-                <div className={styles.classImageContainer}>
-                  <img src={profesor.imagen || `/images/profesor/${profesor.nombre.toLowerCase()}png`} alt={profesor.nombre} className={styles.classImage} />
-                </div>
                 <div className={styles.classDetails}>
-                  <p className={styles.classDate}>{userTel /*usuario.telefono*/}</p>
+                  <p className={styles.classDate}>{usuario.telefono}</p>
                   <p className={styles.classProfessor}>
-                    {userMail /*usuario.email*/}
+                    {usuario.email}
+                  </p>
+                  <p className={styles.classProfessor}>
+                    {usuario.edad}
                   </p>
                 </div>
                 
