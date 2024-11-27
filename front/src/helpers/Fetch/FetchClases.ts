@@ -42,7 +42,7 @@ export const updateClase = async (id: string, updatedClase: IClase) => {
   return response.json();
 };
 
-export const suspendClase = async (id: string) => {
+/*export const suspendClase = async (id: string) => {
   if (!Token) throw new Error("Usuario no autenticado");
 
   const response = await fetch(`${apiUrl}/clases/suspend/${id}`, {
@@ -57,7 +57,7 @@ export const suspendClase = async (id: string) => {
   }
 
   return response.json();
-};
+};*/
 
 export const fetchClaseById = async (id: string): Promise<IClase> => {
   const response = await fetch(`${apiUrl}/clases/${id}`);

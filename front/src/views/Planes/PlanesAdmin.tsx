@@ -1,6 +1,5 @@
-"use client";
+"use client"
 import React from "react";
-import { loadStripe } from "@stripe/stripe-js";
 import styles from "./PlanesView.module.css";
 
 export const planes = [
@@ -18,7 +17,6 @@ export const planes = [
       "Análisis de composición corporal",
     ],
     price: 99,
-    buttonText: "ELEGIR PLAN",
   },
   {
     id: "2",
@@ -34,7 +32,6 @@ export const planes = [
       "Revisiones mensuales de estado físico",
     ],
     price: 19,
-    buttonText: "ELEGIR PLAN",
   },
   {
     id: "3",
@@ -50,46 +47,10 @@ export const planes = [
       "Técnicas avanzadas de recuperación",
     ],
     price: 59,
-    buttonText: "ELEGIR PLAN",
   },
 ];
 
-const PlanesView: React.FC = () => {
-  const handleSelectPlan = async (planId: string) => {
-    try {
-      const response = await fetch(
-        `http://localhost:3010/stripe/create-checkout-session`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ planId }),
-        }
-      );
-      if (!response.ok) {
-        throw new Error("Error al crear la sesión de Stripe");
-      }
-      const { sessionId, url } = await response.json();
-
-      console.log("URL", url);
-      console.log("Session ID", sessionId);
-
-      const stripe = await loadStripe(
-        process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
-      );
-      console.log("SDK STRIPE:", stripe);
-      if (!stripe) {
-        throw new Error("No se pudo cargar el SDK de Stripe");
-      }
-      window.open(url, "_blank");
-      // const result = await stripe.redirectToCheckout({ sessionId });
-      // if (result.error) {
-      //   console.error("Error al redirigir al checkout:", result.error);
-      // }
-    } catch (error) {
-      console.error("Error al redirigir a Stripe:", error);
-    }
-  };
-
+const PlanesAdminView: React.FC = () => {
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>
@@ -110,12 +71,20 @@ const PlanesView: React.FC = () => {
               ))}
             </ul>
             <div className={styles.price}>{plan.price}$</div>
-            <button
-              className={styles.button}
-              onClick={() => handleSelectPlan(plan.id)}
-            >
-              {plan.buttonText}
-            </button>
+            <div className={styles.buttonsContainer}>
+              <button
+                className="submitButton submitButton:hover "
+                onClick={() => (window.location.href = `/editar-plan/${plan.id}`)}
+              >
+                Editar Plan
+              </button>
+              <button
+                className="submitButtonSuspend ml-4"
+                onClick={() => (window.location.href = `/suspender-plan/${plan.id}`)}
+              >
+                Suspender Plan
+              </button>
+            </div>
           </div>
         ))}
       </div>
@@ -123,4 +92,4 @@ const PlanesView: React.FC = () => {
   );
 };
 
-export default PlanesView;
+export default PlanesAdminView;

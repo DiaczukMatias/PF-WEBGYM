@@ -4,8 +4,7 @@ import React, { useState } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { IClase } from "@/interfaces/IClase";
-import { suspendClase } from "@/helpers/Fetch/FetchClases";
-
+import { suspendClase } from "@/helpers/Fetch/FetchSuspend";
 
 interface ClassCardProps {
   clase: IClase;
