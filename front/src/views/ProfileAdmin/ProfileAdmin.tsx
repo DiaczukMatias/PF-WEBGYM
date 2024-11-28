@@ -12,7 +12,7 @@ const ProfileAdmin: React.FC = () => {
   const userMail = session?.user?.email || "Email";
   const userTel = session?.user?.telefono || "Telefono";
   const userIMG = session?.user?.image || "/FOTOPERFIL.png"; // Imagen predeterminada
-
+  const userID = session?.user.id || ''
 
 
 
@@ -28,6 +28,14 @@ const ProfileAdmin: React.FC = () => {
           <li>📞 +{userTel}</li>
           <li>📧 {userMail}</li>
         </ul>
+        <div className="flex justify-center items-center m-4">
+                  <button
+                  className="submitButton .submitButton:hover"
+                   onClick={() => window.location.href = `/editar-usuario/${userID}`}
+                    >
+                      Editar Perfil
+                  </button>
+                </div>
       </div>
 
       <div className={styles.studentsSection}>

@@ -1,0 +1,343 @@
+
+
+
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap");
+
+
+
+.arrowUp, .arrowDown {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  color: #b6ff04; /* Color accent */
+  position: absolute;
+  top: 50%;
+  z-index: 10;
+  transform: translateY(-50%);
+}
+
+.arrowUp {
+  top: 10px;
+}
+
+.arrowDown {
+  bottom: 10px;
+}
+
+
+
+.classItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  margin: 10px 0;
+  border-bottom: 1px solid #9e9e9ed2;
+}
+
+.cardClass {
+  display: flex;
+  flex-direction: row;
+}
+  
+.plan {
+  margin-left: 60px;
+}
+
+.plan h3{
+  border-right: 1px solid #9e9e9ed2 ;
+}
+
+.container {
+  display: flex;
+  padding: 80px;
+  color: white;
+  font-family: Arial, sans-serif;
+  gap: 40px;
+  margin-left: 260px;
+}
+
+.profileSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-right: 1px solid #444;
+  padding-right: 20px;
+}
+
+.profilePictureContainer {
+  border: 4px solid #b6ff04;
+  border-radius: 50%;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.profilePicture {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.name {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.oswaldText {
+  font-family: "Oswald", sans-serif;
+  text-transform: uppercase;
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.contactInfo {
+  list-style: none;
+  padding: 0;
+  margin-top: 15px;
+}
+
+.contactInfo li {
+  margin: 17px 0;
+  font-size: 0.9em;
+}
+
+.studentsSection {
+  flex: 2;
+  padding-left: 20px;
+}
+
+.tabs {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  font-size: 1.2em;
+  border-bottom: 1px solid #444;
+  padding-bottom: 10px;
+  width: 50%;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  gap: 40px;
+  padding-left: 8rem;
+}
+
+.tabs span:hover {
+  color: #b6ff04;
+}
+
+.activeTab {
+  color: white;
+  font-weight: bold;
+}
+
+.tabSeparator {
+  margin: 1px 15px;
+  color: #444;
+}
+
+.carouselContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width:100%;
+  padding-right: 90px;
+}
+
+.carousel {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  height: 300px; /* Ajusta la altura según necesites */
+  padding-top: 20px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  gap: 1rem;
+}
+
+.classes {
+  padding: 25px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.classImageContainer {
+  width: 60px;
+  height: 60px;
+  overflow: hidden;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.classImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.studentPicture {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+  object-fit: cover;
+}
+
+.classDetails {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  flex-direction: column;
+  margin-inline: 2rem;
+  gap: 0.3rem;
+}
+
+
+
+.classText {
+  margin-left: 15px;
+  color: white;
+}
+
+.className {
+  margin-right: 16rem;
+  margin-bottom: 1.2rem;
+  font-size: 1.2rem;
+  font-family: "Oswald", sans-serif;
+  text-transform: uppercase;
+}
+
+.classDate, .classProfessor {
+  font-size: 1rem;
+  color: white;
+}
+
+
+
+.studentInfo p {
+  margin: 20px 0 0;
+  font-size: 0.9em;
+  color: #aaaaaa;
+}
+
+.separator {
+  border: none;
+  border-top: 1px solid #444;
+  margin: 10px 0;
+  width: 60%;
+}
+
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  font-size: 1em;
+}
+
+.pagination span {
+  color: #b6ff04;
+  cursor: pointer;
+}
+
+.membershipCard {
+  margin-top: 40px;
+  margin-bottom: 30px;
+  border: 2px solid #b6ff04;
+  border-radius: 25px;
+  padding: 18px;
+  width: 300px;
+  display: flex;
+  justify-content: space-between; /* Distribuye los elementos a los extremos */
+  align-items: center; /* Alinea verticalmente al centro */
+  gap: 10px; /* Espacio entre "PRO PLAN" y el precio */
+}
+
+.membershipCard h3 {
+  font-family: "Oswald", sans-serif;
+  font-size: 1.2em;
+  margin: 0;
+}
+
+.membershipCard p {
+  font-size: 1em;
+  margin: 0;
+}
+
+
+.membershipCard h3 span:hover {
+  color: #b6ff04;
+}
+
+.changeplan {
+  margin-top: 20px;
+  font-size: 13px;
+  margin-left: 110px;
+}
+
+
+
+
+.role {
+  font-size: 1.2em;
+  margin-top: 5px;
+  color: #aaaaaa;
+}
+
+.rating {
+  color: #ffd700;
+  font-size: 1.2em;
+}
+
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  width: 100%;
+}
+
+.card {
+  background-color: #333; /* Fondo oscuro */
+  border: 2px solid #b6ff04; /* Color acento */
+  border-radius: 10px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+
+.userName {
+  font-size: 1.2rem;
+  font-family: "Oswald", sans-serif;
+  text-transform: uppercase;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.userDetails {
+  font-size: 1rem;
+  color: white;
+  line-height: 1.5;
+}
+
+.editButton {
+  margin-top: 15px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  color: #000;
+  background-color: #b6ff04; /* Color acento */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.editButton:hover {
+  background-color: #96e004; /* Tono más claro del color acento */
+}

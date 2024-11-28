@@ -16,6 +16,7 @@ const ProfileProfesor: React.FC = () => {
   const userMail = session?.user.email || "Email";
   const userTel = session?.user.telefono || "telefono";
   const userImagen = session?.user.image || "/images/profesor/jessicaroberts.png"
+  const userID = session?.user.id || ""
 
   const [activeTab, setActiveTab] = useState<"ALUMNOS" | "CLASES">("ALUMNOS");
   const [userClasses, setUserClasses] = useState<IClase[] | null>(null);
@@ -198,6 +199,7 @@ const ProfileProfesor: React.FC = () => {
                   </p>
                   <p className={styles.classProfessor}>{usuario.clase}</p>
                 </div>
+                
               </div>
               <hr className={styles.separator} />
             </div>
@@ -228,6 +230,14 @@ const ProfileProfesor: React.FC = () => {
           <li>📧 {userMail}</li>
           <li>📸 @{userName}couchgym</li>
         </ul>
+        <div className="flex justify-center items-center m-4">
+                  <button
+                  className="submitButton .submitButton:hover"
+                   onClick={() => window.location.href = `/editar-usuario/${userID}`}
+                    >
+                      Editar Perfil
+                  </button>
+                </div>
       </div>
 
       {/* Sección de Alumnos y Clases */}

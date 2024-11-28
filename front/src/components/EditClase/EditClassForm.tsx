@@ -40,7 +40,8 @@ const EditClassForm: React.FC = () => {
             perfilProfesorId: claseData.perfilProfesor?.id || '', // Asigna un valor predeterminado si no está presente
             fecha: typeof claseData.fecha === 'string' ? claseData.fecha.slice(0, 16) : new Date(claseData.fecha).toISOString().slice(0, 16),
             disponibilidad: claseData.disponibilidad ?? 0, // Asigna 0 si es undefined
-            imagen: claseData.imagen ?? ''
+            imagen: claseData.imagen ?? '',
+            categoriaId: claseData.categoriaId
           };
           
           setFormData(updatedClaseData);
