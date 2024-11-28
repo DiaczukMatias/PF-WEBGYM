@@ -18,6 +18,7 @@ const sidebarItems = [
         ],
       },
       { label: "Usuarios Suspendidos", path: "/admin/usuarios/suspendidos" },
+      { label: "Crear Profesor", path: "/admin/usuarios/crearProfesor" },
     ],
   },
   {
