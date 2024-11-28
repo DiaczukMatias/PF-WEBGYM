@@ -1,25 +1,28 @@
-import { IClase, ICrearClase } from "@/interfaces/IClase";
+import { IClase } from "@/interfaces/IClase";
 import { ISearchParams, ISearchResult } from "@/interfaces/ISearch";
 import { Token } from "../accestoke";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 // Fetch para crear una nueva clase
-export const createClase = async (nuevaClase: ICrearClase) => {
+export const createClase = async (formData: FormData) => {
   if (!Token) throw new Error("Usuario no autenticado");
 
   const response = await fetch(`${apiUrl}/clases`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      // No necesitamos especificar Content-Type cuando usamos FormData
+      // El navegador se encarga de añadir el encabezado adecuado
     },
-    body: JSON.stringify({ nuevaClase }),
+    body: formData, // Directamente el FormData aquí
   });
+
   if (!response.ok) {
     throw new Error("Error al crear la clase");
   }
   return response.json();
 };
+
 
 // Fetch para actualizar una clase existente
 export const updateClase = async (id: string, updatedClase: IClase) => {
@@ -33,7 +36,6 @@ export const updateClase = async (id: string, updatedClase: IClase) => {
     },
     body: JSON.stringify(updatedClase),
   });
-
   if (!response.ok) {
     throw new Error("Error al actualizar la clase");
   }
@@ -65,66 +67,44 @@ export const fetchClaseById = async (id: string): Promise<IClase> => {
   return response.json();
 };
 
-// export const fetchClases = async (page = 1, limit = 10) => {
-//   const response = await fetch(`${apiUrl}/clases?page=${page}&limit=${limit}`); // es nesecasio poner el page y el limit x como esta configurado el back, si no se rompe xq al no pasarlo pone de skip null o undefides y si o si tiene q ser nuemrico
-//   //export const fetchClases = async () => {
-//   // const response = await fetch(`${apiUrl}/clases`);
-//   console.log("CLASES:", response.json());
-//   if (!response.ok) {
-//     throw new Error('Error al obtener las clases');
-//   }
-//   return response.json();
-// };
-
 export const fetchClases = async (page = 1, limit = 10) => {
-  try {
-    const response = await fetch(
-      `${apiUrl}/clases?page=${page}&limit=${limit}`
-    );
-    if (!response.ok) {
-      throw new Error(
-        `Error al obtener las clases: ${response.status} ${response.statusText}`
-      );
-    }
-    const data = await response.json();
-    console.log("CLASES:", data);
-    return data;
-  } catch (error) {
-    console.error("Error en fetchClases:", error);
-    throw error;
-  }
-};
-
-export const searchClases = async (
-  params: ISearchParams
-): Promise<ISearchResult[]> => {
-  try {
-    const response = await fetch(`${apiUrl}/clases/search`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(params),
-    });
-
-    if (response.status === 404) {
-      console.warn("No se encontraron clases para los parámetros dados.");
-      return []; // Retornamos un array vacío para manejarlo en el frontend
-    }
+  const response = await fetch(`${apiUrl}/clases?page=${page}&limit=${limit}`); // es nesecasio poner el page y el limit x como esta configurado el back, si no se rompe xq al no pasarlo pone de skip null o undefides y si o si tiene q ser nuemrico
 
     if (!response.ok) {
-      console.error(`Error en la API: ${response.statusText}`);
-      return []; // Devuelve un array vacío para evitar propagar el error
+      throw new Error('Error al obtener las clases');
     }
+    return response.json();
+  };
+  
+  export const searchClases = async (params: ISearchParams): Promise<ISearchResult[]> => {
+    try {
+      const response = await fetch(`${apiUrl}/clases/search`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(params),
+      });
+  
+      if (response.status === 404) {
+        console.warn("No se encontraron clases para los parámetros dados.");
+        return []; // Retornamos un array vacío para manejarlo en el frontend
+      }
+  
+      if (!response.ok) {
+        console.error(`Error en la API: ${response.statusText}`);
+        return []; // Devuelve un array vacío para evitar propagar el error
+      }
+  
+      const data: ISearchResult[] = await response.json();
+      return data;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Error al buscar clases:", error.message);
+      } else {
+        console.error("Error desconocido al buscar clases");
+      }
+      return []; // Manejamos cualquier error devolviendo un array vacío
+    }
+  };
 
-    const data: ISearchResult[] = await response.json();
-    return data;
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.error("Error al buscar clases:", error.message);
-    } else {
-      console.error("Error desconocido al buscar clases");
-    }
-    return []; // Manejamos cualquier error devolviendo un array vacío
-  }
-};

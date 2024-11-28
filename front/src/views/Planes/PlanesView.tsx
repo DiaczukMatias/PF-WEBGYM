@@ -10,7 +10,6 @@ export const planes = [
     description:
       "Nuestro Plan Pro ofrece entrenamientos avanzados y asesoramiento personalizado en nutrición para ayudarte a alcanzar tus objetivos más rápido. ¡Regístrate ahora!",
     features: [
-      "Acceso a todos nuestros videos de ejercicios",
       "Seguimiento de progreso",
       "Comunidad en línea de apoyo",
       "Planes de entrenamiento avanzados y personalizados",
@@ -27,7 +26,6 @@ export const planes = [
     description:
       "Nuestro Plan Básico es perfecto para aquellos que desean comenzar con el fitness, ofreciendo una forma simple y asequible de entrenar regularmente.",
     features: [
-      "Acceso a videos de ejercicios básicos",
       "Seguimiento de progreso",
       "Soporte de la comunidad",
       "Consejos básicos de nutrición",
@@ -44,7 +42,6 @@ export const planes = [
     description:
       "Crea tu propio plan personalizado según tus necesidades específicas. Perfecto para quienes desean un enfoque más personalizado en el fitness y la nutrición.",
     features: [
-      "Videos de entrenamiento personalizados",
       "Asesoramiento nutricional personalizado",
       "Seguimiento de progreso personalizado",
       "Sesiones de coaching uno a uno",

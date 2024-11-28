@@ -4,13 +4,14 @@ import React, { useState } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { IClase } from "@/interfaces/IClase";
-import { suspendClase } from "@/helpers/Fetch/FetchClases";
+import { suspendClase } from "@/helpers/Fetch/FetchSuspend";
 
 interface ClassCardProps {
   clase: IClase;
 }
 
 const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
+
   const {
     nombre,
     descripcion,
@@ -156,12 +157,8 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
       </div>
 
       <div className="flex justify-center items-center">
-        <button
-          className="flex justify-center items-center m-2 p-2 text-white"
-          onClick={() => (window.location.href = `/clases`)}
-        >
-          Ver Todas las clases
-        </button>
+      
+      
       </div>
     </div>
   );

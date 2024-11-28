@@ -62,27 +62,27 @@ const Checkout: React.FC = () => {
 
   const selectedPlan = planes.find((plan) => plan.id === planId);
 
-  // const handlePayment = async () => {
-  //   try {
-  //     const response = await fetch("pay/success/checkout/session", {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //     });
+  /*const handlePayment = async () => {
+    try {
+      const response = await fetch("pay/success/checkout/session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
 
-  //     if (!response.ok) {
-  //       throw new Error("Failed to create checkout session");
-  //     }
+      if (!response.ok) {
+        throw new Error("Failed to create checkout session");
+      }
 
-  //     const data = await response.json();
-  //     if (data.url) {
-  //       window.location.href = data.url;
-  //     } else {
-  //       throw new Error("No checkout URL returned");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error al redirigir a Stripe:", error);
-  //   }
-  // };
+      const data = await response.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error("No checkout URL returned");
+      }
+    } catch (error) {
+      console.error("Error al redirigir a Stripe:", error);
+    }
+  };*/
 
   if (!selectedPlan) {
     return <p>Plan no encontrado</p>;

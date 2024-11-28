@@ -20,4 +20,5 @@ export interface IPerfilProfesor {
    certificacion?: string;
    imagen?: string;
    usuarioId: IUsuario["id"];
+   clases?: IClase[];
 }
