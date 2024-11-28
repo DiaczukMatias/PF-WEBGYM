@@ -13,7 +13,7 @@ export interface IClase {
   categoria?: ICategoria; // Categoría a la que pertenece la clase (opcional)
   inscripciones?: IInscripcion[]; //nuevo
   perfilProfesor?: IPerfilProfesor | IProfesor;  //IProfesor puede ser // cada clase tiene 1 profesor pero cada rpofesor puede tener multiples clases
-  estado?: "activa" | "suspendida";   //  ver de q al hacer los get de clases filtrarlas y mostrar solo las activas
+  activo?: boolean;  
 }
 
 export interface ICrearClase {
