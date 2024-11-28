@@ -51,8 +51,6 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
     setLoading(true);
     try {
       await suspendClase(id);
-
-      window.location.href = "/clases";
     } catch (error) {
       setLoading(false);
       console.error("Error al suspender la clase:", error);
@@ -114,7 +112,7 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
           {mostrarBotonEditarClase && estado !== "suspendida" && (
             <div className="mt-4  flex justify-center">
               <button
-                className="m-2 p-2 border rounded-lg border-white text-white"
+                className="submitButtonSuspend"
                 onClick={showSuspendConfirmation}
               >
                 Suspender Clase

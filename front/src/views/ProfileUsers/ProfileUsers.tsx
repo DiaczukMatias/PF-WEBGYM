@@ -21,7 +21,7 @@ const ProfileUser: React.FC = () => {
   
   const [activeTab, setActiveTab] = useState<"MIS_CLASES" | "PLAN_ACTUAL">("MIS_CLASES");
   const [userClasses, setUserClasses] = useState<IClase[] | null>(null);
-  const [membership, setMembership] = useState<IMembresia | null>(null);
+  const [membresia, setMembresia] = useState<IMembresia | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const database = true; // Cambia esto entre true/false según la necesidad
@@ -35,7 +35,7 @@ const ProfileUser: React.FC = () => {
         const usuario= session.user ;
 
         // Asignamos la membresía si existe
-        setMembership(usuario.membresia || null);
+        setMembresia(usuario.membresia || null);
 
         //  clases a las que el usuario está inscrito
         const clasesInscritas: IClase[] | null = 
@@ -45,7 +45,7 @@ const ProfileUser: React.FC = () => {
       }
     } else {
       // Si no hay base de datos (cuando database = false), usamos los datos temporales
-      setMembership({
+      setMembresia({
         id: "1",
         nombre: "PRO PLAN",
         precio: 99,
@@ -150,13 +150,12 @@ const ProfileUser: React.FC = () => {
         {activeTab === "MIS_CLASES" ? renderClasses() : (
           <div className={styles.plan}>
             <button  onClick={() => (window.location.href = `/miMembrasia`)} className={styles.membershipCard}>
-            <h3>{membership?.nombre || "No tienes plan activo"}</h3>
-            <p>{membership ? `$${membership.precio} USD` : "Hazte socio para poder disfrutar de nuestras clases y todos los beneficios"}</p>
+            <h3>{membresia?.nombre || "No tienes plan activo"}</h3>
+            <p>{membresia ? `$${membresia.precio} USD` : "Hazte socio para poder disfrutar de nuestras clases y todos los beneficios"}</p>
             <p >
-              {membership ? (
+              {membresia ? (
                 <>
-                  Vence: {new Date(membership.fechaExpiracion).toLocaleDateString()}
-                </>
+               Vence: {membresia.fechaExpiracion ? new Date(membresia.fechaExpiracion).toLocaleDateString() : "Fecha no disponible"}                </>
               ) : ("")}
             </p>
            
@@ -165,7 +164,7 @@ const ProfileUser: React.FC = () => {
               className={styles.changeplan}
               onClick={() => (window.location.href = `/planes`)}
             >
-              {membership ? "Si te gustaría cambiar de plan haz clic aquí" : "Ver planes"}
+              {membresia ? "Si te gustaría cambiar de plan haz clic aquí" : "Ver planes"}
             </button>
             </div>
         )}
