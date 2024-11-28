@@ -6,5 +6,6 @@ export interface ICategoria {
   id: string;
   nombre: string;
   clases?: IClase[];
-  estado?: "activa" | "suspendida";   
+  activo?: boolean;  
+
 }

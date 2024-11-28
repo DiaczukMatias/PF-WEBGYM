@@ -158,19 +158,9 @@ const ProfileProfesor: React.FC = () => {
   const renderAlumnos = () => {
     if (!userAlumnos || userAlumnos.length === 0) {
       return (
-        <div>
+       
           <div className=" m-4 p-4">
-            <p className="flex0 justify-center  text-center mt-4">No tienes ninguna clase.</p>
-            <p className="flex text-center  justify-center m-2">  Crea tus clases:</p></div>
-
-          <div className="flex justify-center items-center m-4">
-            <button
-              className="submitButton .submitButton:hover"
-              onClick={() => window.location.href = `/crearClase`}
-            >
-              Crear Clase
-            </button>
-          </div>
+            <p className="flex0 justify-center  text-center mt-4">No tienes ningun inscripto a tus clases.</p>
         </div>
       );
     }
