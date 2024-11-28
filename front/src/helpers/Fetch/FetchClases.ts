@@ -67,8 +67,8 @@ export const fetchClaseById = async (id: string): Promise<IClase> => {
   return response.json();
 };
 
-export const fetchClases = async (page = 1, limit = 10) => {
-  const response = await fetch(`${apiUrl}/clases?page=${page}&limit=${limit}`); // es nesecasio poner el page y el limit x como esta configurado el back, si no se rompe xq al no pasarlo pone de skip null o undefides y si o si tiene q ser nuemrico
+export const fetchClases = async () => {
+  const response = await fetch(`${apiUrl}/clases/activas`,); // es nesecasio poner el page y el limit x como esta configurado el back, si no se rompe xq al no pasarlo pone de skip null o undefides y si o si tiene q ser nuemrico
 
     if (!response.ok) {
       throw new Error('Error al obtener las clases');
@@ -82,6 +82,7 @@ export const fetchClases = async (page = 1, limit = 10) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          
         },
         body: JSON.stringify(params),
       });

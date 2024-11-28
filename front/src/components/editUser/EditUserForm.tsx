@@ -12,23 +12,22 @@ const EditUserForm: React.FC = () => {
     nombre: "",
     email: "",
     image: null,
-    edad: 0,
-    telefono: 0,
-  }); // Datos del usuario
+    edad: "",
+    telefono: "",
+    contrasena: "", // Nuevo campo para contraseña
+  });
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [errors, setErrors] = useState<IEditUserErrors>({});
   const [inputBlur, setInputBlur] = useState<Partial<IEditUserProps>>({});
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false); // Estado para el envío
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Obtener ID del usuario desde la URL
   useEffect(() => {
     const pathname = window?.location?.pathname;
     const extractedId = pathname.split("/").pop() || "";
-    console.log("ID extraído de la URL:", extractedId)
     setId(extractedId);
   }, []);
 
-  // Obtener datos del usuario al montar el componente
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -37,9 +36,10 @@ const EditUserForm: React.FC = () => {
           setDataUser({
             nombre: usuarioXId.nombre,
             email: usuarioXId.email,
-            image: null, // La imagen no se usa actualmente
+            image: usuarioXId.image || null,
             edad: usuarioXId.edad,
             telefono: usuarioXId.telefono,
+            contrasena: "", // Contraseña vacía inicialmente
           });
         }
       } catch (error) {
@@ -55,13 +55,11 @@ const EditUserForm: React.FC = () => {
     fetchUserData();
   }, [id]);
 
-  // Validar formulario cuando cambien los datos
   useEffect(() => {
     const validationErrors = validateEditUserForm(dataUser);
     setErrors(validationErrors);
   }, [dataUser]);
 
-  // Habilitar o deshabilitar el botón de envío
   useEffect(() => {
     setIsSubmitDisabled(Object.keys(errors).length > 0 || isSubmitting);
   }, [errors, isSubmitting]);
@@ -72,6 +70,12 @@ const EditUserForm: React.FC = () => {
       ...dataUser,
       [name]: value,
     });
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      setImageFile(event.target.files[0]);
+    }
   };
 
   const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -91,22 +95,26 @@ const EditUserForm: React.FC = () => {
       return;
     }
 
-    const formattedDataUser = {
-      ...dataUser,
-      edad: Number(dataUser.edad),
-      telefono: Number(dataUser.telefono),
-    };
+    const formData = new FormData();
+    formData.append("nombre", dataUser.nombre);
+    formData.append("email", dataUser.email);
+    formData.append("edad", String(dataUser.edad));
+    formData.append("telefono", String(dataUser.telefono));
+    formData.append("contrasena", dataUser.contrasena); // Agregar contraseña al FormData
+    if (imageFile) {
+      formData.append("imagen", imageFile); // Añadimos la imagen
+    }
 
-    setIsSubmitting(true); // Desactivar el botón al iniciar el envío
+    setIsSubmitting(true);
 
     try {
-      await updateUser(id, formattedDataUser);
+      await updateUser(id, formData);
       Swal.fire("Éxito", "Usuario actualizado correctamente", "success");
     } catch (error) {
       console.error("Error al actualizar usuario:", error);
       Swal.fire("Error", "Hubo un error al actualizar el usuario", "error");
     } finally {
-      setIsSubmitting(false); // Reactivar el botón después del envío
+      setIsSubmitting(false);
     }
   };
 
@@ -115,7 +123,6 @@ const EditUserForm: React.FC = () => {
       <div className={styles.formContainer}>
         <h2 className={styles.h2}>Editar Perfil</h2>
         <form onSubmit={handleSubmit}>
-          {/* Nombre */}
           <div>
             <label htmlFor="name" className={styles.label}>Nombre</label>
             <input
@@ -132,8 +139,6 @@ const EditUserForm: React.FC = () => {
               <span className={styles.errorMessage}>{errors.nombre}</span>
             )}
           </div>
-
-          {/* Email */}
           <div>
             <label htmlFor="email" className={styles.label}>Email</label>
             <input
@@ -150,8 +155,17 @@ const EditUserForm: React.FC = () => {
               <span className={styles.errorMessage}>{errors.email}</span>
             )}
           </div>
-
-          {/* Teléfono */}
+          <div>
+            <label htmlFor="image" className={styles.label}>Imagen</label>
+            <input
+              id="image"
+              name="imagen"
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className={styles.inputField}
+            />
+          </div>
           <div>
             <label htmlFor="telefono" className={styles.label}>Teléfono</label>
             <input
@@ -168,8 +182,6 @@ const EditUserForm: React.FC = () => {
               <span className={styles.errorMessage}>{errors.telefono}</span>
             )}
           </div>
-
-          {/* Edad */}
           <div>
             <label htmlFor="edad" className={styles.label}>Edad</label>
             <input
@@ -186,7 +198,22 @@ const EditUserForm: React.FC = () => {
               <span className={styles.errorMessage}>{errors.edad}</span>
             )}
           </div>
-
+          <div>
+            <label htmlFor="contrasena" className={styles.label}>Coloca tu contraseña para confirmar</label>
+            <input
+              id="contrasena"
+              name="contrasena"
+              type="password"
+              value={dataUser.contrasena}
+              onChange={handleChange}
+              onBlur={handleInputBlur}
+              placeholder="Contraseña"
+              className={styles.inputField}
+            />
+            {inputBlur.contrasena && errors.contrasena && (
+              <span className={styles.errorMessage}>{errors.contrasena}</span>
+            )}
+          </div>
           <button
             type="submit"
             disabled={isSubmitDisabled}

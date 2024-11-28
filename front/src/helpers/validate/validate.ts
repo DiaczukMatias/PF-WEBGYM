@@ -107,14 +107,16 @@ export  function validateRegisterForm(values: IRegisterProps): IRegisterErrors {
 }
 
 
-export  function validateEditUserForm(values: IEditUserProps): IEditUserErrors {
-  const errors: IRegisterErrors = {};
+export function validateEditUserForm(values: IEditUserProps): IEditUserErrors {
+  const errors: IEditUserErrors = {};
 
   // Validación del nombre
   if (!values.nombre) {
     errors.nombre = "El nombre es un campo obligatorio";
   } else if (values.nombre.length < 3) {
-    errors.nombre = "El nombre debe tener al menos 3 letras";
+    errors.nombre = "El nombre debe tener al menos 3 caracteres";
+  } else if (values.nombre.length > 80) {
+    errors.nombre = "El nombre no debe exceder los 80 caracteres";
   } else if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(values.nombre)) {
     errors.nombre = "El nombre no debe contener caracteres especiales";
   }
@@ -124,15 +126,12 @@ export  function validateEditUserForm(values: IEditUserProps): IEditUserErrors {
     errors.email = "El email es un campo obligatorio";
   } else if (!/\S+@\S+\.\S+/.test(values.email)) {
     errors.email = "El email no tiene un formato válido";
-  } 
-  /* else if (await emailExists(values.email)) {
-    errors.email = "El email ya está registrado";
-  }  */
+  }
 
   // Validación del teléfono
   if (!values.telefono) {
     errors.telefono = "El número de teléfono es un campo obligatorio";
-  } else if (!/^\d{9,12}$/.test(String(values.telefono))) {
+  } else if (!/^\d{9,12}$/.test(values.telefono)) {
     errors.telefono =
       "El número de teléfono debe ser numérico y tener entre 9 y 12 caracteres";
   }
@@ -140,11 +139,41 @@ export  function validateEditUserForm(values: IEditUserProps): IEditUserErrors {
   // Validación de la edad
   if (!values.edad) {
     errors.edad = "La edad es un campo obligatorio";
-  } else if (parseInt(String(values.edad)) < 13) {
-    errors.edad = "Debes ser mayor de 13 años para registrarte";
+  } else {
+    const edadNumerica = parseInt(values.edad, 10);
+    if (isNaN(edadNumerica)) {
+      errors.edad = "La edad debe ser un número válido";
+    } else if (edadNumerica < 13) {
+      errors.edad = "Debes ser mayor de 13 años para registrarte";
+    } else if (edadNumerica > 120) {
+      errors.edad = "La edad ingresada no es válida";
+    }
   }
 
-
+  // Validación de la imagen (opcional)
+  if (values.image) {
+    if (!(values.image instanceof File)) {
+      errors.image = "La imagen debe ser un archivo válido";
+    } else if (!["image/jpeg", "image/png"].includes(values.image.type)) {
+      errors.image = "Solo se permiten imágenes en formato JPEG o PNG";
+    } else if (values.image.size > 10 * 1024 * 1024) { // 10MB
+      errors.image = "La imagen no debe exceder los 10MB";
+    }
+  }
+  // Validación de la contraseña
+  if (!values.contrasena) {
+    errors.contrasena = "La contraseña es un campo obligatorio";
+  } else if (values.contrasena.length < 8) {
+    errors.contrasena = "La contraseña debe tener al menos 8 caracteres";
+  } else if (!/[A-Z]/.test(values.contrasena)) {
+    errors.contrasena = "La contraseña debe incluir al menos una letra mayúscula";
+  } else if (!/[a-z]/.test(values.contrasena)) {
+    errors.contrasena = "La contraseña debe incluir al menos una letra minúscula";
+  } else if (!/[0-9]/.test(values.contrasena)) {
+    errors.contrasena = "La contraseña debe incluir al menos un número";
+  } else if (!/[\W_]/.test(values.contrasena)) {
+    errors.contrasena = "La contraseña debe incluir al menos un carácter especial";
+  }
 
   return errors;
 }
