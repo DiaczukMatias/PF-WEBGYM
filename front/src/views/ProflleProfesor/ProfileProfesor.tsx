@@ -47,16 +47,32 @@ const ProfileProfesor: React.FC = () => {
             return;
           }
 
-         // Obtener las clases del profesor usando perfilProfesorId
-        // const fetchedClasesProfesor = await fetchClasesPorProfesor(perfilProfesorId);
-        // console.log('Clases del profesor:', fetchedClasesProfesor);
-
            // Guardar las clases en el estado
            setUserClasses(clasesProfesor);
            setError(null); // Limpiar errores
  
-     //   const fetchedAlumnosProfesor = await  /// falta fetch de obtener inscritos a las clases de un profesor ///
-         //  setUserAlumnos(fetchedAlumnosProfesor); // aca cambiarlo x la respuesta del fetch de los incritos
+             // Aquí vamos a almacenar todos los usuarios inscritos junto con la clase
+        const usuariosInscritos: IUsuario[] = [];
+
+        clasesProfesor.forEach((clase) => {
+          if (clase.inscripciones && clase.inscripciones.length > 0) {
+            clase.inscripciones.forEach((inscripcion) => {
+              if (inscripcion.usuario && inscripcion.usuario.length > 0) {
+                inscripcion.usuario.forEach((usuario) => {
+                  // Asociamos cada usuario con el nombre de la clase
+                  usuariosInscritos.push({
+                    ...usuario,
+                    clase: clase.nombre,  // Añadimos el nombre de la clase
+                  });
+                });
+              }
+            });
+          }
+        });
+
+        // Actualizar el estado con los usuarios inscritos
+        setUserAlumnos(usuariosInscritos);
+        setError(null); // Limpiar cualquier error
 
           } catch (error) {
             console.error('Error al obtener datos del backend:', error);
@@ -180,6 +196,7 @@ const ProfileProfesor: React.FC = () => {
                   <p className={styles.classProfessor}>
                     {usuario.edad}
                   </p>
+                  <p className={styles.classProfessor}>{usuario.clase}</p>
                 </div>
               </div>
               <hr className={styles.separator} />
