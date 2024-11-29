@@ -5,6 +5,7 @@ import { JWT } from 'next-auth/jwt';//no quitar sino rompe algo en route
 import { IInscripcion } from '@/interfaces/IInscripcion';
 import { IMembresia } from '@/interfaces/IMembresia';
 import { IClase } from '@/interfaces/IClase';
+import { IPerfilProfesor } from '@/interfaces/IProfesor';
 
 declare module 'next-auth' {
   interface User {
@@ -25,7 +26,7 @@ declare module 'next-auth' {
       fechaActualizacion: Date;
       activo: boolean;
       usuario?: IUsuario;
-      inscripciones?: IInscripcion[]; } | know; 
+      inscripciones?: IInscripcion[]; }[] | know; 
     inscripciones?: { id: string;
       fechaInscripcion: Date;
       fechaVencimiento: Date;

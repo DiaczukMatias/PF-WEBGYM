@@ -5,11 +5,13 @@ export interface IMembresia {
     id: string;
     nombre: string;
     precio: number;
-    duracionEnMeses: number;
-    fechaCreacion: Date;
-    fechaExpiracion: Date;
-    fechaActualizacion: Date;
-    activo: boolean;
+    descripcion?: string;
+    features?: string[];
+    duracionEnMeses?: number;
+    fechaCreacion?: Date | string;
+    fechaExpiracion?: Date | string;
+    fechaActualizacion?: Date | string;
+    activo?: boolean;  // Si es true, la membresía está disponible para nuevos usuarios
     usuario?: IUsuario;
     inscripciones?: IInscripcion[];
 }

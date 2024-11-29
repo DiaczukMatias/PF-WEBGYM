@@ -8,8 +8,10 @@ import { FaSpinner } from "react-icons/fa";
 import styles from "./Navbar.module.css";
 import Searchbar from "../SearchBar/SearchBar";
 
+
 const Navbar = () => {
   const { data: session, status } = useSession();
+ 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const userName = session?.user?.name || "Usuario";
   const isLogged = status === "authenticated";
@@ -67,6 +69,7 @@ const Navbar = () => {
             </>
           ) : (
             <>
+            
               <Link
                 href="/clases"
                 className="text-secondary hover:text-[#b6ff04] transition-colors duration-300"
@@ -98,6 +101,15 @@ const Navbar = () => {
                       >
                       Mi Perfil
                       </Link>
+                      {esAdmin && (
+                      <Link
+                        href="/admin"
+                        className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
+                      >
+                       DASHBOARD ADMINISTRADOR
+                      </Link>
+                    )}
+                    
                      {(esCliente || esProfesor) && (
                     <Link
                       href="/agenda"
@@ -128,6 +140,14 @@ const Navbar = () => {
             </>
           )}
           <Searchbar />
+        </div>
+        <div>
+        <button
+          className="flex justify-end items-end m-2 p-2 text-white"
+          onClick={() => window.history.back()}
+        >
+          Volver
+        </button>
         </div>
       </div>
     </nav>

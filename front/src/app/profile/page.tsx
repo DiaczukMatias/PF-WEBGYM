@@ -1,5 +1,5 @@
 "use client"
-import ProfileProfesor from "@/views/Proflle/ProfileProfesor";
+import ProfileProfesor from "@/views/ProflleProfesor/ProfileProfesor";
 import React from "react";
 import { useSession} from "next-auth/react";
 import ProfileUsers from "@/views/ProfileUsers/ProfileUsers";
@@ -8,7 +8,7 @@ import ProfileAdmin from "@/views/ProfileAdmin/ProfileAdmin";
 const Profile :React.FC = () => {
 
   const { data: session } = useSession();
-
+  console.log('sesssion user: ', session?.user);
   const rolUsuario = session?.user?.rol;
   const esCliente = rolUsuario === "cliente" ;
   const esAdmin = rolUsuario === "admin";

@@ -1,5 +1,54 @@
-import { ICrearClase } from "@/interfaces/IClase"; // Importar la interfaz para validar
+import { IClase, ICrearClase } from "@/interfaces/IClase"; // Importar la interfaz para validar
+import { fetchClases } from "@/helpers/Fetch/FetchClases"; // Importar la función fetchClases
 
+export const validateCrearClase = async (clase: ICrearClase) => {
+  const errores: { [key: string]: string } = {};
+
+  // Validación del nombre (al menos 3 caracteres)
+  if (!clase.nombre || clase.nombre.length < 3) {
+    errores.nombre = "El nombre debe tener al menos 3 caracteres.";
+  }
+
+  // Validación de la descripción (obligatoria)
+  if (!clase.descripcion) {
+    errores.descripcion = "La descripción es obligatoria.";
+  }
+
+  // Validación de la fecha (obligatoria)
+  if (!clase.fecha) {
+    errores.fecha = "La fecha es obligatoria.";
+  }
+
+  // Validación de la categoría (obligatoria)
+  if (!clase.categoriaId) {
+    errores.categoriaId = "Selecciona una categoría.";
+  }
+
+  // Validación del profesor (obligatorio)
+  if (!clase.perfilProfesorId) {
+    errores.perfilProfesorId = "Selecciona un profesor.";
+  }
+
+  // Validación del nombre de la clase para no duplicarse
+  try {
+    const clasesExistentes : IClase[]= await fetchClases(); // Obtener las clases existentes
+    const nombreDuplicado = clasesExistentes.some(
+      (claseExistente) => claseExistente.nombre.toLowerCase() === clase.nombre.toLowerCase()
+    );
+
+    if (nombreDuplicado) {
+      errores.nombre = "Ya existe una clase con ese nombre.";
+    }
+  } catch (error) {
+    console.error("Error al verificar las clases existentes:", error);
+    errores.nombre = "Hubo un error al verificar si el nombre de la clase es único.";
+  }
+
+  return errores;
+};
+
+
+/*
 // Validar la información del formulario
 export const validateCrearClase = (nuevaClase: ICrearClase) => {
   const errores: { [key: string]: string } = {};
@@ -37,7 +86,7 @@ export const validateCrearClase = (nuevaClase: ICrearClase) => {
   } 
 
     // Validar imagen URL
-/*const isValidURL = (url: string): boolean => {
+const isValidURL = (url: string): boolean => {
     try {
       new URL(url);
       return true;
@@ -50,7 +99,7 @@ export const validateCrearClase = (nuevaClase: ICrearClase) => {
     errores.imagen = "La URL de la imagen es obligatoria.";
   } else if (!isValidURL(nuevaClase.imagen)) {
     errores.imagen = "La URL de la imagen no es válida.";
-  }*/
+  }
 
   // Validar disponibilidad
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -61,3 +110,4 @@ export const validateCrearClase = (nuevaClase: ICrearClase) => {
 
   return errores;
 };
+*/

@@ -5,42 +5,50 @@ import { createClase } from "@/helpers/Fetch/FetchClases";
 import { ICrearClase } from "@/interfaces/IClase";
 import { ICategoria } from "@/interfaces/ICategory";
 import { getCategories } from "@/helpers/Fetch/FetchCategorias";
-import { useSession } from "next-auth/react";
+import { fetchPerfilProfesores } from "@/helpers/Fetch/FetchProfesores";
+import { IPerfilProfesor } from "@/interfaces/IProfesor";
 
 
 const CrearClaseForm: React.FC = () => {
   const [categories, setCategories] = useState<ICategoria[]>([]);
-  const { data: session } = useSession();
-  const profesorId = session?.user?.id || "";
+  const [profesores, setProfesores] = useState<IPerfilProfesor[]>([]); // Para almacenar los profesores
 
-  console.log("Sesión actual:", session); // Para verificar si la sesión se carga correctamente
 
   const [nuevaClase, setNuevaClase] = useState<ICrearClase>({
     nombre: "",
     descripcion: "",
     fecha: "",
     categoriaId: "",
-    imagen: "/images/clases/zumba.jpg",
+    imagen: null ,
     disponibilidad: 1,
-    perfilProfesorId: profesorId, // Establecido desde la sesión
+    perfilProfesorId: "", 
   });
 
   const [errores, setErrores] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchCategoriesYProfesores = async () => {
       try {
-        const data = await getCategories();
-        console.log("Categorías obtenidas:", data); // Para verificar si las categorías se cargan correctamente
-        setCategories(data);
+        const categoriasData = await getCategories();
+        console.log("Categorías obtenidas:", categoriasData); // Para verificar si las categorías se cargan correctamente
+        const profesoresData = await fetchPerfilProfesores(); // Llamar a la función para obtener los profesores
+        setCategories(categoriasData);
+        setProfesores(profesoresData);
+        console.log("profesoresdata:",profesoresData)
+        console.log("categoriesdata:", categoriasData)
+
       } catch (error) {
-        console.error("Error al obtener las categorías:", error);
+        console.error("Error al obtener las categorías o perfil profesores:", error);
       }
     };
-    fetchCategories();
-  }, []);
+    
+    fetchCategoriesYProfesores();
+  }, []);    
 
-  const handleChange = (
+
+
+
+  const handleChange = async (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
@@ -52,7 +60,7 @@ const CrearClaseForm: React.FC = () => {
     }));
 
     // Validar el campo actualizado
-    const nuevosErrores = validateCrearClase({
+    const nuevosErrores = await validateCrearClase({
       ...nuevaClase,
       [name]: value,
     });
@@ -62,12 +70,29 @@ const CrearClaseForm: React.FC = () => {
       [name]: nuevosErrores[name] || "",
     }));
   };
-
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 10 * 1024 * 1024) { // 10MB
+        setErrores((prevErrores) => ({
+          ...prevErrores,
+          imagen: "El archivo es demasiado grande (máximo 10MB).",
+        }));
+        return;
+      }
+      setNuevaClase((prevClase) => ({
+        ...prevClase,
+        imagen: file,
+      }));
+      setErrores((prevErrores) => ({ ...prevErrores, imagen: "" }));
+    }
+  };
+  
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log("Datos enviados:", nuevaClase); // Verificar qué datos se envían
-    const nuevosErrores = validateCrearClase(nuevaClase);
+    console.log("Datos enviados: ", nuevaClase); // Verificar qué datos se envían
+    const nuevosErrores = await validateCrearClase(nuevaClase);
     setErrores(nuevosErrores);
     console.log("Errores de validación:", nuevosErrores); // Mostrar los errores de validación si existen
 
@@ -76,20 +101,38 @@ const CrearClaseForm: React.FC = () => {
     }
 
     try {
-      await createClase(nuevaClase);
+      	//damos el formato correcto para enviar archivos
+        const formData = new FormData();
+        formData.append("nombre", nuevaClase.nombre);
+    formData.append("descripcion", nuevaClase.descripcion);
+    formData.append("fecha", new Date(nuevaClase.fecha).toISOString())
+    formData.append("categoriaId", nuevaClase.categoriaId);
+    formData.append("disponibilidad", nuevaClase.disponibilidad.toString());
+    formData.append("perfilProfesorId", nuevaClase.perfilProfesorId);
+    if (nuevaClase.imagen instanceof File) {
+      formData.append("imagen", nuevaClase.imagen);
+    }
+
+    const response = await createClase(formData);
+    if (!response.ok) {
+      throw new Error("Error al crear la clase");
+    }
       alert("Clase creada con éxito");
       setNuevaClase({
         nombre: "",
         descripcion: "",
         fecha: "",
         categoriaId: "",
-        imagen: "/images/clases/zumba.jpg",
+        imagen: null,
         disponibilidad: 1,
-        perfilProfesorId: profesorId,
+        perfilProfesorId: "",
       });
       setErrores({});
     } catch (error) {
       console.error("Error al crear la clase:", error);
+      console.log("Datos a enviar:", nuevaClase);
+console.log("Errores de validación:", errores);
+
       alert("Error al crear la clase");
     }
   };
@@ -99,7 +142,7 @@ const CrearClaseForm: React.FC = () => {
       <h1 className="text-2xl font-bold mb-6 text-center text-accent font-OswaldSans-serif">
         CREAR CLASE
       </h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} >
         <div className="mb-4">
           <label htmlFor="nombre" className="block text-sm font-medium">
             Nombre:
@@ -177,22 +220,52 @@ const CrearClaseForm: React.FC = () => {
           )}
         </div>
 
-     {/*   <div className="mb-4">
-          <label htmlFor="imagen" className="block text-sm font-medium">
-            Imagen URL:
+        <div className="mb-4">
+  <label htmlFor="imagen" className="block text-sm font-medium">
+    Seleccionar imagen:
+  </label>
+  <input
+    type="file"
+    id="imagen"
+    name="imagen"
+    accept="image/*"
+    onChange={handleFileChange}
+    className="mt-1 p-2 w-full border border-gray-300 rounded-md bg-transparent"
+  />
+  {errores.imagen && <div className="text-red-500 text-sm mt-1">{errores.imagen}</div>}
+</div>
+
+
+
+<div className="mb-4">
+          <label htmlFor="perfilProfesorId" className="block text-sm font-medium">
+            Seleccionar Profesor:
           </label>
-          <input
-            type="text"
-            id="imagen"
-            name="imagen"
-            value= {nuevaClase.imagen}
+          <select
+            id="perfilProfesorId"
+            name="perfilProfesorId"
+            value={nuevaClase.perfilProfesorId}
             onChange={handleChange}
-            placeholder="URL de la imagen"
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md bg-transparent"
-          />
-          {errores.imagen && <div className="text-red-500 text-sm mt-1">{errores.imagen}</div>}
+            className="mt-1 p-2 w-full border border-white rounded-md bg-transparent text-white hover:border-green-500 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-opacity-50"
+          >
+            <option value="" className="bg-gray-700 text-white">
+              Selecciona un profesor
+            </option>
+            {profesores.map((profesores) => (
+              <option
+                key={profesores.id}
+                value={profesores.id}
+                className="bg-transparent text-white hover:text-green-500"
+              >
+                {profesores.nombre}
+              </option>
+            ))}
+          </select>
+          {errores.perfilProfesorId && (
+            <div className="text-red-500 text-sm mt-1">{errores.perfilProfesorId}</div>
+          )}
         </div>
-*/}
+
         <div className="mb-4">
           <label htmlFor="disponibilidad" className="block text-sm font-medium">
             Cupos disponibles:
@@ -220,7 +293,8 @@ const CrearClaseForm: React.FC = () => {
               !nuevaClase.descripcion ||
               !nuevaClase.fecha ||
               !nuevaClase.categoriaId ||
-              !nuevaClase.imagen
+              !nuevaClase.imagen||
+              !nuevaClase.perfilProfesorId
             }
           >
             Crear Clase

@@ -4,13 +4,14 @@ import React, { useState } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { IClase } from "@/interfaces/IClase";
-import { suspendClase } from "@/helpers/Fetch/FetchClases";
+import { suspendClase } from "@/helpers/Fetch/FetchSuspend";
 
 interface ClassCardProps {
   clase: IClase;
 }
 
 const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
+
   const {
     nombre,
     descripcion,
@@ -20,7 +21,7 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
     perfilProfesor,
     disponibilidad,
     id,
-    estado,
+    activo,
   } = clase;
 
   const { data: session } = useSession();
@@ -50,8 +51,6 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
     setLoading(true);
     try {
       await suspendClase(id);
-
-      window.location.href = "/clases";
     } catch (error) {
       setLoading(false);
       console.error("Error al suspender la clase:", error);
@@ -110,10 +109,10 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
             )}
           </div>
 
-          {mostrarBotonEditarClase && estado !== "suspendida" && (
+          {mostrarBotonEditarClase && activo === true && (
             <div className="mt-4  flex justify-center">
               <button
-                className="m-2 p-2 border rounded-lg border-white text-white"
+                className="submitButtonSuspend"
                 onClick={showSuspendConfirmation}
               >
                 Suspender Clase
@@ -121,10 +120,10 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
             </div>
           )}
 
-          {mostrarBotonEditarClase && estado === "suspendida" && (
+          {mostrarBotonEditarClase && activo === false && (
             <div className="mt-4  flex justify-center">
               <button
-                className="m-2 p-2 border rounded-lg border-green-700 text-green-700"
+                className="submitButton"
                 onClick={showSuspendConfirmation}
               >
                 Activar Clase
@@ -156,12 +155,8 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
       </div>
 
       <div className="flex justify-center items-center">
-        <button
-          className="flex justify-center items-center m-2 p-2 text-white"
-          onClick={() => (window.location.href = `/clases`)}
-        >
-          Ver Todas las clases
-        </button>
+      
+      
       </div>
     </div>
   );

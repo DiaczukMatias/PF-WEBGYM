@@ -9,4 +9,5 @@ export interface IInscripcion {
     clase?: IClase[];
     membresia?: IMembresia[];
     usuario?: IUsuario[];
+    estado?: "activa" | "inactiva"
 }

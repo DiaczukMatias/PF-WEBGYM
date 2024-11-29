@@ -5,6 +5,7 @@ import { ILoginProps } from "@/interfaces/ILogin";
 import { FetchError } from "@/interfaces/IErrors";
 import { Token } from "../accestoke";
 
+
 //funcion para manejerar tipo de error
 function isFetchError(error: unknown): error is FetchError {
   return (
@@ -25,7 +26,7 @@ const authHeader = () => ({
   Authorization: `Bearer ${Token}`,
   'Content-Type': 'application/json',
 });
-
+console.log('Authorization para rutas  protegidas: ',authHeader().Authorization);
 // Funciones para cada operación HTTP
 
 // 1. Iniciar sesión (No protegida)
@@ -114,7 +115,7 @@ export const registerPost = async (userData: IRegisterProps) => {
 export const fetchUsers = async (page = 1, limit = 5) => {
   try {
     const response = await fetch(`${apiUrl}/usuarios?page=${page}&limit=${limit}`, {
-      headers: authHeader(),
+      headers: {"Content-Type": "application/json"},
     });
 
     if (!response.ok) throw new Error(await response.text());
@@ -130,9 +131,40 @@ export const fetchUsers = async (page = 1, limit = 5) => {
 
 // 4. Obtener un usuario por ID (Protegida, solo admin)
 export const fetchUserById = async (id: string) => {
+  console.log('ID en la funcion fetchUserById ' + id );
+  
+  if (!id) {
+    throw new Error("El ID proporcionado es inválido");
+  }
   try {
     const response = await fetch(`${apiUrl}/usuarios/${id}`, {
-      headers: authHeader(),
+      headers: {"Content-Type": "application/json"},
+    });
+    console.log(`URL Fetch: ${apiUrl}/usuarios/${id}`);
+    
+    
+    if (!response.ok) throw new Error(await response.text());
+
+    return await response.json();
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+    console.error(`Error al obtener el usuario con ID ${id}:`, error.message);
+    console.error('el id con el que se intenta fetchear es: '+id)
+    console.error("URL completa:", `${apiUrl}/usuarios/${id}`);
+    throw error;}
+    return [];
+  }
+};
+
+// 5. Actualizar un usuario por ID (Protegida)
+export const updateUser = async (id: string, formData: FormData) => {
+  try {
+    const response = await fetch(`${apiUrl}/usuarios/${id}`, {
+      method: 'PUT',
+      headers: {
+       // Añade headers de autenticación si es necesario
+      },
+      body: formData, // Usar FormData directamente
     });
 
     if (!response.ok) throw new Error(await response.text());
@@ -140,31 +172,12 @@ export const fetchUserById = async (id: string) => {
     return await response.json();
   } catch (error: unknown) {
     if (error instanceof Error) {
-    console.error(`Error al obtener el usuario con ID ${id}:`, error.message);
-    throw error;}
-    return [];
+      console.error(`Error al actualizar el usuario con ID ${id}:`, error.message);
+      throw error;
+    }
   }
 };
 
-// 5. Actualizar un usuario por ID (Protegida)
-export const updateUser = async (id: string, updatedUser: IUsuario) => {
-  try {
-    const response = await fetch(`${apiUrl}/usuarios/${id}`, {
-      method: 'PUT',
-      headers: authHeader(),
-      body: JSON.stringify(updatedUser),
-    });
-
-    if (!response.ok) throw new Error(await response.text());
-
-    return await response.json();
-  } catch (error: unknown) {
-    if (error instanceof Error){
-    console.error(`Error al actualizar el usuario con ID ${id}:`, error.message);
-    throw error;}
-    return [];
-  }
-};
 
 // 6. Eliminar un usuario por ID (Protegida)
 export const deleteUser = async (id: string) => {

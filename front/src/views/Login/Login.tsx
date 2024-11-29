@@ -5,8 +5,9 @@ import { validateLoginForm } from "@/helpers/validate/validate";
 import styles from "./Login.module.css";
 import { ILoginProps, ILoginErrors } from "@/interfaces/ILogin";
 import Swal from "sweetalert2";
-import { signIn } from "next-auth/react";
+
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 const LoginView: React.FC = () => {
   const initialState = { email: "", contrasena: "" };
