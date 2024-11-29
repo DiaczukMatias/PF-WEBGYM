@@ -1,6 +1,17 @@
 import { IClase } from "@/interfaces/IClase";
 import { ISearchParams, ISearchResult } from "@/interfaces/ISearch";
 import { Token } from "../accestoke";
+import { FetchError } from "@/interfaces/IErrors";
+
+export function isFetchError(error: unknown): error is FetchError {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "message" in error &&
+    typeof (error as FetchError).message === "string"
+  );
+}
+
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -25,21 +36,33 @@ export const createClase = async (formData: FormData) => {
 
 
 // Fetch para actualizar una clase existente
-export const updateClase = async (id: string, updatedClase: IClase) => {
-  if (!Token) throw new Error("Usuario no autenticado");
-
+export const updateClase = async (id: string, updatedClase : FormData, accesToken :string) => {
+ 
+ 
+try {
   const response = await fetch(`${apiUrl}/clases/${id}`, {
     method: "PUT",
     headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${Token}`,
+      Authorization: `Bearer ${accesToken}`
     },
-    body: JSON.stringify(updatedClase),
+    body: updatedClase,
   });
   if (!response.ok) {
-    throw new Error("Error al actualizar la clase");
+    console.error('que recibo en mi objeto:', updateClase);
+    const errorResponse = await response.json(); // Captura la respuesta de error
+    const errorMessages = errorResponse.message || 'Ha ocurrido un error desconocido';
+    throw new Error(errorMessages); // Lanzamos un error con el mensaje del backend
   }
-  return response.json();
+  return await response.json(); // Si todo está bien, retornar los datos de la respuesta
+} catch (error: unknown) {
+  if (isFetchError(error)) {
+    console.error("Error al actualizar la clase:", error.message);
+    throw new Error(error.message); // Mostrar el error con mejor visibilidad
+  }
+  console.error("Error desconocido:", error);
+    throw new Error("Ha ocurrido un error desconocido");
+}
+  
 };
 
 export const suspendClase = async (id: string) => {
