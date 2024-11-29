@@ -1,0 +1,70 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&display=swap");
+
+.container {
+  font-family: "Oswald", sans-serif;
+  padding: 20px;
+}
+
+.title {
+  text-align: center;
+  font-size: 2rem;
+  margin: 20px 0;
+}
+
+.titleWhite {
+  color: white;
+}
+
+.titleGreen {
+  color: #b6ff04;
+}
+
+.filterButtonContainer {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+}
+
+.filterButton {
+  background-color: #1f2937;
+  color: #b6ff04;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.filterButton:hover {
+  background-color: #b6ff04;
+  color: #1f2937;
+}
+
+.filtersContainer {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.select {
+  padding: 8px;
+  border: 1px solid #b6ff04;
+  border-radius: 5px;
+}
+
+.clearButton {
+  background-color: #dc2626;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.clearButton:hover {
+  background-color: #b91c1c;
+}
+
+.errorText {
+  color: #dc2626;
+}

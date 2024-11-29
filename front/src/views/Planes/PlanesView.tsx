@@ -58,7 +58,7 @@ const PlanesView: React.FC = () => {
   const handleSelectPlan = async (planId: string) => {
     try {
       const response = await fetch(
-        `http://localhost:3010/stripe/create-checkout-session`,
+        `https://proyecto21a.onrender.com/stripe/create-checkout-session`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

@@ -2,7 +2,37 @@
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&display=swap");
 
 .title {
-  margin-top: 20px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  text-align: center;
+  font-size: 2rem;
+  font-family: "Oswald", sans-serif;
+  text-transform: uppercase;
+
+  padding-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.titleTwo {
+  margin-top: 150px;
+  margin-bottom: 30px;
+  text-align: center;
+  font-size: 2rem;
+  font-family: "Oswald", sans-serif;
+  text-transform: uppercase;
+
+  padding-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.title3 {
+  margin-top: 150px;
   margin-bottom: 30px;
   text-align: center;
   font-size: 2rem;
@@ -64,4 +94,19 @@
 .carrusel {
   border: 2px solid #b6ff04; /* Borde verde */
   border-radius: 8px; /* Bordes redondeados */
+}
+
+.newButton {
+  white-space: nowrap;
+  width: 10%;
+  padding: 0.75rem;
+  background-color: #b6ff04;
+  border: none;
+  color: #000000;
+  font-family: "oswald", sans-serif;
+  font-weight: bold;
+  font-size: 1rem;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }

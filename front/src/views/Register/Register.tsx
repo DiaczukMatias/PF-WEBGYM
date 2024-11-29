@@ -212,7 +212,7 @@ const RegisterView: React.FC = () => {
 
           <button
             type="submit"
-            // disabled={isSubmitDisabled}
+            disabled={isSubmitDisabled}
             className={styles.submitButton}
           >
             {isSubmitting ? "Enviando..." : "Registrarse"}
