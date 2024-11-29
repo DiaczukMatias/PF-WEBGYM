@@ -1,5 +1,5 @@
 "use client";
-
+import { createInscripcion } from "@/helpers/Fetch/FetchIncripciones";
 import React, { useState } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -26,7 +26,7 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
 
   const { data: session } = useSession();
   const rolUsuario = session?.user?.rol;
-  const profesorId = session?.user?.id || "";
+  const usuarioNombre = session?.user?.name || "";
   const token = session?.user?.accessToken ?? "";
 
   const formattedHorario = new Date(fecha).toLocaleString("es-ES", {
@@ -38,7 +38,7 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
     minute: "2-digit",
   });
 
-  const isClaseDelProfesor = perfilProfesor?.usuarioId === profesorId;
+  const isClaseDelProfesor = perfilProfesor?.nombre === usuarioNombre;
   const mostrarBotonInscribirse =
     rolUsuario === "cliente" ||
     (rolUsuario === "profesor" && !isClaseDelProfesor);
@@ -47,6 +47,10 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
 
   const [isSuspendConfirmVisible, setIsSuspendConfirmVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [inscripcionLoading, setInscripcionLoading] = useState(false); // Nuevo estado para manejar la carga de la inscripción
+  const [inscripcionError, setInscripcionError] = useState<string | null>(null); // Nuevo estado para manejar errores
+  const [inscripcionExito, setInscripcionExito] = useState<boolean | null>(null); // Estado para manejar el éxito de la inscripción
+
 
   const handleSuspendClass = async (estado: boolean) => {
     setLoading(true);
@@ -63,6 +67,26 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
 
   //const showSuspendConfirmation = () => setIsSuspendConfirmVisible(true);
   const cancelSuspend = () => setIsSuspendConfirmVisible(false);
+
+
+  // Función para manejar el evento de inscripción
+  const handleInscribirse = async () => {
+    setInscripcionLoading(true);
+    setInscripcionError(null); // Limpiar cualquier error previo
+    setInscripcionExito(null); // Limpiar el estado de éxito
+
+    const usuarioId = session?.user.id ?? ""
+    const claseId = clase.id
+    try {
+      await createInscripcion(usuarioId, claseId); // Usamos el ID del usuario y el ID de la clase
+      setInscripcionExito(true); // Inscripción exitosa
+    } catch (error) {
+      setInscripcionError("Error al inscribirse en la clase");
+      console.error("Error al inscribirse:", error);
+    } finally {
+      setInscripcionLoading(false);
+    }
+  };
 
   return (
     <div>
@@ -99,10 +123,19 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
 
           <div className="mt-4 flex justify-center ">
             {mostrarBotonInscribirse && (
-              <button className="submitButton .submitButton:hover ">
-                Inscribirse
+              <button className="submitButton .submitButton:hover "
+              onClick={handleInscribirse} // Llama a la función cuando se hace click
+              disabled={inscripcionLoading} // Deshabilita el botón mientras se procesa la inscripción 
+              >
+                {inscripcionLoading ? "Cargando..." : "Inscribirse"}
               </button>
             )}
+            {inscripcionExito && (
+            <p className="text-accent mt-2">¡Inscripción exitosa!</p>
+          )}
+          {inscripcionError && (
+            <p className="text-red-500 mt-2">{inscripcionError}</p>
+          )}
             {mostrarBotonEditarClase && (
               <button
                 className="submitButton .submitButton:hover"
