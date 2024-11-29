@@ -4,6 +4,7 @@ import styles from "./Planes.module.css";
 import { IMembresia } from "@/interfaces/IMembresia";
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { loadStripe } from "@stripe/stripe-js";
+import { desactivarMembresia } from '@/helpers/Fetch/FetchMembresias';
 
 interface PlanesProps {
     membresia: IMembresia[];
@@ -67,17 +68,18 @@ const PlanesCard: React.FC<PlanesProps> = ({membresia}) => {
       Math.min(prev + 1, membresia.length - itemsPerPage)
     );
   };
+  
 
-  const handleTogglePlan = async (/*id: string*/) => {
+  const handleTogglePlan = async (nombre: string) => {
     try {
-   /*   const updatedMembresia = await  ruta patch para suspender el plan;
+      const updatedMembresia = await  desactivarMembresia(nombre);
       setLocalPlan((prev) =>
         prev.map((membresia) =>
-          membresia.id === id
+          membresia.nombre === nombre
       ? { ...membresia, activo: updatedMembresia.activo }
             : membresia
         )
-      );*/
+      );
     } catch (error) {
       console.error('Error al cambiar el estado del plan', error);
     }
@@ -140,7 +142,7 @@ const PlanesCard: React.FC<PlanesProps> = ({membresia}) => {
                         Editar Plan
                       </button>
                       <button
-                      onClick={() => handleTogglePlan(/*membresia.id*/)}
+                      onClick={() => handleTogglePlan(membresia.nombre)}
                       className={`ml-4 ${
                         membresia.activo 
                           ? 'submitButtonSuspend'

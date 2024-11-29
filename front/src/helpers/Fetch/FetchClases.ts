@@ -83,7 +83,7 @@ export const fetchClases = async () => {
   return response.json();
 };
 
-export const searchClases = async (
+/*export const searchClases = async (
   params: ISearchParams
 ): Promise<ISearchResult[]> => {
   try {
@@ -101,7 +101,7 @@ export const searchClases = async (
     }
 
     return response.json();
-  };
+  };*/
   
   export const searchClases = async (params: ISearchParams): Promise<ISearchResult[]> => {
     try {
@@ -134,8 +134,7 @@ export const searchClases = async (
       }
       return []; // Manejamos cualquier error devolviendo un array vacío
     }
-
-
+ }
 
   export const fetchTodasClases = async (page: number, limit: number) => {
    
@@ -168,4 +167,4 @@ export const searchClases = async (
       return []; 
     }
     };
-
+  

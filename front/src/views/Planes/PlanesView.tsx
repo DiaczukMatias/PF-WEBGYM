@@ -1,15 +1,18 @@
-"use client";
-import React from "react";
-import { loadStripe } from "@stripe/stripe-js";
-import styles from "./PlanesView.module.css";
+"use client"
+import React, { useEffect, useState } from 'react';
+import PlanesCard from "@/components/Planes/Plenes";
+import { IMembresia } from '@/interfaces/IMembresia';
 
-export const planes = [
+
+export const planesData = [
   {
     id: "1",
-    name: "PRO PLAN",
-    description:
+    nombre: "PRO PLAN",
+    descripcion:
       "Nuestro Plan Pro ofrece entrenamientos avanzados y asesoramiento personalizado en nutrición para ayudarte a alcanzar tus objetivos más rápido. ¡Regístrate ahora!",
     features: [
+      "Acceso a las clases grupales",
+      "INscripsiones desde la web",
       "Seguimiento de progreso",
       "Comunidad en línea de apoyo",
       "Planes de entrenamiento avanzados y personalizados",
@@ -17,15 +20,16 @@ export const planes = [
       "Acceso a programas de entrenamiento avanzados",
       "Análisis de composición corporal",
     ],
-    price: 99,
-    buttonText: "ELEGIR PLAN",
+    precio: 99,
   },
   {
     id: "2",
-    name: "PLAN BÁSICO",
-    description:
+    nombre: "PLAN BÁSICO",
+    descripcion:
       "Nuestro Plan Básico es perfecto para aquellos que desean comenzar con el fitness, ofreciendo una forma simple y asequible de entrenar regularmente.",
     features: [
+      "Acceso a las clases grupales",
+      "INscripsiones desde la web",
       "Seguimiento de progreso",
       "Soporte de la comunidad",
       "Consejos básicos de nutrición",
@@ -33,15 +37,16 @@ export const planes = [
       "Acceso a desafíos grupales",
       "Revisiones mensuales de estado físico",
     ],
-    price: 19,
-    buttonText: "ELEGIR PLAN",
+    precio: 19,
   },
   {
     id: "3",
-    name: "PLAN CUSTOMIZADO",
-    description:
+    nombre: "PLAN CUSTOMIZADO",
+    descripcion:
       "Crea tu propio plan personalizado según tus necesidades específicas. Perfecto para quienes desean un enfoque más personalizado en el fitness y la nutrición.",
-    features: [
+    features: [  
+      "Acceso a las clases grupales",
+      "INscripsiones desde la web",
       "Asesoramiento nutricional personalizado",
       "Seguimiento de progreso personalizado",
       "Sesiones de coaching uno a uno",
@@ -49,76 +54,57 @@ export const planes = [
       "Acceso a recursos premium",
       "Técnicas avanzadas de recuperación",
     ],
-    price: 59,
-    buttonText: "ELEGIR PLAN",
+    precio: 59,
   },
 ];
 
-const PlanesView: React.FC = () => {
-  const handleSelectPlan = async (planId: string) => {
-    try {
-      const response = await fetch(
-        `https://proyecto21a.onrender.com/stripe/create-checkout-session`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ planId }),
+
+// Definir el tipo de la prop para aceptar distintas funciones de fetch
+interface PlanesViewProps {
+  fetchPlanes:IMembresia[];
+}
+
+const PlanesView: React.FC<PlanesViewProps> = ({ fetchPlanes }) => {
+  // Cambia el valor de `useBackend` a `true` para usar el backend o a `false` para usar los datos temporales
+  const [useBackend] = useState(true);
+
+  const [membresia, setMembresias] = useState<IMembresia[]>([]);
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      if (useBackend) {
+        // Si `useBackend` es true, se obtienen los datos del backend
+        try {
+          setMembresias(fetchPlanes);
+   
+
+         console.log("set planes:", setMembresias)
+
+        } catch (error) {
+          console.error('Error al obtener los planes del backend:', error);
         }
-      );
-      if (!response.ok) {
-        throw new Error("Error al crear la sesión de Stripe");
+      } else {
+        // Si `useBackend` es false, se usan los datos temporales
+        setMembresias(planesData);
+        
       }
-      const { sessionId, url } = await response.json();
+    };
+    fetchData();
+  }, [useBackend, fetchPlanes]); // Se ejecuta cuando `useBackend` cambia
 
-      console.log("URL", url);
-      console.log("Session ID", sessionId);
-
-      const stripe = await loadStripe(
-        process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
-      );
-      console.log("SDK STRIPE:", stripe);
-      if (!stripe) {
-        throw new Error("No se pudo cargar el SDK de Stripe");
-      }
-      window.open(url, "_blank");
-      // const result = await stripe.redirectToCheckout({ sessionId });
-      // if (result.error) {
-      //   console.error("Error al redirigir al checkout:", result.error);
-      // }
-    } catch (error) {
-      console.error("Error al redirigir a Stripe:", error);
-    }
-  };
+      const mappedPlanes = membresia
+      .map((membresia) => ({
+        id: membresia.id,
+        nombre: membresia.nombre,
+        descripcion: membresia.descripcion,
+        features: membresia.features,
+        precio: membresia.precio
+      }));
+    
 
   return (
-    <div className={styles.container}>
-      <h2 className={styles.title}>
-        <span className={styles.whiteText}>NUESTROS</span>
-        <span className={styles.greenText}>PLANES</span>
-      </h2>
-      <div className={styles.cardsContainer}>
-        {planes.map((plan) => (
-          <div key={plan.id} className={styles.card}>
-            <div className={styles.titulo}>{plan.name}</div>
-            <p className={styles.cardDescription}>{plan.description}</p>
-            <div className={styles.planContainer}>
-              <h3 className={styles.planTitle}>Características</h3>
-            </div>
-            <ul className={styles.cardFeatures}>
-              {plan.features.map((feature, index) => (
-                <li key={index}>{feature}</li>
-              ))}
-            </ul>
-            <div className={styles.price}>{plan.price}$</div>
-            <button
-              className={styles.button}
-              onClick={() => handleSelectPlan(plan.id)}
-            >
-              {plan.buttonText}
-            </button>
-          </div>
-        ))}
-      </div>
+    <div >
+       <PlanesCard membresia={mappedPlanes}/>
     </div>
   );
 };

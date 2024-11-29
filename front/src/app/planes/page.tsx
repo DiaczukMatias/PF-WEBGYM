@@ -1,15 +1,14 @@
 import PlanesView from "@/views/Planes/PlanesView";
 import React from "react";
-// importar fet todos los planes
+import { obtenerMembresias } from "@/helpers/Fetch/FetchMembresias";
 
+const planes:React.FC  = async () => {
 
-const planes:React.FC  = () => {
-
-    //const fetchFunction= pasarle el fetch planes;
+    const fetchFunction= await obtenerMembresias();
 
   return (
     <div>
-       <PlanesView /*fetchPlanes={fetchFunction}*//>
+       <PlanesView fetchPlanes={fetchFunction}/>
        </div>
   );
 };

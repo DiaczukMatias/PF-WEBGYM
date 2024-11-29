@@ -222,9 +222,9 @@ export const renovarMembresia = async (userId: string) => {
 };
 
 // Cancelar Membresía Activa (Usuario)
-export const cancelarMembresia = async () => {
+export const cancelarMembresia = async (id: string) => {
   try {
-    const response = await fetch(`${apiUrl}/membresias/cancelar`, {
+    const response = await fetch(`${apiUrl}/membresias/cancelar/${id}`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
