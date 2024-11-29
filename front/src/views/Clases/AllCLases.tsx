@@ -4,12 +4,12 @@ import { useState, useEffect } from "react";
 import ClassCardList from "@/components/CardList/CardList";
 import { getCategories } from "@/helpers/Fetch/FetchCategorias"; // Fetch de categorías
 import { searchClases } from "@/helpers/Fetch/FetchClases"; // Buscar clases con parámetros
-import { fetchClases } from "@/helpers/Fetch/FetchClases"; // Obtener todas las clases
+import { fetchTodasClases } from "@/helpers/Fetch/FetchClases"; // Obtener todas las clases
 import { ICategoria } from "@/interfaces/ICategory";
 import { ISearchResult } from "@/interfaces/ISearch";
 import { IProfesor } from "@/interfaces/IProfesor";
 
-const ClasesView = () => {
+const AllClasesView = () => {
   const pathname = usePathname(); // Obtén la ruta actual
   const isAdminRoute = pathname === "/admin/clases"; // Detecta si es admin
 
@@ -24,6 +24,9 @@ const ClasesView = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedProfesor, setSelectedProfesor] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
+
+  const [page] = useState(1);  // Estado para la página
+  const [limit] = useState(10);  // Estado para el límite de clases por página
 
   // Fetch categories
   useEffect(() => {
@@ -53,7 +56,8 @@ const ClasesView = () => {
         let data: ISearchResult[];
 
         if (!selectedCategory && !selectedProfesor) {
-          data = await fetchClases();
+          data = await fetchTodasClases(page, limit);
+          
         } else {
           data = await searchClases({
             claseNombre: "",
@@ -83,7 +87,7 @@ const ClasesView = () => {
     };
 
     fetchClassesData();
-  }, [selectedCategory, selectedProfesor]);
+  }, [selectedCategory, selectedProfesor, page, limit]);
 
   const handleClearFilters = () => {
     setSelectedCategory(null);
@@ -211,5 +215,5 @@ const ClasesView = () => {
 };
 
 
-export default ClasesView;
+export default AllClasesView;
 

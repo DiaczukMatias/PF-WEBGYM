@@ -21,7 +21,7 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
     perfilProfesor,
     disponibilidad,
     id,
-    activo,
+    estado = true,
   } = clase;
 
   const { data: session } = useSession();
@@ -47,17 +47,20 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
   const [isSuspendConfirmVisible, setIsSuspendConfirmVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleSuspendClass = async () => {
+  const handleSuspendClass = async (estado: boolean) => {
     setLoading(true);
+  
     try {
-      await suspendClase(id);
-    } catch (error) {
+      await suspendClase(id, estado);
       setLoading(false);
+      setIsSuspendConfirmVisible(false);
+    } catch (error) {
       console.error("Error al suspender la clase:", error);
+      setLoading(false);
     }
   };
 
-  const showSuspendConfirmation = () => setIsSuspendConfirmVisible(true);
+  //const showSuspendConfirmation = () => setIsSuspendConfirmVisible(true);
   const cancelSuspend = () => setIsSuspendConfirmVisible(false);
 
   return (
@@ -109,31 +112,26 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
             )}
           </div>
 
-          {mostrarBotonEditarClase && activo === true && (
+          {mostrarBotonEditarClase && (
             <div className="mt-4  flex justify-center">
               <button
-                className="submitButtonSuspend"
-                onClick={showSuspendConfirmation}
-              >
-                Suspender Clase
+               className={`submitButton ${estado ? "submitButtonSuspend" : ""}`}
+               onClick={() => handleSuspendClass(!estado)}
+               disabled={loading}
+             >
+               {loading
+                 ? estado ? "Suspendiendo..." : "Activando..." : estado ? "Suspender Clase": "Activar Clase"}              
               </button>
             </div>
           )}
 
-          {mostrarBotonEditarClase && activo === false && (
-            <div className="mt-4  flex justify-center">
-              <button
-                className="submitButton"
-                onClick={showSuspendConfirmation}
-              >
-                Activar Clase
-              </button>
-            </div>
-          )}
 
           {isSuspendConfirmVisible && (
             <div className="confirmation-modal">
-              <p>¿Estás seguro de que quieres suspender la clase: {nombre}?</p>
+          <p>
+            ¿Estás seguro de que quieres{" "}
+            {estado ? "suspender" : "activar"} la clase: {nombre}?
+          </p>
               <div className="flex gap-2">
                 <button
                   className="m-2 p-2 border rounded-lg border-white text-white"
@@ -143,10 +141,16 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
                 </button>
                 <button
                   className="m-2 p-2 border rounded-lg border-red-700 text-red-700"
-                  onClick={handleSuspendClass}
+                  onClick={() => handleSuspendClass(!estado)}
                   disabled={loading}
                 >
-                  {loading ? "Suspendiendo..." : "Suspender Clase"}
+                  {loading
+                    ? estado
+                      ? "Suspendiendo..."
+                      : "Activando..."
+                    : estado
+                    ? "Suspender Clase"
+                    : "Activar Clase"}
                 </button>
               </div>
             </div>
