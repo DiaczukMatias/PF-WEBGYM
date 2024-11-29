@@ -1,6 +1,17 @@
 import { IClase } from "@/interfaces/IClase";
 import { ISearchParams, ISearchResult } from "@/interfaces/ISearch";
 import { Token } from "../accestoke";
+import { FetchError } from "@/interfaces/IErrors";
+
+export function isFetchError(error: unknown): error is FetchError {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "message" in error &&
+    typeof (error as FetchError).message === "string"
+  );
+}
+
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -23,23 +34,34 @@ export const createClase = async (formData: FormData) => {
   return response.json();
 };
 
-
 // Fetch para actualizar una clase existente
-export const updateClase = async (id: string, updatedClase: IClase) => {
-  if (!Token) throw new Error("Usuario no autenticado");
-
+export const updateClase = async (id: string, updatedClase : FormData, accesToken :string) => {
+ 
+ 
+try {
   const response = await fetch(`${apiUrl}/clases/${id}`, {
     method: "PUT",
     headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${Token}`,
+      Authorization: `Bearer ${accesToken}`
     },
-    body: JSON.stringify(updatedClase),
+    body: updatedClase,
   });
   if (!response.ok) {
-    throw new Error("Error al actualizar la clase");
+    console.error('que recibo en mi objeto:', updateClase);
+    const errorResponse = await response.json(); // Captura la respuesta de error
+    const errorMessages = errorResponse.message || 'Ha ocurrido un error desconocido';
+    throw new Error(errorMessages); // Lanzamos un error con el mensaje del backend
   }
-  return response.json();
+  return await response.json(); // Si todo está bien, retornar los datos de la respuesta
+} catch (error: unknown) {
+  if (isFetchError(error)) {
+    console.error("Error al actualizar la clase:", error.message);
+    throw new Error(error.message); // Mostrar el error con mejor visibilidad
+  }
+  console.error("Error desconocido:", error);
+    throw new Error("Ha ocurrido un error desconocido");
+}
+  
 };
 
 
@@ -55,9 +77,29 @@ export const fetchClaseById = async (id: string): Promise<IClase> => {
 export const fetchClases = async () => {
   const response = await fetch(`${apiUrl}/clases/activas`,); // es nesecasio poner el page y el limit x como esta configurado el back, si no se rompe xq al no pasarlo pone de skip null o undefides y si o si tiene q ser nuemrico
 
-    if (!response.ok) {
-      throw new Error('Error al obtener las clases');
+  if (!response.ok) {
+    throw new Error("Error al obtener las clases");
+  }
+  return response.json();
+};
+
+export const searchClases = async (
+  params: ISearchParams
+): Promise<ISearchResult[]> => {
+  try {
+    const response = await fetch(`${apiUrl}/clases/search`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(params),
+    });
+
+    if (response.status === 404) {
+      console.warn("No se encontraron clases para los parámetros dados.");
+      return []; // Retornamos un array vacío para manejarlo en el frontend
     }
+
     return response.json();
   };
   
@@ -92,7 +134,7 @@ export const fetchClases = async () => {
       }
       return []; // Manejamos cualquier error devolviendo un array vacío
     }
-  };
+
 
 
   export const fetchTodasClases = async (page: number, limit: number) => {
@@ -123,6 +165,7 @@ export const fetchClases = async () => {
       } else {
         console.error("Error desconocido al buscar clases");
       }
-      return []; // Manejamos cualquier error devolviendo un array vacío
+      return []; 
     }
     };
+
