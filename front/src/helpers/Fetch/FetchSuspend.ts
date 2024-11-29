@@ -1,18 +1,18 @@
-import { Token } from "../accestoke";
+
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 
 
   //ok ya lo aplique 
-export const suspendClase = async (id: string, estado: boolean) => {
-  if (!Token) throw new Error("Usuario no autenticado");
+export const suspendClase = async (token:string ,id: string, estado: boolean) => {
+  if (!token) throw new Error("Usuario no autenticado");
 
   const response = await fetch(`${apiUrl}/clases/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${Token}`,
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({estado}),
   });
@@ -25,13 +25,13 @@ export const suspendClase = async (id: string, estado: boolean) => {
 };
 
 
-export const suspendCategoria = async (id: string) => {
-  if (!Token) throw new Error("Usuario no autenticado");
+export const suspendCategoria = async (token:string,id: string) => {
+  if (!token) throw new Error("Usuario no autenticado");
 
   const response = await fetch(`${apiUrl}/categorias/suspend/${id}`, {
     method: "PATCH",
     headers: {
-      Authorization: `Bearer ${Token}`,
+      Authorization: `Bearer ${token}`,
     },
   });
 
@@ -44,13 +44,13 @@ export const suspendCategoria = async (id: string) => {
 
 
 // Función para obtener las clases suspendidas
-export const fetchGetSuspendedClases = async () => {
-  if (!Token) throw new Error("Usuario no autenticado"); // Verifica que el usuario esté autenticado
+export const fetchGetSuspendedClases = async (token:string) => {
+  if (!token) throw new Error("Usuario no autenticado"); // Verifica que el usuario esté autenticado
 
   const response = await fetch(`${apiUrl}/clases/suspend`, {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${Token}`, // Agrega el token al header para la autenticación
+      Authorization: `Bearer ${token}`, // Agrega el token al header para la autenticación
     },
   });
 
@@ -65,13 +65,13 @@ export const fetchGetSuspendedClases = async () => {
 
 
 // Función para obtener las categorías suspendidas
-export const fetchGetSuspendedCategorias = async () => {
-  if (!Token) throw new Error("Usuario no autenticado"); // Verifica que el usuario esté autenticado
+export const fetchGetSuspendedCategorias = async (token:string) => {
+  if (!token) throw new Error("Usuario no autenticado"); // Verifica que el usuario esté autenticado
 
   const response = await fetch(`${apiUrl}/categorias/suspend`, {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${Token}`, // Agrega el token al header para la autenticación
+      Authorization: `Bearer ${token}`, // Agrega el token al header para la autenticación
     },
   });
 

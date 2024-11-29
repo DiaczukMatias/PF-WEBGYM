@@ -8,11 +8,12 @@ import { fetchTodasClases } from "@/helpers/Fetch/FetchClases"; // Obtener todas
 import { ICategoria } from "@/interfaces/ICategory";
 import { ISearchResult } from "@/interfaces/ISearch";
 import { IProfesor } from "@/interfaces/IProfesor";
+import { useSession } from "next-auth/react";
 
 const AllClasesView = () => {
   const pathname = usePathname(); // Obtén la ruta actual
   const isAdminRoute = pathname === "/admin/clases"; // Detecta si es admin
-
+  const { data: session } = useSession();
 
   const [categories, setCategories] = useState<ICategoria[]>([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
@@ -25,8 +26,8 @@ const AllClasesView = () => {
   const [selectedProfesor, setSelectedProfesor] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
 
-  const [page] = useState(1);  // Estado para la página
-  const [limit] = useState(10);  // Estado para el límite de clases por página
+  const [page] = useState<number> (1);  // Estado para la página
+  const [limit] = useState<number> (10);  // Estado para el límite de clases por página
 
   // Fetch categories
   useEffect(() => {
@@ -49,6 +50,8 @@ const AllClasesView = () => {
   // Fetch classes data
   useEffect(() => {
     const fetchClassesData = async () => {
+      const token = session?.user?.accessToken ?? "";
+
       setLoading(true);
       setError(null);
 
@@ -56,7 +59,7 @@ const AllClasesView = () => {
         let data: ISearchResult[];
 
         if (!selectedCategory && !selectedProfesor) {
-          data = await fetchTodasClases(page, limit);
+          data = await fetchTodasClases( page, limit);
           
         } else {
           data = await searchClases({

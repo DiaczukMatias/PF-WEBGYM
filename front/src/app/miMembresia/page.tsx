@@ -1,10 +1,10 @@
-
+import MiMembresiaView from "@/views/MiMembresia/MiMembresia";
 import React from "react";
 
 const MiMembrasia= () => {
   return (
     <div>
-   agregar la membresia acutal del usuario, detalle del plan del Usuario
+      <MiMembresiaView/>
     </div>
   );
 };

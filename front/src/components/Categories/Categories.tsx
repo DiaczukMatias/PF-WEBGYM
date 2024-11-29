@@ -1,5 +1,5 @@
 'use client';
-
+import { useSession } from "next-auth/react";
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { ICategoria } from '@/interfaces/ICategory';
@@ -15,6 +15,8 @@ const Category: React.FC<CategoryProps> = ({ categories }) => {
   const [localCategories, setLocalCategories] = useState(categories);
   const [isAdminRoute, setIsAdminRoute] = useState(false);
   const itemsPerPage = 3;
+  const { data: session } = useSession();
+  const token = session?.user?.accessToken ?? "";
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -34,18 +36,28 @@ const Category: React.FC<CategoryProps> = ({ categories }) => {
 
   const handleToggleCategory = async (id: string) => {
     try {
-      const updatedCategory = await suspendCategoria(id);
+      const updatedCategory = await suspendCategoria(token, id);
       setLocalCategories((prev) =>
-        prev.map((category) =>
-          category.id === id
-            ? { ...category, estado: updatedCategory.activo }
-            : category
+        prev.map((categories) =>
+          categories.id === id
+            ? { ...categories, estado: updatedCategory.activo }
+            : categories
         )
       );
     } catch (error) {
       console.error('Error al cambiar el estado de la categoría:', error);
     }
   };
+
+  useEffect(() => {
+    setLocalCategories(
+      categories.map((categories) => ({
+        ...categories,
+        activo: categories.activo ?? true, // Si 'activo' no existe, lo inicializa como 'true'.
+      }))
+    );
+  }, [categories]);
+
 
   return (
     <div className="relative m-4 py-4">

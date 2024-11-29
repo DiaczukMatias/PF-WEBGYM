@@ -1,9 +1,8 @@
 import { ICategoria } from "@/interfaces/ICategory";
 import { IClase } from "@/interfaces/IClase";
-import { Token } from "../accestoke";
+
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
 
 
 /**
@@ -86,7 +85,7 @@ export const createCategoria = async (
  * @param {ICategoria} categoryData - Nuevos datos de la categoría
  * @returns {Promise<ICategoria>} Categoría actualizada
  */
-export const updateCategory = async (
+export const updateCategory = async (token:string,
   id: string,
   categoryData: ICategoria,
 ): Promise<ICategoria> => {
@@ -95,7 +94,7 @@ export const updateCategory = async (
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${Token}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(categoryData),
     });
@@ -118,12 +117,12 @@ export const updateCategory = async (
  * @param {string} id - ID de la categoría
  * @returns {Promise<void>} Confirmación de eliminación
  */
-export const deleteCategory = async (id: string): Promise<void> => {
+export const deleteCategory = async (token:string, id: string): Promise<void> => {
   try {
     const response = await fetch(`${apiUrl}/categorias/${id}`, {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${Token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
     if (!response.ok) {

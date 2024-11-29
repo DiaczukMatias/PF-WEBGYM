@@ -20,6 +20,7 @@ export default function Usuarios() {
         const dataUsers = await fetchUsers(page, limit);
         if (Array.isArray(dataUsers)) {
           setAllUsers(dataUsers);
+          console.log("data usar all users:", dataUsers)
           setHasMore(dataUsers.length === limit); // Si devuelve menos del límite, no hay más usuarios
         } else {
           console.error("La respuesta no tiene el formato esperado:", dataUsers);
@@ -52,9 +53,9 @@ export default function Usuarios() {
     <div key={usuario.id} className={styles.card}>
       <h4 className={styles.userName}>{usuario.nombre.toUpperCase()}</h4>
       <div className={styles.userDetails}>
-        <p>{usuario.telefono ?? "Sin teléfono"}</p>
-        <p>{usuario.email}</p>
-        <p>{usuario.edad ?? "Edad no especificada"}</p>
+        <p>Telefono: {usuario.telefono ?? "Sin teléfono"}</p>
+        <p>Email: {usuario.email}</p>
+        <p>Edad: {usuario.edad ?? "Edad no especificada"}</p>
       </div>
       <button
         className={styles.editButton}
