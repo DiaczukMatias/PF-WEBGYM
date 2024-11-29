@@ -38,7 +38,7 @@ const Category: React.FC<CategoryProps> = ({ categories }) => {
       setLocalCategories((prev) =>
         prev.map((category) =>
           category.id === id
-            ? { ...category, estado: updatedCategory.estado }
+            ? { ...category, estado: updatedCategory.activo }
             : category
         )
       );
@@ -83,13 +83,13 @@ const Category: React.FC<CategoryProps> = ({ categories }) => {
                     </h1>
                     <button
                       onClick={() => handleToggleCategory(categoria.id)}
-                      className={`mt-4 px-4 py-2 border rounded-lg ${
-                        categoria.estado === 'activa'
-                          ? 'bg-red-600 text-white hover:bg-red-700'
-                          : 'bg-green-600 text-white hover:bg-green-700'
-                      }`}
+                        className={`ml-4 ${
+                          categoria.activo 
+                            ? 'submitButtonSuspend'
+                            : 'submitButton'
+                        }`}
                     >
-                      {categoria.estado === 'activa' ? 'Suspender' : 'Activar'}
+                      {categoria.activo ? 'Suspender' : 'Activar'}
                     </button>
                   </div>
                 ) : (

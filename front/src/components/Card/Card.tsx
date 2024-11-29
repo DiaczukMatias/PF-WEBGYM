@@ -21,7 +21,7 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
     perfilProfesor,
     disponibilidad,
     id,
-    estado,
+    activo,
   } = clase;
 
   const { data: session } = useSession();
@@ -51,8 +51,6 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
     setLoading(true);
     try {
       await suspendClase(id);
-
-      window.location.href = "/clases";
     } catch (error) {
       setLoading(false);
       console.error("Error al suspender la clase:", error);
@@ -111,10 +109,10 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
             )}
           </div>
 
-          {mostrarBotonEditarClase && estado !== "suspendida" && (
+          {mostrarBotonEditarClase && activo === true && (
             <div className="mt-4  flex justify-center">
               <button
-                className="m-2 p-2 border rounded-lg border-white text-white"
+                className="submitButtonSuspend"
                 onClick={showSuspendConfirmation}
               >
                 Suspender Clase
@@ -122,10 +120,10 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
             </div>
           )}
 
-          {mostrarBotonEditarClase && estado === "suspendida" && (
+          {mostrarBotonEditarClase && activo === false && (
             <div className="mt-4  flex justify-center">
               <button
-                className="m-2 p-2 border rounded-lg border-green-700 text-green-700"
+                className="submitButton"
                 onClick={showSuspendConfirmation}
               >
                 Activar Clase

@@ -16,6 +16,7 @@ const ProfileProfesor: React.FC = () => {
   const userMail = session?.user.email || "Email";
   const userTel = session?.user.telefono || "telefono";
   const userImagen = session?.user.image || "/images/profesor/jessicaroberts.png"
+  const userID = session?.user.id || ""
 
   const [activeTab, setActiveTab] = useState<"ALUMNOS" | "CLASES">("ALUMNOS");
   const [userClasses, setUserClasses] = useState<IClase[] | null>(null);
@@ -47,16 +48,32 @@ const ProfileProfesor: React.FC = () => {
             return;
           }
 
-         // Obtener las clases del profesor usando perfilProfesorId
-        // const fetchedClasesProfesor = await fetchClasesPorProfesor(perfilProfesorId);
-        // console.log('Clases del profesor:', fetchedClasesProfesor);
-
            // Guardar las clases en el estado
            setUserClasses(clasesProfesor);
            setError(null); // Limpiar errores
  
-     //   const fetchedAlumnosProfesor = await  /// falta fetch de obtener inscritos a las clases de un profesor ///
-         //  setUserAlumnos(fetchedAlumnosProfesor); // aca cambiarlo x la respuesta del fetch de los incritos
+             // Aquí vamos a almacenar todos los usuarios inscritos junto con la clase
+        const usuariosInscritos: IUsuario[] = [];
+
+        clasesProfesor.forEach((clase) => {
+          if (clase.inscripciones && clase.inscripciones.length > 0) {
+            clase.inscripciones.forEach((inscripcion) => {
+              if (inscripcion.usuario && inscripcion.usuario.length > 0) {
+                inscripcion.usuario.forEach((usuario) => {
+                  // Asociamos cada usuario con el nombre de la clase
+                  usuariosInscritos.push({
+                    ...usuario,
+                    clase: clase.nombre,  // Añadimos el nombre de la clase
+                  });
+                });
+              }
+            });
+          }
+        });
+
+        // Actualizar el estado con los usuarios inscritos
+        setUserAlumnos(usuariosInscritos);
+        setError(null); // Limpiar cualquier error
 
           } catch (error) {
             console.error('Error al obtener datos del backend:', error);
@@ -158,19 +175,9 @@ const ProfileProfesor: React.FC = () => {
   const renderAlumnos = () => {
     if (!userAlumnos || userAlumnos.length === 0) {
       return (
-        <div>
+       
           <div className=" m-4 p-4">
-            <p className="flex0 justify-center  text-center mt-4">No tienes ninguna clase.</p>
-            <p className="flex text-center  justify-center m-2">  Crea tus clases:</p></div>
-
-          <div className="flex justify-center items-center m-4">
-            <button
-              className="submitButton .submitButton:hover"
-              onClick={() => window.location.href = `/crearClase`}
-            >
-              Crear Clase
-            </button>
-          </div>
+            <p className="flex0 justify-center  text-center mt-4">No tienes ningun inscripto a tus clases.</p>
         </div>
       );
     }
@@ -190,7 +197,9 @@ const ProfileProfesor: React.FC = () => {
                   <p className={styles.classProfessor}>
                     {usuario.edad}
                   </p>
+                  <p className={styles.classProfessor}>{usuario.clase}</p>
                 </div>
+                
               </div>
               <hr className={styles.separator} />
             </div>
@@ -221,6 +230,14 @@ const ProfileProfesor: React.FC = () => {
           <li>📧 {userMail}</li>
           <li>📸 @{userName}couchgym</li>
         </ul>
+        <div className="flex justify-center items-center m-4">
+                  <button
+                  className="submitButton .submitButton:hover"
+                   onClick={() => window.location.href = `/editar-usuario/${userID}`}
+                    >
+                      Editar Perfil
+                  </button>
+                </div>
       </div>
 
       {/* Sección de Alumnos y Clases */}
