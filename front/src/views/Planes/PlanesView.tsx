@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react';
-import PlanesCard from "@/components/Planes/Plenes";
+import PlanesCard from "@/components/Planes/Planes";
 import { IMembresia } from '@/interfaces/IMembresia';
 
 
@@ -66,9 +66,9 @@ interface PlanesViewProps {
 
 const PlanesView: React.FC<PlanesViewProps> = ({ fetchPlanes }) => {
   // Cambia el valor de `useBackend` a `true` para usar el backend o a `false` para usar los datos temporales
-  const [useBackend] = useState(true);
+  const [useBackend] = useState(false);
 
-  const [membresia, setMembresias] = useState<IMembresia[]>([]);
+  const [membresias, setMembresias] = useState<IMembresia[]>([]);
   
   useEffect(() => {
     const fetchData = async () => {
@@ -92,14 +92,15 @@ const PlanesView: React.FC<PlanesViewProps> = ({ fetchPlanes }) => {
     fetchData();
   }, [useBackend, fetchPlanes]); // Se ejecuta cuando `useBackend` cambia
 
-      const mappedPlanes = membresia
-      .map((membresia) => ({
+      const mappedPlanes = Array.isArray(membresias) 
+     ? membresias.map((membresia) => ({
         id: membresia.id,
         nombre: membresia.nombre,
-        descripcion: membresia.descripcion,
+        descripcion: membresia.descripcion, 
+        duracionEnMeses: membresia.duracionEnMeses,
         features: membresia.features,
         precio: membresia.precio
-      }));
+      })) : [];
     
 
   return (

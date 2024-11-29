@@ -5,6 +5,7 @@ import { IMembresia } from "@/interfaces/IMembresia";
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { loadStripe } from "@stripe/stripe-js";
 import { desactivarMembresia } from '@/helpers/Fetch/FetchMembresias';
+import { useSession } from "next-auth/react";
 
 interface PlanesProps {
     membresia: IMembresia[];
@@ -16,6 +17,7 @@ const PlanesCard: React.FC<PlanesProps> = ({membresia}) => {
   const [localPlan, setLocalPlan] = useState(membresia);
   const [isAdminRoute, setIsAdminRoute] = useState(false);
   const itemsPerPage = 3;
+  const { data: session } = useSession();
 
   const handleSelectPlan = async (planId: string) => {
     try {
@@ -69,10 +71,10 @@ const PlanesCard: React.FC<PlanesProps> = ({membresia}) => {
     );
   };
   
-
-  const handleTogglePlan = async (nombre: string) => {
+   const token = session?.user.accessToken ?? "";
+  const handleTogglePlan = async (token: string, nombre: string) => {
     try {
-      const updatedMembresia = await  desactivarMembresia(nombre);
+      const updatedMembresia = await  desactivarMembresia(token, nombre);
       setLocalPlan((prev) =>
         prev.map((membresia) =>
           membresia.nombre === nombre
@@ -142,7 +144,7 @@ const PlanesCard: React.FC<PlanesProps> = ({membresia}) => {
                         Editar Plan
                       </button>
                       <button
-                      onClick={() => handleTogglePlan(membresia.nombre)}
+                      onClick={() => handleTogglePlan(token, membresia.nombre)}
                       className={`ml-4 ${
                         membresia.activo 
                           ? 'submitButtonSuspend'

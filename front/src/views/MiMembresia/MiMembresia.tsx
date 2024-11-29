@@ -10,6 +10,7 @@ const MiMembresiaView: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { data: session } = useSession();
+  const token = session?.user?.accessToken ?? "";
 
   const fetchMembresiaActiva = async () => {
     if (!session?.user?.id) return;
@@ -39,7 +40,7 @@ const MiMembresiaView: React.FC = () => {
     setError(null);
   
     try {
-      await cancelarMembresia(membresia.id); // Ahora estamos seguros de que `id` es un string
+      await cancelarMembresia(token, membresia.id); // Ahora estamos seguros de que `id` es un string
       setMembresia(null); // Elimina la membresía activa tras cancelarla
     } catch (err) {
       setError("Error al cancelar la membresía.");
@@ -57,7 +58,7 @@ const MiMembresiaView: React.FC = () => {
 
     try {
       const usuarioId = session.user.id;
-      await renovarMembresia(usuarioId);
+      await renovarMembresia(token, usuarioId);
       fetchMembresiaActiva(); // Refresca la membresía tras renovarla
     } catch (err) {
       setError("Error al renovar la membresía.");

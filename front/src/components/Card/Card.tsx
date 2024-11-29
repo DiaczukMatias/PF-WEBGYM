@@ -27,6 +27,7 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
   const { data: session } = useSession();
   const rolUsuario = session?.user?.rol;
   const profesorId = session?.user?.id || "";
+  const token = session?.user?.accessToken ?? "";
 
   const formattedHorario = new Date(fecha).toLocaleString("es-ES", {
     weekday: "long",
@@ -51,7 +52,7 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
     setLoading(true);
   
     try {
-      await suspendClase(id, estado);
+      await suspendClase(token ,id, estado);
       setLoading(false);
       setIsSuspendConfirmVisible(false);
     } catch (error) {

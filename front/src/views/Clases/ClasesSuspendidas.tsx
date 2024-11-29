@@ -9,8 +9,7 @@ const SuspendedClasesView = () => {
   const [suspendedClasses, setSuspendedClasses] = useState<IClase[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-
+ 
   const [page] = useState(1);  // Estado para la página
   const [limit] = useState(10);  // Estado para el límite de clases por página
 
@@ -20,7 +19,7 @@ const SuspendedClasesView = () => {
       try {
         setLoading(true);
 
-        const todasClasesResponse = await fetchTodasClases(page, limit);
+        const todasClasesResponse = await fetchTodasClases( page, limit);
         const todasClases: IClase[] = await todasClasesResponse.json(); 
 
         const clasesActivasResponse = await fetchClases();

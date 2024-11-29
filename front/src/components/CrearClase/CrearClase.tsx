@@ -7,12 +7,13 @@ import { ICategoria } from "@/interfaces/ICategory";
 import { getCategories } from "@/helpers/Fetch/FetchCategorias";
 import { fetchPerfilProfesores } from "@/helpers/Fetch/FetchProfesores";
 import { IPerfilProfesor } from "@/interfaces/IProfesor";
-
+import { useSession } from "next-auth/react";
 
 const CrearClaseForm: React.FC = () => {
   const [categories, setCategories] = useState<ICategoria[]>([]);
   const [profesores, setProfesores] = useState<IPerfilProfesor[]>([]); // Para almacenar los profesores
-
+  const { data: session } = useSession();
+  const token = session?.user?.accessToken ?? "";
 
   const [nuevaClase, setNuevaClase] = useState<ICrearClase>({
     nombre: "",
@@ -113,7 +114,7 @@ const CrearClaseForm: React.FC = () => {
       formData.append("imagen", nuevaClase.imagen);
     }
 
-    const response = await createClase(formData);
+    const response = await createClase(token, formData);
     if (!response.ok) {
       throw new Error("Error al crear la clase");
     }

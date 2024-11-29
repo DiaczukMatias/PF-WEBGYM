@@ -1,5 +1,5 @@
 import { IPerfilProfesor } from "@/interfaces/IProfesor";
-import { Token } from "../accestoke";
+
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -61,8 +61,8 @@ export const fetchClasesPorProfesor = async (perfilProfesorId: string) => {
   }
 };
 
-export const crearPerfilProfesor = async (usuarioId:string, formData: FormData) => {
-  if (!Token) throw new Error("Usuario no autenticado");
+export const crearPerfilProfesor = async (token:string, usuarioId:string, formData: FormData) => {
+  if (!token) throw new Error("Usuario no autenticado");
 
 
     const response = await fetch(`${apiUrl}/perfilProfesor/${usuarioId}`, {

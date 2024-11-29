@@ -45,7 +45,7 @@ export default function Admin() {
 
   return (
     <div className="flex flex-col justify-center items-center text-center">
-      <h1 className="text-accent text-3xl font-bold">ADMINS</h1>
+      <h1 className="text-accent text-3xl font-bold">ADMINISTRADORES:</h1>
 
       <div className={styles.gridContainer}>
         {allUsers.map((usuario) => (

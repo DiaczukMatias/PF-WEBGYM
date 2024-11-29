@@ -1,7 +1,7 @@
 import { IClase } from "@/interfaces/IClase";
 import { ISearchParams, ISearchResult } from "@/interfaces/ISearch";
-import { Token } from "../accestoke";
 import { FetchError } from "@/interfaces/IErrors";
+import { Token } from "../accestoke";
 
 export function isFetchError(error: unknown): error is FetchError {
   return (
@@ -15,9 +15,17 @@ export function isFetchError(error: unknown): error is FetchError {
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
+// Función para configurar los headers de autorización
+const authHeader = () => ({
+  Authorization: `Bearer ${Token}`,
+  'Content-Type': 'application/json',
+});
+console.log('Authorization para rutas  protegidas: ',authHeader().Authorization);
+// Funciones para cada operación HTTP
+
 // Fetch para crear una nueva clase
-export const createClase = async (formData: FormData) => {
-  if (!Token) throw new Error("Usuario no autenticado");
+export const createClase = async (token:string, formData: FormData) => {
+  if (!token) throw new Error("Usuario no autenticado");
 
   const response = await fetch(`${apiUrl}/clases`, {
     method: "POST",
@@ -136,22 +144,18 @@ export const fetchClases = async () => {
     }
  }
 
-  export const fetchTodasClases = async (page: number, limit: number) => {
+  export const fetchTodasClases = async ( page: number, limit: number) => {
    
      // Validación de page y limit para asegurarse de que son números positivos
   if (isNaN(page) || isNaN(limit) || page <= 0 || limit <= 0) {
     console.error("Los parámetros 'page' y 'limit' deben ser números positivos.");
     return []; // Retorna un array vacío si los parámetros son inválidos
   }
-  if (!Token) throw new Error("Usuario no autenticado");
 
    try { 
     const response = await fetch(`${apiUrl}/clases?page=${page}&limit=${limit}`,{ 
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${Token}`,
-        },
+        headers: authHeader(),
       });
       if (!response.ok) {
         console.error(`Error en la respuesta: ${response.status} - ${response.statusText}`);

@@ -1,3 +1,5 @@
+
+
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 interface IMembresiaData {
@@ -29,7 +31,7 @@ export const crearMembresia = async (membresiaData: IMembresiaData) => {
 };
 
 // Comprar una Membresía (Usuario Autenticado)
-export const comprarMembresia = async (
+export const comprarMembresia = async (token: string,
   usuarioId: string,
   membresiaId: string
 ) => {
@@ -38,7 +40,7 @@ export const comprarMembresia = async (
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ usuarioId }),
     });
@@ -75,13 +77,13 @@ export const obtenerMembresias = async (
 };
 
 // Obtener Historial de Membresías de un Usuario Específico
-export const obtenerHistorialMembresias = async (usuarioId: string) => {
+export const obtenerHistorialMembresias = async (token: string, usuarioId: string) => {
   try {
     const response = await fetch(
       `${apiUrl}/membresias/${usuarioId}/historial`,
       {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${token}`,
         },
       }
     );
@@ -97,12 +99,12 @@ export const obtenerHistorialMembresias = async (usuarioId: string) => {
 };
 
 // Obtener Historial de Membresías (Admin)
-export const obtenerHistorialMembresiasAdmin = async () => {
+export const obtenerHistorialMembresiasAdmin = async (token: string) => {
   try {
     const response = await fetch(`${apiUrl}/membresias/admin/historial`, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -135,11 +137,11 @@ export const obtenerMembresiaActiva = async (usuarioId: string) => {
 };
 
 // Obtener Membresías Inactivas (Admin)
-export const obtenerMembresiasInactivas = async () => {
+export const obtenerMembresiasInactivas = async (token: string) => {
   try {
     const response = await fetch(`${apiUrl}/membresias/pag/inactivas`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       },
     });
     if (response.ok) {
@@ -154,12 +156,12 @@ export const obtenerMembresiasInactivas = async () => {
 };
 
 // Desactivar Membresía (Admin)
-export const desactivarMembresia = async (nombre: string) => {
+export const desactivarMembresia = async (token: string, nombre: string) => {
   try {
     const response = await fetch(`${apiUrl}/membresias/desactivar/${nombre}`, {
       method: "PUT",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -175,7 +177,7 @@ export const desactivarMembresia = async (nombre: string) => {
 };
 
 // Actualizar Precio de Membresía (Admin)
-export const actualizarPrecioMembresia = async (
+export const actualizarPrecioMembresia = async (token: string,
   membresiaId: string,
   nuevoPrecio: number
 ) => {
@@ -184,7 +186,7 @@ export const actualizarPrecioMembresia = async (
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ precio: nuevoPrecio }),
     });
@@ -201,12 +203,12 @@ export const actualizarPrecioMembresia = async (
 };
 
 // Renovar Membresía (Admin o Usuario)
-export const renovarMembresia = async (userId: string) => {
+export const renovarMembresia = async (token: string, userId: string) => {
   try {
     const response = await fetch(`${apiUrl}/membresias/renovar/${userId}`, {
       method: "PATCH",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -222,12 +224,12 @@ export const renovarMembresia = async (userId: string) => {
 };
 
 // Cancelar Membresía Activa (Usuario)
-export const cancelarMembresia = async (id: string) => {
+export const cancelarMembresia = async (token: string,id: string) => {
   try {
     const response = await fetch(`${apiUrl}/membresias/cancelar/${id}`, {
       method: "PATCH",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
