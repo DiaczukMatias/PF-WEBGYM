@@ -1,17 +1,15 @@
-"use client"
-import React, { useEffect, useState } from 'react';
-import PlanesCard from "@/components/Planes/Plenes";
+"use client";
+import React from "react";
+import { loadStripe } from "@stripe/stripe-js";
+import styles from "./PlanesView.module.css";
 
-
-export const planesData = [
+export const planes = [
   {
     id: "1",
-    nombre: "PRO PLAN",
-    descripcion:
+    name: "PRO PLAN",
+    description:
       "Nuestro Plan Pro ofrece entrenamientos avanzados y asesoramiento personalizado en nutrición para ayudarte a alcanzar tus objetivos más rápido. ¡Regístrate ahora!",
     features: [
-      "Acceso a las clases grupales",
-      "INscripsiones desde la web",
       "Seguimiento de progreso",
       "Comunidad en línea de apoyo",
       "Planes de entrenamiento avanzados y personalizados",
@@ -19,16 +17,15 @@ export const planesData = [
       "Acceso a programas de entrenamiento avanzados",
       "Análisis de composición corporal",
     ],
-    precio: 99,
+    price: 99,
+    buttonText: "ELEGIR PLAN",
   },
   {
     id: "2",
-    nombre: "PLAN BÁSICO",
-    descripcion:
+    name: "PLAN BÁSICO",
+    description:
       "Nuestro Plan Básico es perfecto para aquellos que desean comenzar con el fitness, ofreciendo una forma simple y asequible de entrenar regularmente.",
     features: [
-      "Acceso a las clases grupales",
-      "INscripsiones desde la web",
       "Seguimiento de progreso",
       "Soporte de la comunidad",
       "Consejos básicos de nutrición",
@@ -36,16 +33,15 @@ export const planesData = [
       "Acceso a desafíos grupales",
       "Revisiones mensuales de estado físico",
     ],
-    precio: 19,
+    price: 19,
+    buttonText: "ELEGIR PLAN",
   },
   {
     id: "3",
-    nombre: "PLAN CUSTOMIZADO",
-    descripcion:
+    name: "PLAN CUSTOMIZADO",
+    description:
       "Crea tu propio plan personalizado según tus necesidades específicas. Perfecto para quienes desean un enfoque más personalizado en el fitness y la nutrición.",
-    features: [  
-      "Acceso a las clases grupales",
-      "INscripsiones desde la web",
+    features: [
       "Asesoramiento nutricional personalizado",
       "Seguimiento de progreso personalizado",
       "Sesiones de coaching uno a uno",
@@ -53,58 +49,76 @@ export const planesData = [
       "Acceso a recursos premium",
       "Técnicas avanzadas de recuperación",
     ],
-    precio: 59,
+    price: 59,
+    buttonText: "ELEGIR PLAN",
   },
 ];
 
-
-// Definir el tipo de la prop para aceptar distintas funciones de fetch
-/*interface PlanesViewProps {
-  fetchPlanes: () => Promise<any[]>;
-}*/
-
-const PlanesView: React.FC/*<PlanesViewProps>*/ = ({ /*fetchPlanes */}) => {
-  // Cambia el valor de `useBackend` a `true` para usar el backend o a `false` para usar los datos temporales
-  const [useBackend] = useState(true);
-
-  const [membresia, setMembresias] = useState(planesData);
-  
-  useEffect(() => {
-    const fetchData = async () => {
-      if (useBackend) {
-        // Si `useBackend` es true, se obtienen los datos del backend
-        try {
-        //  const fetchedPlanes = await fetchPlanes(); // Llama a la función fetch pasada como prop en el page
-        //  setMembresias(fetchedPlanes);
-   
-
-       //   console.log("set planes:", setMembresia)
-
-        } catch (error) {
-          console.error('Error al obtener los planes del backend:', error);
+const PlanesView: React.FC = () => {
+  const handleSelectPlan = async (planId: string) => {
+    try {
+      const response = await fetch(
+        `https://proyecto21a.onrender.com/stripe/create-checkout-session`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ planId }),
         }
-      } else {
-        // Si `useBackend` es false, se usan los datos temporales
-        setMembresias(planesData);
-        
+      );
+      if (!response.ok) {
+        throw new Error("Error al crear la sesión de Stripe");
       }
-    };
-    fetchData();
-  }, [useBackend]); // Se ejecuta cuando `useBackend` cambia
+      const { sessionId, url } = await response.json();
 
-      const mappedPlanes = membresia
-      .map((membresia) => ({
-        id: membresia.id,
-        nombre: membresia.nombre,
-        descripcion: membresia.descripcion,
-        features: membresia.features,
-        precio: membresia.precio
-      }));
-    
+      console.log("URL", url);
+      console.log("Session ID", sessionId);
+
+      const stripe = await loadStripe(
+        process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+      );
+      console.log("SDK STRIPE:", stripe);
+      if (!stripe) {
+        throw new Error("No se pudo cargar el SDK de Stripe");
+      }
+      window.open(url, "_blank");
+      // const result = await stripe.redirectToCheckout({ sessionId });
+      // if (result.error) {
+      //   console.error("Error al redirigir al checkout:", result.error);
+      // }
+    } catch (error) {
+      console.error("Error al redirigir a Stripe:", error);
+    }
+  };
 
   return (
-    <div >
-       <PlanesCard membresia={mappedPlanes}/>
+    <div className={styles.container}>
+      <h2 className={styles.title}>
+        <span className={styles.whiteText}>NUESTROS</span>
+        <span className={styles.greenText}>PLANES</span>
+      </h2>
+      <div className={styles.cardsContainer}>
+        {planes.map((plan) => (
+          <div key={plan.id} className={styles.card}>
+            <div className={styles.titulo}>{plan.name}</div>
+            <p className={styles.cardDescription}>{plan.description}</p>
+            <div className={styles.planContainer}>
+              <h3 className={styles.planTitle}>Características</h3>
+            </div>
+            <ul className={styles.cardFeatures}>
+              {plan.features.map((feature, index) => (
+                <li key={index}>{feature}</li>
+              ))}
+            </ul>
+            <div className={styles.price}>{plan.price}$</div>
+            <button
+              className={styles.button}
+              onClick={() => handleSelectPlan(plan.id)}
+            >
+              {plan.buttonText}
+            </button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
