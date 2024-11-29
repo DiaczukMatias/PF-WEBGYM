@@ -3,14 +3,18 @@ import { Token } from "../accestoke";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 
-export const suspendClase = async (id: string) => {
+
+  //ok ya lo aplique 
+export const suspendClase = async (id: string, estado: boolean) => {
   if (!Token) throw new Error("Usuario no autenticado");
 
-  const response = await fetch(`${apiUrl}/clases/suspend/${id}`, {
+  const response = await fetch(`${apiUrl}/clases/${id}`, {
     method: "PATCH",
     headers: {
+      "Content-Type": "application/json",
       Authorization: `Bearer ${Token}`,
     },
+    body: JSON.stringify({estado}),
   });
 
   if (!response.ok) {

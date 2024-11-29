@@ -64,22 +64,7 @@ try {
   
 };
 
-export const suspendClase = async (id: string) => {
-  if (!Token) throw new Error("Usuario no autenticado");
 
-  const response = await fetch(`${apiUrl}/clases/suspend/${id}`, {
-    method: "PATCH",
-    headers: {
-      Authorization: `Bearer ${Token}`,
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error("Error al suspender la clase");
-  }
-
-  return response.json();
-};
 
 export const fetchClaseById = async (id: string): Promise<IClase> => {
   const response = await fetch(`${apiUrl}/clases/${id}`);
@@ -150,14 +135,37 @@ export const searchClases = async (
       return []; // Manejamos cualquier error devolviendo un array vacío
     }
 
-    const data: ISearchResult[] = await response.json();
-    return data;
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.error("Error al buscar clases:", error.message);
-    } else {
-      console.error("Error desconocido al buscar clases");
-    }
-    return []; // Manejamos cualquier error devolviendo un array vacío
+
+
+  export const fetchTodasClases = async (page: number, limit: number) => {
+   
+     // Validación de page y limit para asegurarse de que son números positivos
+  if (isNaN(page) || isNaN(limit) || page <= 0 || limit <= 0) {
+    console.error("Los parámetros 'page' y 'limit' deben ser números positivos.");
+    return []; // Retorna un array vacío si los parámetros son inválidos
   }
-};
+  if (!Token) throw new Error("Usuario no autenticado");
+
+   try { 
+    const response = await fetch(`${apiUrl}/clases?page=${page}&limit=${limit}`,{ 
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Token}`,
+        },
+      });
+      if (!response.ok) {
+        console.error(`Error en la respuesta: ${response.status} - ${response.statusText}`);
+        throw new Error('Error al obtener las clases');
+      }
+      return response.json();
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Error al buscar clases:", error.message);
+      } else {
+        console.error("Error desconocido al buscar clases");
+      }
+      return []; 
+    }
+    };
+
