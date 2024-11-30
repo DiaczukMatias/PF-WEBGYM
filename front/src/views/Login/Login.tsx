@@ -48,6 +48,14 @@ const LoginView: React.FC = () => {
           icon: "error",
           title: "Oops...",
           text: "Credenciales incorrectas",
+          customClass: {
+            confirmButton: 'bg-gray-300 text-white', // Botón de confirmación rojo
+          },
+          didOpen: () => {
+            const popup = Swal.getPopup();
+            if (popup) {
+              popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+            }}
         });
       } else {
         router.push("/profile");
@@ -66,6 +74,14 @@ const LoginView: React.FC = () => {
           icon: "error",
           title: "Oops...",
           text: "Error en el inicio de sesión con Google",
+          customClass: {
+            confirmButton: 'bg-gray-300 text-white', // Botón de confirmación rojo
+          },
+          didOpen: () => {
+            const popup = Swal.getPopup();
+            if (popup) {
+              popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+            }}
         });
       } else {
         router.push("/profile");

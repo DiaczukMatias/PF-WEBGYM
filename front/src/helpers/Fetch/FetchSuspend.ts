@@ -23,7 +23,7 @@ export const suspendClase = async ( id: string, estado: boolean, accesToken :str
 };
 
 
-export const suspendCategoria = async (id: string, accesToken :string) => {
+export const suspendCategoria = async (id: string, activa: boolean, accesToken :string) => {
   //const token = authToken();
 
 
@@ -44,13 +44,11 @@ export const suspendCategoria = async (id: string, accesToken :string) => {
 
 // Función para obtener las clases suspendidas
 export const fetchGetSuspendedClases = async (accesToken :string) => {
-  //const token = authToken();
-
 
   const response = await fetch(`${apiUrl}/clases/suspend`, {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${accesToken}`, // Agrega el token al header para la autenticación
+      Authorization: `Bearer ${accesToken}`, 
     },
   });
 

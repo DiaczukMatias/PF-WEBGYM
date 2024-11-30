@@ -35,13 +35,13 @@ const Category: React.FC<CategoryProps> = ({ categories }) => {
     );
   };
 
-  const handleToggleCategory = async (id: string, ) => {
+  const handleToggleCategory = async (id: string, activo: boolean ) => {
     try {
       if (!session?.user.accessToken) {
         console.error('El token de acceso no está disponible.');
         return; // Detener la ejecución
       }
-      const updatedCategory = await suspendCategoria( id, session?.user.accessToken);
+      const updatedCategory = await suspendCategoria( id, activo, session?.user.accessToken);
       setLocalCategories((prev) =>
         prev.map((categories) =>
           categories.id === id
@@ -99,12 +99,9 @@ const Category: React.FC<CategoryProps> = ({ categories }) => {
          {categoria.nombre.toUpperCase()}
                     </h1>
                     <button
-                      onClick={() => handleToggleCategory(categoria.id)}
+                      onClick={() => handleToggleCategory(categoria.id ,!categoria.activo)}
                         className={`ml-4 ${
-                          categoria.activo 
-                            ? 'submitButtonSuspend'
-                            : 'submitButton'
-                        }`}
+                          categoria.activo  ? 'submitButtonSuspend': 'submitButton'}`}
                     >
                       {categoria.activo ? 'Suspender' : 'Activar'}
                     </button>

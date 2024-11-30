@@ -64,10 +64,7 @@ export const comprarMembresia = async (
 };
 
 // Obtener Membresías Paginadas
-export const obtenerMembresias = async (
-  page: number = 1,
-  limit: number = 10
-) => {
+export const obtenerMembresias = async (page: number, limit: number) => {
   try {
     const response = await fetch(
       `${apiUrl}/membresias?page=${page}&limit=${limit}`

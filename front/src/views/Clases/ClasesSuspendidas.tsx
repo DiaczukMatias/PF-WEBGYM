@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import { fetchClases, fetchTodasClases } from "@/helpers/Fetch/FetchClases";
+import { fetchGetSuspendedClases } from "@/helpers/Fetch/FetchSuspend";
+//mport { fetchClases, fetchTodasClases } from "@/helpers/Fetch/FetchClases";
 import ClassCardList from "@/components/CardList/CardList"; // Componente para mostrar las tarjetas
 import { IClase } from "@/interfaces/IClase";
 import { useSession } from "next-auth/react";
@@ -11,8 +12,8 @@ const SuspendedClasesView = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
  
-  const [page] = useState(1);  // Estado para la página
-  const [limit] = useState(10);  // Estado para el límite de clases por página
+  const [page] = useState<number> (1);  // Estado para la página
+  const [limit] = useState<number> (10);  // Estado para el límite de clases por página
   const { data: session } = useSession();
 
 
@@ -27,15 +28,30 @@ const SuspendedClasesView = () => {
           return; // Detener la ejecución
         }
         setLoading(true);
-        const todasClasesResponse = await fetchTodasClases( page, limit, session?.user.accessToken );
-        const todasClases: IClase[] = await todasClasesResponse.json(); 
+        const clasesSuspendidas = await fetchGetSuspendedClases(session?.user.accessToken );
+        setSuspendedClasses(clasesSuspendidas);
 
-        const clasesActivasResponse = await fetchClases();
-        const clasesActivas: IClase[] = await clasesActivasResponse.json();
+        /*
+        const todasClasesResponse = await fetchTodasClases(page, limit, session.user.accessToken);
+          if (!todasClasesResponse.ok) {
+           throw new Error(`Error al obtener todas las clases: ${todasClasesResponse.status}`); 
+           }
+          const todasClases: IClase[] = await todasClasesResponse.json();
+          console.log('Todas las clases:', todasClases);
 
-        const clasesRestadas = todasClases.filter((clase: IClase )=> !clasesActivas.some((c: IClase) => c.id === clase.id) 
+       const clasesActivasResponse = await fetchClases();
+         if (!clasesActivasResponse.ok) {
+           throw new Error('Error al obtener las clases activas');
+         }
+         const clasesActivas: IClase[] = await clasesActivasResponse.json();
+         console.log('Clases activas:', clasesActivas);
+
+        const clasesRestadas = todasClases.filter((clase: IClase) => 
+          !clasesActivas.some((c: IClase) => c.id === clase.id)
       );
-        setSuspendedClasses(clasesRestadas);
+      
+        setSuspendedClasses(clasesRestadas);*/
+
       } catch (err) {
         console.error(err);
         setError("Hubo un problema al cargar las clases suspendidas.");
@@ -45,7 +61,7 @@ const SuspendedClasesView = () => {
     };
 
     getSuspendedClasses();
-  }, []);
+  }, [session, page, limit]);
 
   return (
     <div>

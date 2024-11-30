@@ -64,12 +64,13 @@ export const fetchClasesPorProfesor = async (perfilProfesorId: string) => {
   }
 };
 
-export const crearPerfilProfesor = async ( usuarioId:string, formData: FormData, ) => {
+export const crearPerfilProfesor = async ( usuarioId:string, formData: FormData, accessToken: string ) => {
 
 
     const response = await fetch(`${apiUrl}/perfilProfesor/${usuarioId}`, {
       method: 'POST',
       headers: {
+        Authorization: `Bearer ${accessToken}`
       },
       body: formData,
     });

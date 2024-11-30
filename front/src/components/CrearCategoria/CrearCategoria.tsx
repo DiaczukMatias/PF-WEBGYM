@@ -39,12 +39,39 @@ const CrearCategoria = () => {
 
     try {
       await createCategoria(nombre);
-      Swal.fire("Éxito", "Categoría creada correctamente", "success");
+      Swal.fire({
+        icon: 'success',
+        title: '¡Éxito!',
+        text: 'Categoría creada correctamente',
+        confirmButtonText: 'OK',
+        customClass: {
+          confirmButton: 'bg-accent text-white',
+        },
+        didOpen: () => {
+          const popup = Swal.getPopup();
+          if (popup) {
+            popup.classList.add('bg-dark', 'text-white');
+            popup.style.backgroundColor = '#333'; // Fondo oscuro
+            popup.style.color = 'white'; // Texto blanco
+          }
+        },  })
       setNombre("");
       setInputBlur({ nombre: false });
       setErrors({});
     } catch (err) {
-      Swal.fire("Error", "Hubo un error al crear la categoría", "error");
+      Swal.fire({
+        title: "Error",
+        text: "Hubo un error al crear la categoría",
+        icon: "error",
+        customClass: {
+          confirmButton: 'bg-gray-300 text-white', // Botón de confirmación rojo
+        },
+        didOpen: () => {
+          const popup = Swal.getPopup();
+          if (popup) {
+            popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+          }}
+      });
       console.error("Error al crear categoría:", err);
     }
   };

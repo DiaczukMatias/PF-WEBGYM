@@ -9,16 +9,16 @@ export default function Clientes() {
   const router = useRouter();
   const [allUsers, setAllUsers] = useState<IUsuario[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [limit] = useState(5); // Usuarios por página
+  const [limit] = useState(8); // Usuarios por página
   const [hasMore, setHasMore] = useState(true); // Para controlar si hay más usuarios en páginas siguientes
 
   useEffect(() => {
-    const fetchAllUsers = async (page: number, limit: number) => {
+    const fetchAllUsers = async (page:number, limit:number) => {
       try {
         const dataUsers = await fetchUsers(page, limit);
         if (Array.isArray(dataUsers)) {
           // Filtrar solo los usuarios con rol 'cliente'
-          const clientes = dataUsers.filter(user => user.rol === "cliente");
+          const clientes = dataUsers.filter(usuarios => usuarios.rol === "cliente");
           setAllUsers(clientes);
           setHasMore(clientes.length === limit); // Si devuelve menos del límite, no hay más usuarios
         } else {
@@ -55,6 +55,7 @@ export default function Clientes() {
               <p>Telefono: {usuario.telefono ?? "Sin teléfono"}</p>
               <p>Email: {usuario.email}</p>
               <p>Edad: {usuario.edad ?? "Edad no especificada"}</p>
+              <p> Rol: {usuario.rol} </p>
             </div>
             <button
               className={styles.editButton}
