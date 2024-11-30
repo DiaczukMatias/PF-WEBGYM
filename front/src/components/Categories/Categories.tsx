@@ -1,10 +1,11 @@
 'use client';
-import { useSession } from "next-auth/react";
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { ICategoria } from '@/interfaces/ICategory';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { suspendCategoria } from '@/helpers/Fetch/FetchSuspend';
+import { useSession } from 'next-auth/react';
+
 
 interface CategoryProps {
   categories: ICategoria[];
@@ -16,7 +17,7 @@ const Category: React.FC<CategoryProps> = ({ categories }) => {
   const [isAdminRoute, setIsAdminRoute] = useState(false);
   const itemsPerPage = 3;
   const { data: session } = useSession();
-  const token = session?.user?.accessToken ?? "";
+
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -34,9 +35,13 @@ const Category: React.FC<CategoryProps> = ({ categories }) => {
     );
   };
 
-  const handleToggleCategory = async (id: string) => {
+  const handleToggleCategory = async (id: string, ) => {
     try {
-      const updatedCategory = await suspendCategoria(token, id);
+      if (!session?.user.accessToken) {
+        console.error('El token de acceso no está disponible.');
+        return; // Detener la ejecución
+      }
+      const updatedCategory = await suspendCategoria( id, session?.user.accessToken);
       setLocalCategories((prev) =>
         prev.map((categories) =>
           categories.id === id

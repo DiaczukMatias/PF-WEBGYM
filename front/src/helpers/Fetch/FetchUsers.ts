@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 import { IUsuario } from "@/interfaces/IUser";
 import { ILoginProps } from "@/interfaces/ILogin";
 import { FetchError } from "@/interfaces/IErrors";
-import { Token } from "../accestoke";
+//import { useSession } from "next-auth/react";
 
 
 //funcion para manejerar tipo de error
@@ -21,12 +21,13 @@ function isFetchError(error: unknown): error is FetchError {
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-// Función para configurar los headers de autorización
+/*// Función para configurar los headers de autorización
 const authHeader = () => ({
   Authorization: `Bearer ${Token}`,
   'Content-Type': 'application/json',
 });
 console.log('Authorization para rutas  protegidas: ',authHeader().Authorization);
+*/ 
 // Funciones para cada operación HTTP
 
 // 1. Iniciar sesión (No protegida)
@@ -180,11 +181,13 @@ export const updateUser = async (id: string, formData: FormData) => {
 
 
 // 6. Eliminar un usuario por ID (Protegida)
-export const deleteUser = async (id: string) => {
+export const deleteUser = async (id: string, accesToken :string) => {
   try {
     const response = await fetch(`${apiUrl}/${id}`, {
       method: 'DELETE',
-      headers: authHeader(),
+      headers: {
+        Authorization: `Bearer ${accesToken}`
+      },
     });
 
     if (!response.ok) throw new Error(await response.text());
@@ -199,11 +202,13 @@ export const deleteUser = async (id: string) => {
 };
 
 // 7. Actualizar perfil del usuario autenticado (Protegida)
-export const updateProfile = async ( profileData: IUsuario) => {
+export const updateProfile = async ( profileData: IUsuario, accesToken :string) => {
   try {
     const response = await fetch(`${apiUrl}/profile`, {
       method: 'PUT',
-      headers: authHeader(),
+      headers: {
+        Authorization: `Bearer ${accesToken}`
+      },
       body: JSON.stringify({  ...profileData }),
     });
 

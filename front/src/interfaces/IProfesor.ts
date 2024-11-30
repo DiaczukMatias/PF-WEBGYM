@@ -21,4 +21,6 @@ export interface IPerfilProfesor {
    imagen?: string;
    usuarioId: IUsuario["id"];
    clases?: IClase[];
+   estado?: bigint;
+   usuario?: IUsuario;
 }

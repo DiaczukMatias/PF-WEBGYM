@@ -5,6 +5,7 @@ import { IClase } from "@/interfaces/IClase";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 
+
 /**
  * Obtiene todas las categorías (ruta pública)
  * @returns {Promise<ICategoria[]>} Array de categorías
@@ -51,7 +52,7 @@ export const getCategoryById = async (id: string): Promise<ICategoria> => {
 
 /**
  * Crea una nueva categoría (ruta protegida)
- * @param {string} nombre- Datos de la categoría
+ * @param {string} nombre Datos de la categoría
 *  @returns {Promise<ICategoria>} Categoría creada
  */
 export const createCategoria = async (
@@ -85,16 +86,21 @@ export const createCategoria = async (
  * @param {ICategoria} categoryData - Nuevos datos de la categoría
  * @returns {Promise<ICategoria>} Categoría actualizada
  */
-export const updateCategory = async (token:string,
+export const updateCategory = async (
   id: string,
-  categoryData: ICategoria,
+  categoryData: ICategoria, 
+  accesToken :string
 ): Promise<ICategoria> => {
+  //const token = authToken();
+  
+  if (!accesToken) throw new Error("Usuario no autenticado");
+
   try {
     const response = await fetch(`${apiUrl}/categorias/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${accesToken}`,
       },
       body: JSON.stringify(categoryData),
     });
@@ -117,12 +123,17 @@ export const updateCategory = async (token:string,
  * @param {string} id - ID de la categoría
  * @returns {Promise<void>} Confirmación de eliminación
  */
-export const deleteCategory = async (token:string, id: string): Promise<void> => {
+export const deleteCategory = async ( id: string, accesToken :string): Promise<void> => {
+ // const token = authToken();
+
+  
+  if (!accesToken) throw new Error("Usuario no autenticado");
+
   try {
     const response = await fetch(`${apiUrl}/categorias/${id}`, {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${accesToken}`,
       },
     });
     if (!response.ok) {

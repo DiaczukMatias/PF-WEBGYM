@@ -6,6 +6,7 @@ import Image from "next/image";
 import { IClase } from "@/interfaces/IClase";
 import { suspendClase } from "@/helpers/Fetch/FetchSuspend";
 
+
 interface ClassCardProps {
   clase: IClase;
 }
@@ -27,7 +28,6 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
   const { data: session } = useSession();
   const rolUsuario = session?.user?.rol;
   const usuarioNombre = session?.user?.name || "";
-  const token = session?.user?.accessToken ?? "";
 
   const formattedHorario = new Date(fecha).toLocaleString("es-ES", {
     weekday: "long",
@@ -55,8 +55,14 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
   const handleSuspendClass = async (estado: boolean) => {
     setLoading(true);
   
-    try {
-      await suspendClase(token ,id, estado);
+    try { 
+      if (!session?.user.accessToken) {
+      console.error('El token de acceso no está disponible.');
+      setLoading(false);
+      return; // Detener la ejecución
+    }
+      
+      await suspendClase( id, estado, session.user.accessToken);
       setLoading(false);
       setIsSuspendConfirmVisible(false);
     } catch (error) {

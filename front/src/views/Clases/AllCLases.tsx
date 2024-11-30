@@ -13,7 +13,6 @@ import { useSession } from "next-auth/react";
 const AllClasesView = () => {
   const pathname = usePathname(); // Obtén la ruta actual
   const isAdminRoute = pathname === "/admin/clases"; // Detecta si es admin
-  const { data: session } = useSession();
 
   const [categories, setCategories] = useState<ICategoria[]>([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
@@ -28,6 +27,8 @@ const AllClasesView = () => {
 
   const [page] = useState<number> (1);  // Estado para la página
   const [limit] = useState<number> (10);  // Estado para el límite de clases por página
+  const { data: session } = useSession();
+
 
   // Fetch categories
   useEffect(() => {
@@ -50,16 +51,20 @@ const AllClasesView = () => {
   // Fetch classes data
   useEffect(() => {
     const fetchClassesData = async () => {
-      const token = session?.user?.accessToken ?? "";
 
       setLoading(true);
       setError(null);
 
       try {
         let data: ISearchResult[];
-
+        
+        if (!session?.user.accessToken) {
+          console.error('El token de acceso no está disponible.');
+          setLoading(false);
+          return; // Detener la ejecución
+        }
         if (!selectedCategory && !selectedProfesor) {
-          data = await fetchTodasClases( page, limit);
+          data = await fetchTodasClases( page, limit, session.user.accessToken);
           
         } else {
           data = await searchClases({

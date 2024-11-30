@@ -1,7 +1,6 @@
 import { IClase } from "@/interfaces/IClase";
 import { ISearchParams, ISearchResult } from "@/interfaces/ISearch";
 import { FetchError } from "@/interfaces/IErrors";
-import { Token } from "../accestoke";
 
 export function isFetchError(error: unknown): error is FetchError {
   return (
@@ -10,22 +9,25 @@ export function isFetchError(error: unknown): error is FetchError {
     "message" in error &&
     typeof (error as FetchError).message === "string"
   );
-}
+}  
+
+  
 
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+//const token = authToken();
 
 // Función para configurar los headers de autorización
-const authHeader = () => ({
-  Authorization: `Bearer ${Token}`,
+/*const authHeader = () => ({
+  
+  Authorization: `Bearer ${token}`,
   'Content-Type': 'application/json',
 });
 console.log('Authorization para rutas  protegidas: ',authHeader().Authorization);
-// Funciones para cada operación HTTP
+*/// Funciones para cada operación HTTP
 
 // Fetch para crear una nueva clase
-export const createClase = async (token:string, formData: FormData) => {
-  if (!token) throw new Error("Usuario no autenticado");
+export const createClase = async ( formData: FormData) => {
 
   const response = await fetch(`${apiUrl}/clases`, {
     method: "POST",
@@ -144,7 +146,7 @@ export const fetchClases = async () => {
     }
  }
 
-  export const fetchTodasClases = async ( page: number, limit: number) => {
+  export const fetchTodasClases = async ( page: number, limit: number, accesToken :string) => {
    
      // Validación de page y limit para asegurarse de que son números positivos
   if (isNaN(page) || isNaN(limit) || page <= 0 || limit <= 0) {
@@ -155,7 +157,9 @@ export const fetchClases = async () => {
    try { 
     const response = await fetch(`${apiUrl}/clases?page=${page}&limit=${limit}`,{ 
         method: "GET",
-        headers: authHeader(),
+        headers: {
+          Authorization: `Bearer ${accesToken}`
+        },
       });
       if (!response.ok) {
         console.error(`Error en la respuesta: ${response.status} - ${response.statusText}`);

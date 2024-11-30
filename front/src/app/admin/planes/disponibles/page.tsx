@@ -3,21 +3,28 @@ import React, { useEffect, useState } from "react";
 import PlanesView from "@/views/Planes/PlanesView";
 import { obtenerMembresias, obtenerMembresiasInactivas } from "@/helpers/Fetch/FetchMembresias";
 import { IMembresia } from "@/interfaces/IMembresia";
+//import { authToken } from "@/helpers/accestoke";
 import { useSession } from "next-auth/react";
+
 
 const PlanesDisponibles: React.FC = () => {
   const [membresias, setMembresias] = useState<IMembresia[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+
   const { data: session } = useSession();
 
 
   useEffect(() => {
     const fetchMembresias = async () => {
-      const token = session?.user?.accessToken;
-      if (token) {
+
+  if (!session?.user.accessToken) {
+    console.error("No se encontró token de autorización", session?.user.accessToken);
+    return null;
+  }
+      if (session.user.accessToken) {
         try {
           const membresiasActivas: IMembresia[] = await obtenerMembresias();
-          const membresiasInactivas: IMembresia[] = await obtenerMembresiasInactivas(token);
+          const membresiasInactivas: IMembresia[] = await obtenerMembresiasInactivas(session.user.accessToken);
           
           // Filtra las membresías activas excluyendo las inactivas
           const filteredMembresias = membresiasActivas.filter((membresia: IMembresia) =>
