@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 
 export default function Profesres() {
   const router = useRouter();
-  const [allUsers, setAllUsers] = useState<IPerfilProfesor[]>([]);
+  const [allProfesores, setAllProfesores] = useState<IPerfilProfesor[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [limit] = useState(5); // Usuarios por página
   const [hasMore, setHasMore] = useState(true); // Para controlar si hay más usuarios en páginas siguientes
@@ -15,19 +15,19 @@ export default function Profesres() {
   useEffect(() => {
     const fetchAllUsers = async () => {
       try {
-        const profesor = await fetchPerfilProfesores();
-        if (Array.isArray(profesor)) {
+        const profesores = await fetchPerfilProfesores();
+        if (Array.isArray(profesores)) {
           // Filtrar solo los usuarios con rol 'cliente'
-          setAllUsers(profesor);
-          console.log("profesores:",profesor)
-          setHasMore(profesor.length === limit); // Si devuelve menos del límite, no hay más usuarios
+          setAllProfesores(profesores);
+          console.log("profesores:",profesores)
+          setHasMore(profesores.length === limit); // Si devuelve menos del límite, no hay más usuarios
         } else {
-          console.error("La respuesta no tiene el formato esperado:", profesor);
-          setAllUsers([]);
+          console.error("La respuesta no tiene el formato esperado:", profesores);
+          setAllProfesores([]);
         }
       } catch (error) {
         console.error("Error al obtener usuarios:", error);
-        setAllUsers([]);
+        setAllProfesores([]);
       }
     };
 
@@ -49,22 +49,35 @@ export default function Profesres() {
     <div className="flex flex-col justify-center items-center text-center">
       <h1 className="text-accent text-3xl font-bold">PROFESORES</h1>
       <div className={styles.gridContainer}>
-        {allUsers.map((usuario) => (
-          <div key={usuario.id} className={styles.card}>
-            <h4 className={styles.userName}>{usuario.nombre.toUpperCase()}</h4>
-         {/*   <div className={styles.profilePictureContainer}>
-          <img src={usuario.imagen ?? "/images/profesor/jessicaroberts.png"} alt="Profile" className={styles.profilePicture} />
-        </div>*/}
+        {allProfesores.map((profesor) => (
+          <div key={profesor.id} className={styles.card}>
+            <h4 className={styles.userName}>{profesor.nombre.toUpperCase()}</h4>
+            <div className={styles.profilePictureContainer}>
+          <img src={profesor.imagen ?? "/images/profesor/jessicaroberts.png"} alt="Profile" className={styles.profilePicture} />
+        </div>
             <div className={styles.userDetails}>
-              <p> Certificacion:  {usuario.certificacion ?? "sin certificacion"}</p>
-              <p> Descripcion:  {usuario.descripcion}</p>
+              <p> Certificacion:  {profesor.certificacion ?? "sin certificacion"}</p>
+              <p> Descripcion:  {profesor.descripcion}</p>
+              <p>Clases:</p>
+            {profesor.clases && profesor.clases.length > 0 ? (
+              <ul>
+                {profesor.clases.map((clase) => (
+                  <li key={clase.id} className={styles.claseItem}>
+                    {clase.nombre}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No tiene clases asignadas.</p>
+            )}
+              
             </div>
-           {/* <button
+            <button
               className={styles.editButton}
-              onClick={() => router.push(`/editar-usuario/${usuario.id}`)}
+              onClick={() => router.push(`/editar-usuario/${profesor.usuario?.id}`)}
             >
               Editar Perfil
-            </button>*/}
+            </button>
           </div>
         ))}
       </div>

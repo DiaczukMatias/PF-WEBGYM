@@ -1,9 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
-//import { fetchGetSuspendedClases } from "@/helpers/Fetch/FetchSuspend";
 import { fetchClases, fetchTodasClases } from "@/helpers/Fetch/FetchClases";
 import ClassCardList from "@/components/CardList/CardList"; // Componente para mostrar las tarjetas
 import { IClase } from "@/interfaces/IClase";
+import { useSession } from "next-auth/react";
+
 
 const SuspendedClasesView = () => {
   const [suspendedClasses, setSuspendedClasses] = useState<IClase[]>([]);
@@ -12,14 +13,21 @@ const SuspendedClasesView = () => {
  
   const [page] = useState(1);  // Estado para la página
   const [limit] = useState(10);  // Estado para el límite de clases por página
+  const { data: session } = useSession();
+
 
   // Fetch clases suspendidas
   useEffect(() => {
     const getSuspendedClasses = async () => {
+      
       try {
+        if (!session?.user.accessToken) {
+          console.error('El token de acceso no está disponible.');
+          setLoading(false);
+          return; // Detener la ejecución
+        }
         setLoading(true);
-
-        const todasClasesResponse = await fetchTodasClases( page, limit);
+        const todasClasesResponse = await fetchTodasClases( page, limit, session?.user.accessToken );
         const todasClases: IClase[] = await todasClasesResponse.json(); 
 
         const clasesActivasResponse = await fetchClases();

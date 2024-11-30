@@ -10,7 +10,6 @@ const MiMembresiaView: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { data: session } = useSession();
-  const token = session?.user?.accessToken ?? "";
 
   const fetchMembresiaActiva = async () => {
     if (!session?.user?.id) return;
@@ -40,7 +39,11 @@ const MiMembresiaView: React.FC = () => {
     setError(null);
   
     try {
-      await cancelarMembresia(token, membresia.id); // Ahora estamos seguros de que `id` es un string
+      if (!session?.user.accessToken) {
+        console.error('El token de acceso no está disponible.');
+        return; // Detener la ejecución
+      }
+      await cancelarMembresia( membresia.id, session?.user.accessToken); // Ahora estamos seguros de que `id` es un string
       setMembresia(null); // Elimina la membresía activa tras cancelarla
     } catch (err) {
       setError("Error al cancelar la membresía.");
@@ -57,8 +60,12 @@ const MiMembresiaView: React.FC = () => {
     setError(null);
 
     try {
+      if (!session?.user.accessToken) {
+        console.error('El token de acceso no está disponible.');
+        return; // Detener la ejecución
+      }
       const usuarioId = session.user.id;
-      await renovarMembresia(token, usuarioId);
+      await renovarMembresia(usuarioId, session.user.accessToken);
       fetchMembresiaActiva(); // Refresca la membresía tras renovarla
     } catch (err) {
       setError("Error al renovar la membresía.");

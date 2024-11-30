@@ -1,5 +1,5 @@
 "use client";
-import { IUsuario, RolEnum } from "@/interfaces/IUser";
+import { IUsuario} from "@/interfaces/IUser";
 import styles from "./ProfileView.module.css";
 import { useEffect, useState } from "react";
 import { fetchUsers } from "@/helpers/Fetch/FetchUsers";

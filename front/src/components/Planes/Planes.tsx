@@ -5,7 +5,7 @@ import { IMembresia } from "@/interfaces/IMembresia";
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { loadStripe } from "@stripe/stripe-js";
 import { desactivarMembresia } from '@/helpers/Fetch/FetchMembresias';
-import { useSession } from "next-auth/react";
+import { useSession } from 'next-auth/react';
 
 interface PlanesProps {
     membresia: IMembresia[];
@@ -71,10 +71,13 @@ const PlanesCard: React.FC<PlanesProps> = ({membresia}) => {
     );
   };
   
-   const token = session?.user.accessToken ?? "";
-  const handleTogglePlan = async (token: string, nombre: string) => {
+  const handleTogglePlan = async ( nombre: string) => {
+    if (!session?.user.accessToken) {
+      console.error('El token de acceso no está disponible.');
+      return; // Detener la ejecución
+    }
     try {
-      const updatedMembresia = await  desactivarMembresia(token, nombre);
+      const updatedMembresia = await  desactivarMembresia( nombre, session.user.accessToken);
       setLocalPlan((prev) =>
         prev.map((membresia) =>
           membresia.nombre === nombre
@@ -144,7 +147,7 @@ const PlanesCard: React.FC<PlanesProps> = ({membresia}) => {
                         Editar Plan
                       </button>
                       <button
-                      onClick={() => handleTogglePlan(token, membresia.nombre)}
+                      onClick={() => handleTogglePlan( membresia.nombre)}
                       className={`ml-4 ${
                         membresia.activo 
                           ? 'submitButtonSuspend'

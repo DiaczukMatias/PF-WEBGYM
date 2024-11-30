@@ -1,5 +1,4 @@
 
-
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 interface IMembresiaData {
@@ -7,6 +6,7 @@ interface IMembresiaData {
   precio: number;
   duracionEnMeses: number;
 }
+
 
 // Crear una nueva Membresía (Admin)
 export const crearMembresia = async (membresiaData: IMembresiaData) => {
@@ -31,16 +31,23 @@ export const crearMembresia = async (membresiaData: IMembresiaData) => {
 };
 
 // Comprar una Membresía (Usuario Autenticado)
-export const comprarMembresia = async (token: string,
+export const comprarMembresia = async (
   usuarioId: string,
-  membresiaId: string
+  membresiaId: string,
+  accesToken :string
 ) => {
+//  const token = authToken();
+
+  if (!accesToken) {
+    console.error("No se encontró token de autorización", accesToken);
+    return null;
+  }
   try {
     const response = await fetch(`${apiUrl}/membresias/${membresiaId}/compra`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${accesToken}`,
       },
       body: JSON.stringify({ usuarioId }),
     });
@@ -77,13 +84,17 @@ export const obtenerMembresias = async (
 };
 
 // Obtener Historial de Membresías de un Usuario Específico
-export const obtenerHistorialMembresias = async (token: string, usuarioId: string) => {
+export const obtenerHistorialMembresias = async ( usuarioId: string, accesToken :string) => {
+ // const token = authToken();
+  
+  if (!accesToken) throw new Error("Usuario no autenticado");
+
   try {
     const response = await fetch(
       `${apiUrl}/membresias/${usuarioId}/historial`,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${accesToken}`,
         },
       }
     );
@@ -99,12 +110,16 @@ export const obtenerHistorialMembresias = async (token: string, usuarioId: strin
 };
 
 // Obtener Historial de Membresías (Admin)
-export const obtenerHistorialMembresiasAdmin = async (token: string) => {
-  try {
+export const obtenerHistorialMembresiasAdmin = async (accesToken :string) => {
+  //const token = authToken();
+
+  
+  if (!accesToken) throw new Error("Usuario no autenticado");
+ try {
     const response = await fetch(`${apiUrl}/membresias/admin/historial`, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${accesToken}`,
       },
     });
 
@@ -137,11 +152,18 @@ export const obtenerMembresiaActiva = async (usuarioId: string) => {
 };
 
 // Obtener Membresías Inactivas (Admin)
-export const obtenerMembresiasInactivas = async (token: string) => {
+export const obtenerMembresiasInactivas = async (accesToken :string) => {
+  //const token = authToken();
+
+  if (!accesToken) {
+    console.error("No se encontró token de autorización");
+    return null;
+  }
+
   try {
     const response = await fetch(`${apiUrl}/membresias/pag/inactivas`, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${accesToken}`,
       },
     });
     if (response.ok) {
@@ -156,12 +178,18 @@ export const obtenerMembresiasInactivas = async (token: string) => {
 };
 
 // Desactivar Membresía (Admin)
-export const desactivarMembresia = async (token: string, nombre: string) => {
+export const desactivarMembresia = async ( nombre: string, accesToken :string) => {
+ // const token = authToken();
+
+  if (!accesToken) {
+    console.error("No se encontró token de autorización");
+    return null;
+  }
   try {
     const response = await fetch(`${apiUrl}/membresias/desactivar/${nombre}`, {
       method: "PUT",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${accesToken}`,
       },
     });
 
@@ -177,16 +205,23 @@ export const desactivarMembresia = async (token: string, nombre: string) => {
 };
 
 // Actualizar Precio de Membresía (Admin)
-export const actualizarPrecioMembresia = async (token: string,
+export const actualizarPrecioMembresia = async (
   membresiaId: string,
-  nuevoPrecio: number
+  nuevoPrecio: number,
+  accesToken :string
 ) => {
+  //const token = authToken();
+
+  if (!accesToken) {
+    console.error("No se encontró token de autorización");
+    return null;
+  }
   try {
     const response = await fetch(`${apiUrl}/membresias/${membresiaId}/precio`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${accesToken}`,
       },
       body: JSON.stringify({ precio: nuevoPrecio }),
     });
@@ -203,12 +238,18 @@ export const actualizarPrecioMembresia = async (token: string,
 };
 
 // Renovar Membresía (Admin o Usuario)
-export const renovarMembresia = async (token: string, userId: string) => {
+export const renovarMembresia = async ( userId: string, accesToken :string) => {
+ // const token = authToken();
+
+  if (!accesToken) {
+    console.error("No se encontró token de autorización", accesToken);
+    return null;
+  }
   try {
     const response = await fetch(`${apiUrl}/membresias/renovar/${userId}`, {
       method: "PATCH",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${accesToken}`,
       },
     });
 
@@ -224,12 +265,18 @@ export const renovarMembresia = async (token: string, userId: string) => {
 };
 
 // Cancelar Membresía Activa (Usuario)
-export const cancelarMembresia = async (token: string,id: string) => {
+export const cancelarMembresia = async (id: string, accesToken :string) => {
+ // const token = authToken();
+
+  if (!accesToken) {
+    console.error("No se encontró token de autorización",accesToken);
+    return null;
+  }
   try {
     const response = await fetch(`${apiUrl}/membresias/cancelar/${id}`, {
       method: "PATCH",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${accesToken}`,
       },
     });
 

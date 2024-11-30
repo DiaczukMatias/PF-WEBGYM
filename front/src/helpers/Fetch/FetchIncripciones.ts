@@ -1,6 +1,4 @@
 
-//import { IInscripcion } from "@/interfaces/IInscripcion";
-
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 // Fetch para crear una inscripción

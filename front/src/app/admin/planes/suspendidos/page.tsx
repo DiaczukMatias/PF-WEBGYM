@@ -11,14 +11,18 @@ const PlanesSuspendidos:React.FC  =  () => {
   const [membresias, setMembresias] = useState<IMembresia[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const { data: session } = useSession();
-  const token = session?.user?.accessToken;
 
   useEffect(() => { 
   
-    if (token) {
+    if (session?.user.accessToken) {
       const fetchMembresias = async () => {
+        if (!session?.user.accessToken) {
+          console.error('El token de acceso no está disponible.');
+          setLoading(false);
+          return; // Detener la ejecución
+        }
         try {
-          const data = await obtenerMembresiasInactivas(token);  // Obtener los datos
+          const data = await obtenerMembresiasInactivas(session.user.accessToken);  // Obtener los datos
           setMembresias(data);  // Actualizar el estado con los datos obtenidos
         } catch (error) {
           console.error("Error al obtener las membresías:", error);
