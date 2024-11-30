@@ -11,11 +11,12 @@ export default function Usuarios() {
   const router = useRouter();
   const [allUsers, setAllUsers] = useState<IUsuario[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [limit] = useState(5); // Usuarios por página
+  const [limit] = useState<number>(8); // Usuarios por página
+
   const [hasMore, setHasMore] = useState(true); // Para controlar si hay más usuarios en páginas siguientes
 
   useEffect(() => {
-    const fetchAllUsers = async (page: number, limit: number) => {
+    const fetchAllUsers = async (page:number, limit:number) => {
       try {
         const dataUsers = await fetchUsers(page, limit);
         if (Array.isArray(dataUsers)) {
@@ -57,11 +58,18 @@ export default function Usuarios() {
         <p>Email: {usuario.email}</p>
         <p>Edad: {usuario.edad ?? "Edad no especificada"}</p>
       </div>
-      <button
+      {/*<button
         className={styles.editButton}
         onClick={() => router.push(`/editar-usuario/${usuario.id}`)}
       >
         Editar Perfil
+      </button>*/}
+      <button
+        className={styles.editButton}
+        onClick={() => router.push(
+          `/admin/usuarios/crearProfesor/${usuario.id}`)}
+      >
+       Crear Profesor
       </button>
     </div>
   ))}

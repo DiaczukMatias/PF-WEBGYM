@@ -48,6 +48,14 @@ const EditUserForm: React.FC = () => {
           icon: "error",
           title: "Oops...",
           text: "Hubo un error al cargar los datos del usuario.",
+          customClass: {
+            confirmButton: 'bg-gray-300 text-white', // Botón de confirmación rojo
+          },
+          didOpen: () => {
+            const popup = Swal.getPopup();
+            if (popup) {
+              popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+            }}
         });
       }
     };
@@ -91,6 +99,14 @@ const EditUserForm: React.FC = () => {
         icon: "error",
         title: "Oops...",
         text: "Hay errores en el formulario",
+        customClass: {
+          confirmButton: 'bg-gray-300 text-white', // Botón de confirmación rojo
+        },
+        didOpen: () => {
+          const popup = Swal.getPopup();
+          if (popup) {
+            popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+          }}
       });
       return;
     }
@@ -109,10 +125,38 @@ const EditUserForm: React.FC = () => {
 
     try {
       await updateUser(id, formData);
-      Swal.fire("Éxito", "Usuario actualizado correctamente", "success");
+      Swal.fire({
+        title: "Éxito",
+        text: `Usuario actualizado correctamente`,
+        icon: "success",
+        confirmButtonText: 'OK',
+        customClass: {
+          confirmButton: 'bg-accent text-white',
+        },
+        didOpen: () => {
+          const popup = Swal.getPopup();
+          if (popup) {
+            popup.classList.add('bg-dark', 'text-white');
+            popup.style.backgroundColor = '#333'; // Fondo oscuro
+            popup.style.color = 'white'; // Texto blanco
+          }
+        },
+      })
     } catch (error) {
       console.error("Error al actualizar usuario:", error);
-      Swal.fire("Error", "Hubo un error al actualizar el usuario", "error");
+      Swal.fire({
+        title: "Error",
+        text: "Hubo un error al actualizar el usuario",
+        icon: "error",
+        customClass: {
+          confirmButton: 'bg-gray-300 text-white', // Botón de confirmación rojo
+        },
+        didOpen: () => {
+          const popup = Swal.getPopup();
+          if (popup) {
+            popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+          }}
+      });
     } finally {
       setIsSubmitting(false);
     }

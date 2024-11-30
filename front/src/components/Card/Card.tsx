@@ -5,6 +5,8 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { IClase } from "@/interfaces/IClase";
 import { suspendClase } from "@/helpers/Fetch/FetchSuspend";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 
 interface ClassCardProps {
@@ -26,6 +28,8 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
   } = clase;
 
   const { data: session } = useSession();
+  const router = useRouter();
+
   const rolUsuario = session?.user?.rol;
   const usuarioNombre = session?.user?.name || "";
 
@@ -53,26 +57,98 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
 
 
   const handleSuspendClass = async (estado: boolean) => {
-    setLoading(true);
-  
-    try { 
+    try {
       if (!session?.user.accessToken) {
-      console.error('El token de acceso no está disponible.');
-      setLoading(false);
-      return; // Detener la ejecución
-    }
-      
+        Swal.fire({
+          title: "Error",
+          text: "No estas autorizado para realizar esta acción",
+          icon: "error",
+          showCancelButton: true,
+          customClass: {
+            cancelButton: 'bg-gray-300 text-black', // Botón de cancelar gris claro con texto negro
+          },
+          didOpen: () => {
+            const popup = Swal.getPopup(); // Obtener el popup
+            if (popup) {
+              popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+              // Forzar los estilos aquí también si no se aplican correctamente
+              popup.style.backgroundColor = '#333'; // Fondo oscuro manualmente
+              popup.style.color = 'white'; // Color blanco para el texto
+            }
+          },
+        });
+        return;
+      }
+
+          // Confirmación con Swal
+    const result = await Swal.fire({
+      title: `¿Estás seguro de que quieres ${estado ? "activar" : "suspender"} la clase?`,
+      text: `${nombre}`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: estado ? "Activar" : "Suspender",
+      cancelButtonText: "Cancelar",
+      customClass: {
+        confirmButton: estado ? 'bg-accent text-white' : 'bg-red-600 text-white',
+        cancelButton: 'bg-gray-300 text-black',
+      },
+      didOpen: () => {
+        const popup = Swal.getPopup();
+        if (popup) {
+          popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+          popup.style.backgroundColor = '#333'; // Fondo oscuro
+          popup.style.color = 'white'; // Texto blanco
+        }
+      }
+    });
+
+    if (result.isConfirmed) {
+      // Si confirma, realiza la acción
+      setLoading(true);
+    
       await suspendClase( id, estado, session.user.accessToken);
+
       setLoading(false);
-      setIsSuspendConfirmVisible(false);
+
+      Swal.fire({
+        title: "Éxito",
+        text: `La clase ha sido ${estado ? "activada" : "suspendida"} correctamente.`,
+        icon: "success",
+        confirmButtonText: 'OK',
+        customClass: {
+          confirmButton: 'bg-accent text-white',
+        },
+        didOpen: () => {
+          const popup = Swal.getPopup();
+          if (popup) {
+            popup.classList.add('bg-dark', 'text-white');
+            popup.style.backgroundColor = '#333'; // Fondo oscuro
+            popup.style.color = 'white'; // Texto blanco
+          }
+        },
+      }).then(() => {
+        router.push("/clases"); // Redirige a la página principal o donde prefieras
+      });
+    }
     } catch (error) {
-      console.error("Error al suspender la clase:", error);
       setLoading(false);
+      console.error("Error al suspender la clase:", error);
+
+      Swal.fire({
+        title: "Error",
+        text: "Hubo un problema al realizar la acción. Inténtalo nuevamente.",
+        icon: "error",
+        customClass: {
+          confirmButton: 'bg-gray-300 text-white', // Botón de confirmación rojo
+        },
+        didOpen: () => {
+          const popup = Swal.getPopup();
+          if (popup) {
+            popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+          }}
+      });
     }
   };
-
-  //const showSuspendConfirmation = () => setIsSuspendConfirmVisible(true);
-  const cancelSuspend = () => setIsSuspendConfirmVisible(false);
 
 
   // Función para manejar el evento de inscripción
@@ -81,11 +157,12 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
     setInscripcionError(null); // Limpiar cualquier error previo
     setInscripcionExito(null); // Limpiar el estado de éxito
 
-    const usuarioId = session?.user.id ?? ""
-    const claseId = clase.id
+   
     try {
-      await createInscripcion(usuarioId, claseId); // Usamos el ID del usuario y el ID de la clase
-      setInscripcionExito(true); // Inscripción exitosa
+      if (session?.user.id && clase.id) {
+      await createInscripcion(session?.user.id, clase.id); // Usamos el ID del usuario y el ID de la clase
+      setInscripcionExito(true); // Inscripción exitosa 
+      }
     } catch (error) {
       setInscripcionError("Error al inscribirse en la clase");
       console.error("Error al inscribirse:", error);
@@ -154,34 +231,9 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
 
           {mostrarBotonEditarClase && (
             <div className="mt-4  flex justify-center">
-              <button
-               className={`submitButton ${estado ? "submitButtonSuspend" : ""}`}
+             <button
+               className={`${estado ? "submitButtonSuspend" : "submitButton "}`}
                onClick={() => handleSuspendClass(!estado)}
-               disabled={loading}
-             >
-               {loading
-                 ? estado ? "Suspendiendo..." : "Activando..." : estado ? "Suspender Clase": "Activar Clase"}              
-              </button>
-            </div>
-          )}
-
-
-          {isSuspendConfirmVisible && (
-            <div className="confirmation-modal">
-          <p>
-            ¿Estás seguro de que quieres{" "}
-            {estado ? "suspender" : "activar"} la clase: {nombre}?
-          </p>
-              <div className="flex gap-2">
-                <button
-                  className="m-2 p-2 border rounded-lg border-white text-white"
-                  onClick={cancelSuspend}
-                >
-                  Cancelar
-                </button>
-                <button
-                  className="m-2 p-2 border rounded-lg border-red-700 text-red-700"
-                  onClick={() => handleSuspendClass(!estado)}
                   disabled={loading}
                 >
                   {loading
@@ -192,9 +244,9 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
                     ? "Suspender Clase"
                     : "Activar Clase"}
                 </button>
-              </div>
             </div>
           )}
+
         </div>
       </div>
 

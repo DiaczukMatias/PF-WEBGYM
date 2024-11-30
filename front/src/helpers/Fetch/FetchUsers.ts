@@ -74,6 +74,17 @@ export const registerPost = async (userData: IRegisterProps) => {
           title: responseData.message || "Register complete",
           showConfirmButton: false,
           timer: 1500,
+          customClass: {
+            confirmButton: 'bg-accent text-white',
+          },
+          didOpen: () => {
+            const popup = Swal.getPopup();
+            if (popup) {
+              popup.classList.add('bg-dark', 'text-white');
+              popup.style.backgroundColor = '#333'; // Fondo oscuro
+              popup.style.color = 'white'; // Texto blanco
+            }
+          },
         });
         return responseData; // Devuelve el dato necesario para la redirección
       } else if (response.status === 400) {
@@ -81,6 +92,14 @@ export const registerPost = async (userData: IRegisterProps) => {
           icon: "error",
           title: "Oops...",
           text: responseData.message.join(", ") || "Bad Request",
+          customClass: {
+            confirmButton: 'bg-gray-300 text-white', // Botón de confirmación rojo
+          },
+          didOpen: () => {
+            const popup = Swal.getPopup();
+            if (popup) {
+              popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+            }}
         });
       } else if (response.status === 500) {
         // ESTO LO DEVUELVE CUANDO HAY UN USUARIO DUPLICADO
@@ -88,6 +107,14 @@ export const registerPost = async (userData: IRegisterProps) => {
           icon: "error",
           title: "Oops...",
           text: responseData.message || "Internal Server Error",
+          customClass: {
+            confirmButton: 'bg-gray-300 text-white', // Botón de confirmación rojo
+          },
+          didOpen: () => {
+            const popup = Swal.getPopup();
+            if (popup) {
+              popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+            }}
         });
       } else {
         throw new Error("Error: Unexpected response status");
@@ -99,6 +126,14 @@ export const registerPost = async (userData: IRegisterProps) => {
           icon: "error",
           title: "Oops...",
           text: error.message || "An unknown error occurred",
+          customClass: {
+            confirmButton: 'bg-gray-300 text-white', // Botón de confirmación rojo
+          },
+          didOpen: () => {
+            const popup = Swal.getPopup();
+            if (popup) {
+              popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+            }}
         });
       } else {
         // Es otro tipo de error desconocido
@@ -106,6 +141,14 @@ export const registerPost = async (userData: IRegisterProps) => {
           icon: "error",
           title: "Oops...",
           text: "An unexpected error occurred.",
+          customClass: {
+            confirmButton: 'bg-gray-300 text-white', // Botón de confirmación rojo
+          },
+          didOpen: () => {
+            const popup = Swal.getPopup();
+            if (popup) {
+              popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+            }}
         });
       }
       throw error;

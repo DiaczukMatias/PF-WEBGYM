@@ -52,9 +52,9 @@ export default function Profesres() {
         {allProfesores.map((profesor) => (
           <div key={profesor.id} className={styles.card}>
             <h4 className={styles.userName}>{profesor.nombre.toUpperCase()}</h4>
-            <div className={styles.profilePictureContainer}>
+          {/*  <div className={styles.profilePictureContainer}>
           <img src={profesor.imagen ?? "/images/profesor/jessicaroberts.png"} alt="Profile" className={styles.profilePicture} />
-        </div>
+        </div>*/}
             <div className={styles.userDetails}>
               <p> Certificacion:  {profesor.certificacion ?? "sin certificacion"}</p>
               <p> Descripcion:  {profesor.descripcion}</p>
