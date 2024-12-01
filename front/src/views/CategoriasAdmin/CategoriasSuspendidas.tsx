@@ -1,5 +1,5 @@
 'use client';
-
+import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
 import Category from '@/components/Categories/Categories'; // Asegúrate de que este componente se encargue de mostrar las categorías
 import { getCategories } from '@/helpers/Fetch/FetchCategorias'; // Cambiar por fetchGetSuspendedCategorias() cuando esté listo
@@ -11,11 +11,16 @@ const CategoriasSuspendidasView = () => {
   const [categorias, setCategorias] = useState<ICategoria[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<FetchError | null>(null);
+  const { data: session } = useSession();
+
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const fetchedCategorias: ICategoria[] = await getCategories(); // Cambiar por fetchGetSuspendedCategorias()
+        if (!session?.user.accessToken) {
+          return; // Detener la ejecución
+        }
+        const fetchedCategorias: ICategoria[] = await getCategories(session?.user.accessToken); // Cambiar por fetchGetSuspendedCategorias()
         setCategorias(fetchedCategorias);
 
         if (fetchedCategorias.length === 0) {

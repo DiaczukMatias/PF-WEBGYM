@@ -1,6 +1,6 @@
 import { getCategories } from "../Fetch/FetchCategorias";
 
-export const validateCrearCategoria = async (nombre: string): Promise<string | null> => {
+export const validateCrearCategoria = async (nombre: string,  accessToken: string): Promise<string | null> => {
   if (!nombre.trim()) {
     return "El nombre de la categoría es obligatorio.";
   }
@@ -12,7 +12,7 @@ export const validateCrearCategoria = async (nombre: string): Promise<string | n
   }
 
   try {
-    const categorias = await getCategories();
+    const categorias = await getCategories(accessToken);
     const categoriaExistente = categorias.find(
       (categoria) => categoria.nombre.toLowerCase() === nombre.toLowerCase().trim()
     );

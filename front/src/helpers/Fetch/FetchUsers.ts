@@ -1,6 +1,5 @@
 import { IRegisterProps } from "@/interfaces/IRegister";
 import Swal from "sweetalert2";
-import { IUsuario } from "@/interfaces/IUser";
 import { ILoginProps } from "@/interfaces/ILogin";
 import { FetchError } from "@/interfaces/IErrors";
 //import { useSession } from "next-auth/react";
