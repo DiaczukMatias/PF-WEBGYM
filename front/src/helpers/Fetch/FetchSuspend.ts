@@ -1,16 +1,56 @@
-import { Token } from "../accestoke";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 
-export const suspendClase = async (id: string) => {
-  if (!Token) throw new Error("Usuario no autenticado");
 
-  const response = await fetch(`${apiUrl}/clases/suspend/${id}`, {
+export const suspendClase = async ( id: string, estado: boolean, accesToken :string) => {
+
+
+  const response = await fetch(`${apiUrl}/clases/${id}`, {
     method: "PATCH",
     headers: {
-      Authorization: `Bearer ${Token}`,
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accesToken}`,
     },
+    body: JSON.stringify({estado}),
+  });
+
+  if (!response.ok) {
+    throw new Error("Error al suspender la clase");
+  }
+
+  return response.json();
+};
+
+export const suspendUser = async ( id: string, estado: boolean, accesToken :string) => {
+
+
+  const response = await fetch(`${apiUrl}/usuarios/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accesToken}`,
+    },
+    body: JSON.stringify({estado}),
+  });
+
+  if (!response.ok) {
+    throw new Error("Error al suspender la clase");
+  }
+
+  return response.json();
+};
+
+export const suspendProfesor = async ( id: string, estado: boolean, accesToken :string) => {
+
+
+  const response = await fetch(`${apiUrl}/perfilProfesor/${id}/estado`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accesToken}`,
+    },
+    body: JSON.stringify({estado}),
   });
 
   if (!response.ok) {
@@ -21,14 +61,16 @@ export const suspendClase = async (id: string) => {
 };
 
 
-export const suspendCategoria = async (id: string) => {
-  if (!Token) throw new Error("Usuario no autenticado");
+export const suspendCategoria = async (id: string, estado: boolean, accesToken :string) => {
 
-  const response = await fetch(`${apiUrl}/categorias/suspend/${id}`, {
+
+  const response = await fetch(`${apiUrl}/categorias/${id}/estado`, {
     method: "PATCH",
     headers: {
-      Authorization: `Bearer ${Token}`,
+      Authorization: `Bearer ${accesToken}`,
     },
+    body: JSON.stringify({estado}),
+
   });
 
   if (!response.ok) {
@@ -40,13 +82,12 @@ export const suspendCategoria = async (id: string) => {
 
 
 // Función para obtener las clases suspendidas
-export const fetchGetSuspendedClases = async () => {
-  if (!Token) throw new Error("Usuario no autenticado"); // Verifica que el usuario esté autenticado
+export const fetchGetSuspendedClases = async (accesToken :string) => {
 
   const response = await fetch(`${apiUrl}/clases/suspend`, {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${Token}`, // Agrega el token al header para la autenticación
+      Authorization: `Bearer ${accesToken}`, 
     },
   });
 
@@ -61,13 +102,14 @@ export const fetchGetSuspendedClases = async () => {
 
 
 // Función para obtener las categorías suspendidas
-export const fetchGetSuspendedCategorias = async () => {
-  if (!Token) throw new Error("Usuario no autenticado"); // Verifica que el usuario esté autenticado
+export const fetchGetSuspendedCategorias = async (accesToken :string) => {
+ // const token = authToken();
+
 
   const response = await fetch(`${apiUrl}/categorias/suspend`, {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${Token}`, // Agrega el token al header para la autenticación
+      Authorization: `Bearer ${accesToken}`, // Agrega el token al header para la autenticación
     },
   });
 

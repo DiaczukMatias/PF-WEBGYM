@@ -141,6 +141,7 @@ const Navbar = () => {
           )}
           <Searchbar />
         </div>
+        {esAdmin && (
         <div>
         <button
           className="flex justify-end items-end m-2 p-2 text-white"
@@ -149,6 +150,7 @@ const Navbar = () => {
           Volver
         </button>
         </div>
+            )}
       </div>
     </nav>
   );

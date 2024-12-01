@@ -3,6 +3,8 @@ import React, { useState, ChangeEvent, FormEvent } from "react";
 import Swal from "sweetalert2";
 import { createCategoria } from "@/helpers/Fetch/FetchCategorias";
 import { validateCrearCategoria } from "@/helpers/validate/validateCrearCategoria";
+import { useSession } from 'next-auth/react';
+
 
 
 const CrearCategoria = () => {
@@ -10,6 +12,7 @@ const CrearCategoria = () => {
   const [errors, setErrors] = useState<{ nombre?: string }>({});
   const [inputBlur, setInputBlur] = useState<{ nombre: boolean }>({ nombre: false });
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+  const { data: session } = useSession();
 
   // Maneja los cambios en el input
   const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -22,29 +25,57 @@ const CrearCategoria = () => {
 
   // Maneja el blur en el input
   const handleInputBlur = async () => {
-    const validationError = await validateCrearCategoria(nombre);
+    if (session?.user.accessToken) {
+    const validationError = await validateCrearCategoria(nombre, session?.user.accessToken);
     setInputBlur({ nombre: true });
-    setErrors({ nombre: validationError || undefined});
+    setErrors({ nombre: validationError || undefined});}
   };
 
   // Maneja el envío del formulario
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const validationError = await validateCrearCategoria(nombre);
+    if (session?.user.accessToken) {
+    const validationError = await validateCrearCategoria(nombre, session?.user.accessToken);
     if (validationError) {
       setErrors({ nombre: validationError });
-      return;
+      return;}
     }
 
     try {
       await createCategoria(nombre);
-      Swal.fire("Éxito", "Categoría creada correctamente", "success");
+      Swal.fire({
+        icon: 'success',
+        title: '¡Éxito!',
+        text: 'Categoría creada correctamente',
+        confirmButtonText: 'OK',
+        customClass: {
+          confirmButton: 'bg-accent text-white',
+        },
+        didOpen: () => {
+          const popup = Swal.getPopup();
+          if (popup) {
+            popup.classList.add('bg-dark', 'text-white');
+            popup.style.backgroundColor = '#333'; // Fondo oscuro
+            popup.style.color = 'white'; // Texto blanco
+          }
+        },  })
       setNombre("");
       setInputBlur({ nombre: false });
       setErrors({});
     } catch (err) {
-      Swal.fire("Error", "Hubo un error al crear la categoría", "error");
+      Swal.fire({
+        title: "Error",
+        text: "Hubo un error al crear la categoría",
+        icon: "error",
+        customClass: {
+          confirmButton: 'bg-gray-300 text-white', // Botón de confirmación rojo
+        },
+        didOpen: () => {
+          const popup = Swal.getPopup();
+          if (popup) {
+            popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+          }}
+      });
       console.error("Error al crear categoría:", err);
     }
   };

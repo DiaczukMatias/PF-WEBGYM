@@ -1,10 +1,11 @@
 'use client';
-
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { ICategoria } from '@/interfaces/ICategory';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { suspendCategoria } from '@/helpers/Fetch/FetchSuspend';
+import { useSession } from 'next-auth/react';
+
 
 interface CategoryProps {
   categories: ICategoria[];
@@ -15,6 +16,8 @@ const Category: React.FC<CategoryProps> = ({ categories }) => {
   const [localCategories, setLocalCategories] = useState(categories);
   const [isAdminRoute, setIsAdminRoute] = useState(false);
   const itemsPerPage = 3;
+  const { data: session } = useSession();
+
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -32,20 +35,34 @@ const Category: React.FC<CategoryProps> = ({ categories }) => {
     );
   };
 
-  const handleToggleCategory = async (id: string) => {
+  const handleToggleCategory = async (id: string, activo: boolean ) => {
     try {
-      const updatedCategory = await suspendCategoria(id);
+      if (!session?.user.accessToken) {
+        console.error('El token de acceso no está disponible.');
+        return; // Detener la ejecución
+      }
+      const updatedCategory = await suspendCategoria( id, activo, session?.user.accessToken);
       setLocalCategories((prev) =>
-        prev.map((category) =>
-          category.id === id
-            ? { ...category, estado: updatedCategory.activo }
-            : category
+        prev.map((categories) =>
+          categories.id === id
+            ? { ...categories, estado: updatedCategory.activo }
+            : categories
         )
       );
     } catch (error) {
       console.error('Error al cambiar el estado de la categoría:', error);
     }
   };
+
+  useEffect(() => {
+    setLocalCategories(
+      categories.map((categories) => ({
+        ...categories,
+        activo: categories.activo ?? true, // Si 'activo' no existe, lo inicializa como 'true'.
+      }))
+    );
+  }, [categories]);
+
 
   return (
     <div className="relative m-4 py-4">
@@ -82,12 +99,9 @@ const Category: React.FC<CategoryProps> = ({ categories }) => {
          {categoria.nombre.toUpperCase()}
                     </h1>
                     <button
-                      onClick={() => handleToggleCategory(categoria.id)}
+                      onClick={() => handleToggleCategory(categoria.id ,!categoria.activo)}
                         className={`ml-4 ${
-                          categoria.activo 
-                            ? 'submitButtonSuspend'
-                            : 'submitButton'
-                        }`}
+                          categoria.activo  ? 'submitButtonSuspend': 'submitButton'}`}
                     >
                       {categoria.activo ? 'Suspender' : 'Activar'}
                     </button>

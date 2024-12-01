@@ -1,11 +1,18 @@
 import { IPerfilProfesor } from "@/interfaces/IProfesor";
-import { Token } from "../accestoke";
+//import { authToken } from "../accestoke";
+//import { useSession } from "next-auth/react";
+
+
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 
-export const fetchProfesoresConClases = async () => {
-const response = await fetch(`${apiUrl}/perfilProfesor/clase`);
+export const fetchProfesoresConClases = async (accesToken: string) => {
+const response = await fetch(`${apiUrl}/perfilProfesor/clase`, {
+  method: "GET",
+  headers: {
+    Authorization: `Bearer ${accesToken}`,
+  },});
     if (!response.ok) {
       throw new Error('Error al obtener los profesores con sus clases');
     }
@@ -61,13 +68,13 @@ export const fetchClasesPorProfesor = async (perfilProfesorId: string) => {
   }
 };
 
-export const crearPerfilProfesor = async (usuarioId:string, formData: FormData) => {
-  if (!Token) throw new Error("Usuario no autenticado");
+export const crearPerfilProfesor = async ( usuarioId:string, formData: FormData, accessToken: string ) => {
 
 
     const response = await fetch(`${apiUrl}/perfilProfesor/${usuarioId}`, {
       method: 'POST',
       headers: {
+        Authorization: `Bearer ${accessToken}`
       },
       body: formData,
     });
