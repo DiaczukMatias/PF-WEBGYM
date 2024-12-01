@@ -47,7 +47,6 @@ export const createClase = async ( formData: FormData) => {
 // Fetch para actualizar una clase existente
 export const updateClase = async (id: string, updatedClase : FormData, accessToken :string) => {
  
- 
 try {
   const response = await fetch(`${apiUrl}/clases/${id}`, {
     method: "PUT",

@@ -2,21 +2,28 @@
 
 import React, { useEffect, useState } from 'react';
 import Category from '@/components/Categories/Categories'; // Asegúrate de que este componente se encargue de mostrar las categorías
-import { getCategoriesActivas } from '@/helpers/Fetch/FetchCategorias'; // Traer los datos del backend
+import { getCategories } from '@/helpers/Fetch/FetchCategorias'; // Traer los datos del backend
 import styles from './CategoriasAdmin.module.css'; // Estilos de la vista de categorías
 import { ICategoria } from '@/interfaces/ICategory';
 import { FetchError } from '@/interfaces/IErrors';
+import { useSession } from 'next-auth/react';
 
-const CategoriasActivasView = () => {
+const AllCategorias= () => {
   // Estado para las categorías y errores tipados
   const [categorias, setCategorias] = useState<ICategoria[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<FetchError | null>(null);
+  const { data: session } = useSession();
+
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const fetchedCategorias: ICategoria[] = await getCategoriesActivas();
+        if (!session?.user.accessToken) {
+            console.error('El token de acceso no está disponible.');
+            return; // Detener la ejecución
+          }
+        const fetchedCategorias: ICategoria[] = await getCategories(session?.user.accessToken);
         setCategorias(fetchedCategorias);
 
         if (fetchedCategorias.length === 0) {
@@ -71,4 +78,4 @@ const CategoriasActivasView = () => {
   );
 };
 
-export default CategoriasActivasView;
+export default AllCategorias;

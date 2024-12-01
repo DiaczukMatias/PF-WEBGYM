@@ -86,9 +86,9 @@ const ProfileUser: React.FC = () => {
             </p>
           </div>
 
-          <div className="flex justify-center items-center m-4">
+          <div className="flex justify-center items-center m-4 ">
             <button
-              className={styles.exploreclases}
+              className="submitButton .submitButton:hover"
               onClick={() => (window.location.href = `/clases`)}
             >
               EXPLORAR CLASES

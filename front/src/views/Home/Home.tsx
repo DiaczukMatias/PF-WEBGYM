@@ -11,9 +11,9 @@ import {
   categoriesData,
 } from "@/helpers/datatemporalClases";
 import { fetchClases } from "@/helpers/Fetch/FetchClases";
-import { getCategories } from "@/helpers/Fetch/FetchCategorias";
-//import { fetchPerfilProfesores } from '@/helpers/Fetch/FetchProfesores';
-import { fetchProfesoresConClases } from "@/helpers/Fetch/FetchProfesores";
+import { getCategoriesActivas } from "@/helpers/Fetch/FetchCategorias";
+import { fetchPerfilProfesores } from '@/helpers/Fetch/FetchProfesores';
+//import { fetchProfesoresConClases } from "@/helpers/Fetch/FetchProfesores";
 import styles from "./Home.module.css";
 //import { IPerfilProfesor } from '@/inte//rfaces/IProfesor';
 
@@ -34,8 +34,8 @@ const HomeView = () => {
         // Si `useBackend` es true, se obtienen los datos del backend
         try {
           const fetchedClases = await fetchClases();
-          const fetchedCategorias = await getCategories();
-          const fetchedProfesores = await fetchProfesoresConClases(); // Llamar a la función para obtener los profesores
+          const fetchedCategorias = await getCategoriesActivas();
+          const fetchedProfesores = await fetchPerfilProfesores(); // Llamar a la función para obtener los profesores
 
           setClases(fetchedClases);
           setCategorias(fetchedCategorias);

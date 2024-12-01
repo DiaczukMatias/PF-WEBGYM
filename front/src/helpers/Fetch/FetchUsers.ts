@@ -156,10 +156,14 @@ export const registerPost = async (userData: IRegisterProps) => {
   };
 
 // 3. Obtener todos los usuarios (Protegida, solo admin)
-export const fetchUsers = async (page = 1, limit = 6) => {
+export const fetchAllUsers = async (page = 1, limit = 6, accesToken:string) => {
   try {
     const response = await fetch(`${apiUrl}/usuarios?page=${page}&limit=${limit}`, {
-      headers: {"Content-Type": "application/json"},
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accesToken}`,
+      },
     });
 
     if (!response.ok) throw new Error(await response.text());
@@ -173,7 +177,7 @@ export const fetchUsers = async (page = 1, limit = 6) => {
   }
 };
 
-// 4. Obtener un usuario por ID (Protegida, solo admin)
+// 4. Obtener un usuario por ID
 export const fetchUserById = async (id: string) => {
   console.log('ID en la funcion fetchUserById ' + id );
   
@@ -200,7 +204,7 @@ export const fetchUserById = async (id: string) => {
   }
 };
 
-// 5. Actualizar un usuario por ID (Protegida)
+// 5. Actualizar un usuario por ID 
 export const updateUser = async (id: string, formData: FormData) => {
   try {
     const response = await fetch(`${apiUrl}/usuarios/${id}`, {
@@ -231,6 +235,7 @@ export const deleteUser = async (id: string, accesToken :string) => {
       headers: {
         Authorization: `Bearer ${accesToken}`
       },
+      
     });
 
     if (!response.ok) throw new Error(await response.text());
@@ -244,7 +249,7 @@ export const deleteUser = async (id: string, accesToken :string) => {
   }
 };
 
-// 7. Actualizar perfil del usuario autenticado (Protegida)
+/* 7. Actualizar perfil del usuario autenticado (Protegida)
 export const updateProfile = async ( profileData: IUsuario, accesToken :string) => {
   try {
     const response = await fetch(`${apiUrl}/profile`, {
@@ -265,6 +270,31 @@ export const updateProfile = async ( profileData: IUsuario, accesToken :string) 
     return [];
   }
 };
+*/
+
+//  Actualizar rol deun usuario por ID 
+export const updateUserRol = async (id: string, rol:string, accesToken: string) => {
+  try {
+    const response = await fetch(`${apiUrl}/usuarios/${id}/rol`, {
+      method: 'PUT',
+      headers: {
+        "Content-Type": "application/json",
+      Authorization: `Bearer ${accesToken}`,
+          },
+          body: JSON.stringify({rol}),
+    });
+
+    if (!response.ok) throw new Error(await response.text());
+
+    return await response.json();
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error(`Error al actualizar el usuario con ID ${id}:`, error.message);
+      throw error;
+    }
+  }
+};
+
 
 /*import { IRegisterProps } from "@/interfaces/IRegister";
 import Swal from "sweetalert2";

@@ -22,16 +22,55 @@ export const suspendClase = async ( id: string, estado: boolean, accesToken :str
   return response.json();
 };
 
-
-export const suspendCategoria = async (id: string, activa: boolean, accesToken :string) => {
-  //const token = authToken();
+export const suspendUser = async ( id: string, estado: boolean, accesToken :string) => {
 
 
-  const response = await fetch(`${apiUrl}/categorias/suspend/${id}`, {
+  const response = await fetch(`${apiUrl}/usuarios/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accesToken}`,
+    },
+    body: JSON.stringify({estado}),
+  });
+
+  if (!response.ok) {
+    throw new Error("Error al suspender la clase");
+  }
+
+  return response.json();
+};
+
+export const suspendProfesor = async ( id: string, estado: boolean, accesToken :string) => {
+
+
+  const response = await fetch(`${apiUrl}/perfilProfesor/${id}/estado`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accesToken}`,
+    },
+    body: JSON.stringify({estado}),
+  });
+
+  if (!response.ok) {
+    throw new Error("Error al suspender la clase");
+  }
+
+  return response.json();
+};
+
+
+export const suspendCategoria = async (id: string, estado: boolean, accesToken :string) => {
+
+
+  const response = await fetch(`${apiUrl}/categorias/${id}/estado`, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${accesToken}`,
     },
+    body: JSON.stringify({estado}),
+
   });
 
   if (!response.ok) {

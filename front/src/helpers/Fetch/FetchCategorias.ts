@@ -10,9 +10,14 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
  * Obtiene todas las categorías (ruta pública)
  * @returns {Promise<ICategoria[]>} Array de categorías
  */
-export const getCategories = async (): Promise<ICategoria[]> => {
+export const getCategories = async (accesToken: string): Promise<ICategoria[]> => {
   try {
-    const response = await fetch(`${apiUrl}/categorias`);
+    const response = await fetch(`${apiUrl}/categorias`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${accesToken}`,
+      },
+    });
     if (!response.ok) {
       throw new Error("Error al obtener las categorías.");
     }
@@ -172,3 +177,38 @@ export const getClassesByCategory = async (categoryId: string): Promise<IClase[]
     return []; // Retorna un array vacío en caso de error
   }
 };
+
+
+
+// hacer fetch falta del back:
+
+//@Get('activas')
+
+ // Obtiene todas las categorías (ruta pública)
+
+
+export const getCategoriesActivas = async (): Promise<ICategoria[]> => {
+  const response = await fetch(`${apiUrl}/categorias/activas`);
+
+  if (!response.ok) {
+    throw new Error("Error al obtener las cayegorias activas");
+  }
+  return response.json();
+};
+
+
+//@Get(':id/activas')
+
+// Obtiene unacategoría activa x id (ruta pública)
+
+
+export const getCategoriaById = async (id: string): Promise<ICategoria[]> => {
+  const response = await fetch(`${apiUrl}/categorias/${id}/activas`);
+
+  if (!response.ok) {
+    throw new Error("Error al obtener las cayegorias activas");
+  }
+  return response.json();
+};
+//  @Patch(':id/estado')  esta en el fetch suspended   
+   // = suspendCategoria 

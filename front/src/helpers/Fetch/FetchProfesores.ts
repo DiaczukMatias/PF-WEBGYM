@@ -7,8 +7,12 @@ import { IPerfilProfesor } from "@/interfaces/IProfesor";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 
-export const fetchProfesoresConClases = async () => {
-const response = await fetch(`${apiUrl}/perfilProfesor/clase`);
+export const fetchProfesoresConClases = async (accesToken: string) => {
+const response = await fetch(`${apiUrl}/perfilProfesor/clase`, {
+  method: "GET",
+  headers: {
+    Authorization: `Bearer ${accesToken}`,
+  },});
     if (!response.ok) {
       throw new Error('Error al obtener los profesores con sus clases');
     }

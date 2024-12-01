@@ -49,12 +49,8 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
   const mostrarBotonEditarClase =
     rolUsuario === "admin" || (rolUsuario === "profesor" && isClaseDelProfesor);
 
-  const [isSuspendConfirmVisible, setIsSuspendConfirmVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [inscripcionLoading, setInscripcionLoading] = useState(false); // Nuevo estado para manejar la carga de la inscripción
-  const [inscripcionError, setInscripcionError] = useState<string | null>(null); // Nuevo estado para manejar errores
-  const [inscripcionExito, setInscripcionExito] = useState<boolean | null>(null); // Estado para manejar el éxito de la inscripción
-
 
   const handleSuspendClass = async (estado: boolean) => {
     try {
@@ -154,21 +150,45 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
   // Función para manejar el evento de inscripción
   const handleInscribirse = async () => {
     setInscripcionLoading(true);
-    setInscripcionError(null); // Limpiar cualquier error previo
-    setInscripcionExito(null); // Limpiar el estado de éxito
 
    
     try {
       if (session?.user.id && clase.id) {
+
       await createInscripcion(session?.user.id, clase.id); // Usamos el ID del usuario y el ID de la clase
-      setInscripcionExito(true); // Inscripción exitosa 
-      }
+       Swal.fire({
+        title: "Éxito",
+        text: `Estas inscripto en la clase ${clase.nombre} correctamente.`,
+        icon: "success",
+        confirmButtonText: 'OK',
+        customClass: {
+          confirmButton: 'bg-accent text-white',
+        },
+        didOpen: () => {
+          const popup = Swal.getPopup();
+          if (popup) {
+            popup.classList.add('bg-dark', 'text-white');
+            popup.style.backgroundColor = '#333'; // Fondo oscuro
+            popup.style.color = 'white'; // Texto blanco
+          }
+        },
+      })      }
     } catch (error) {
-      setInscripcionError("Error al inscribirse en la clase");
+      Swal.fire({
+        title: "Error",
+        text: "Hubo un problema al realizar la acción. Inténtalo nuevamente.",
+        icon: "error",
+        customClass: {
+          confirmButton: 'bg-gray-300 text-white', // Botón de confirmación rojo
+        },
+        didOpen: () => {
+          const popup = Swal.getPopup();
+          if (popup) {
+            popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+          }}
+      });
       console.error("Error al inscribirse:", error);
-    } finally {
-      setInscripcionLoading(false);
-    }
+    } 
   };
 
   return (
@@ -213,12 +233,7 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
                 {inscripcionLoading ? "Cargando..." : "Inscribirse"}
               </button>
             )}
-            {inscripcionExito && (
-            <p className="text-accent mt-2">¡Inscripción exitosa!</p>
-          )}
-          {inscripcionError && (
-            <p className="text-red-500 mt-2">{inscripcionError}</p>
-          )}
+
             {mostrarBotonEditarClase && (
               <button
                 className="submitButton .submitButton:hover"
