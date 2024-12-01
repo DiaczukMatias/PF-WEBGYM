@@ -7,11 +7,13 @@ import { ICategoria } from "@/interfaces/ICategory";
 import { getCategories } from "@/helpers/Fetch/FetchCategorias";
 import { fetchPerfilProfesores } from "@/helpers/Fetch/FetchProfesores";
 import { IPerfilProfesor } from "@/interfaces/IProfesor";
+import { useSession } from 'next-auth/react';
 
 
 const CrearClaseForm: React.FC = () => {
   const [categories, setCategories] = useState<ICategoria[]>([]);
   const [profesores, setProfesores] = useState<IPerfilProfesor[]>([]); // Para almacenar los profesores
+  const { data: session } = useSession();
 
 
   const [nuevaClase, setNuevaClase] = useState<ICrearClase>({
@@ -29,7 +31,11 @@ const CrearClaseForm: React.FC = () => {
   useEffect(() => {
     const fetchCategoriesYProfesores = async () => {
       try {
-        const categoriasData = await getCategories();
+        if (!session?.user.accessToken) {
+          console.error('El token de acceso no está disponible.');
+          return; // Detener la ejecución
+        }
+        const categoriasData = await getCategories(session?.user.accessToken);
         console.log("Categorías obtenidas:", categoriasData); // Para verificar si las categorías se cargan correctamente
         const profesoresData = await fetchPerfilProfesores(); // Llamar a la función para obtener los profesores
         setCategories(categoriasData);
@@ -113,7 +119,7 @@ const CrearClaseForm: React.FC = () => {
       formData.append("imagen", nuevaClase.imagen);
     }
 
-    const response = await createClase(formData);
+    const response = await createClase( formData);
     if (!response.ok) {
       throw new Error("Error al crear la clase");
     }

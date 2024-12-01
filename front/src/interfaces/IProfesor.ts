@@ -11,6 +11,7 @@ export interface IProfesor {
     usuario?: IUsuario;
     usuarioId?: IUsuario["id"];
     perfilProfesor: IPerfilProfesor;
+    
 }
 
 export interface IPerfilProfesor {
@@ -21,4 +22,6 @@ export interface IPerfilProfesor {
    imagen?: string;
    usuarioId: IUsuario["id"];
    clases?: IClase[];
+   estado?: boolean;
+   usuario?: IUsuario;
 }

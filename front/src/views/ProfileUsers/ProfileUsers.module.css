@@ -1,8 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap");
 
-
-
-.arrowUp, .arrowDown {
+.arrowUp,
+.arrowDown {
   background: transparent;
   border: none;
   cursor: pointer;
@@ -22,8 +21,6 @@
   bottom: 10px;
 }
 
-
-
 .classItem {
   display: flex;
   align-items: center;
@@ -37,13 +34,13 @@
   display: flex;
   flex-direction: row;
 }
-  
+
 .plan {
   margin-left: 60px;
 }
 
-.plan h3{
-  border-right: 1px solid #9e9e9ed2 ;
+.plan h3 {
+  border-right: 1px solid #9e9e9ed2;
 }
 
 .container {
@@ -108,13 +105,10 @@
 }
 
 .tabs {
-  justify-content: center;
-  display: flex;
-  align-items: center;
   font-size: 1.2em;
   border-bottom: 1px solid #444;
   padding-bottom: 10px;
-  width: 50%;
+  width: 65%;
   cursor: pointer;
   transition: color 0.3s ease;
   gap: 40px;
@@ -133,13 +127,14 @@
 .tabSeparator {
   margin: 1px 15px;
   color: #444;
+  width: 80%;
 }
 
 .carouselContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width:100%;
+  max-width: 100%;
   padding-right: 90px;
 }
 
@@ -192,8 +187,6 @@
   gap: 0.3rem;
 }
 
-
-
 .classText {
   margin-left: 15px;
   color: white;
@@ -207,12 +200,11 @@
   text-transform: uppercase;
 }
 
-.classDate, .classProfessor {
+.classDate,
+.classProfessor {
   font-size: 1rem;
   color: white;
 }
-
-
 
 .studentInfo p {
   margin: 20px 0 0;
@@ -240,12 +232,13 @@
 }
 
 .membershipCard {
+  font-family: oswald;
   margin-top: 40px;
   margin-bottom: 30px;
   border: 2px solid #b6ff04;
   border-radius: 25px;
   padding: 18px;
-  width: 300px;
+  width: 500px;
   display: flex;
   justify-content: space-between; /* Distribuye los elementos a los extremos */
   align-items: center; /* Alinea verticalmente al centro */
@@ -263,14 +256,52 @@
   margin: 0;
 }
 
-
 .membershipCard h3 span:hover {
   color: #b6ff04;
 }
 
 .changeplan {
-  margin-top: 20px;
-  font-size: 13px;
-  margin-left: 110px;
+  margin-left: 16%;
+  white-space: nowrap;
+  width: 20%;
+  padding: 0.75rem;
+  background-color: #b6ff04;
+  border: none;
+  color: #000000;
+  font-family: "oswald", sans-serif;
+  font-weight: bold;
+  font-size: 1rem;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
+.changeseccion {
+  font-family: oswald;
+  margin-top: 40px;
+  margin-bottom: 30px;
+  border: 2px solid #b6ff04;
+  border-radius: 25px;
+  padding: 18px;
+  width: 500px;
+  display: flex;
+  justify-content: space-between; /* Distribuye los elementos a los extremos */
+  align-items: center; /* Alinea verticalmente al centro */
+  gap: 10px; /* Espacio entre "PRO PLAN" y el precio */
+}
+
+.exploreclases {
+  margin-right: 35%;
+  white-space: nowrap;
+  width: 20%;
+  padding: 0.75rem;
+  background-color: #b6ff04;
+  border: none;
+  color: #000000;
+  font-family: "oswald", sans-serif;
+  font-weight: bold;
+  font-size: 1rem;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}

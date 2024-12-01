@@ -17,7 +17,7 @@ const sidebarItems = [
           { label: "Rol Admin", path: "/admin/usuarios/activos/admin" },
         ],
       },
-      { label: "Usuarios Suspendidos", path: "/admin/usuarios/suspendidos" },
+    //  { label: "Usuarios Suspendidos", path: "/admin/usuarios/suspendidos" },
       { label: "Crear Profesor", path: "/admin/usuarios/crearProfesor" },
     ],
   },
@@ -35,7 +35,7 @@ const sidebarItems = [
     path: "/admin/categorias",
     subItems: [
       { label: "Categorías Activas", path: "/admin/categorias/activas" },
-      { label: "Categorías Suspendidas", path: "/admin/categorias/suspendidas" },
+    //  { label: "Categorías Suspendidas", path: "/admin/categorias/suspendidas" },
       { label: "Crear Categoría", path: "/admin/categorias/crear" },
     ],
   },

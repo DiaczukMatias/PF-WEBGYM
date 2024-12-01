@@ -1,22 +1,57 @@
 "use client";
 import { useEffect, useState } from "react";
-//import { fetchGetSuspendedClases } from "@/helpers/Fetch/FetchSuspend";
-import { fetchClases } from "@/helpers/Fetch/FetchClases";
+import { fetchGetSuspendedClases } from "@/helpers/Fetch/FetchSuspend";
+//mport { fetchClases, fetchTodasClases } from "@/helpers/Fetch/FetchClases";
 import ClassCardList from "@/components/CardList/CardList"; // Componente para mostrar las tarjetas
-import { ISearchResult } from "@/interfaces/ISearch"; // Asegúrate de tener la interfaz para los resultados de búsqueda
+import { IClase } from "@/interfaces/IClase";
+import { useSession } from "next-auth/react";
+
 
 const SuspendedClasesView = () => {
-  const [suspendedClasses, setSuspendedClasses] = useState<ISearchResult[]>([]);
+  const [suspendedClasses, setSuspendedClasses] = useState<IClase[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+ 
+  const [page] = useState<number> (1);  // Estado para la página
+  const [limit] = useState<number> (10);  // Estado para el límite de clases por página
+  const { data: session } = useSession();
+
 
   // Fetch clases suspendidas
   useEffect(() => {
     const getSuspendedClasses = async () => {
+      
       try {
+        if (!session?.user.accessToken) {
+          console.error('El token de acceso no está disponible.');
+          setLoading(false);
+          return; // Detener la ejecución
+        }
         setLoading(true);
-        const data = await fetchClases()  //fetchGetSuspendedClases();   //cambiarle al fetch de suspendidas cuando funcionen
-        setSuspendedClasses(data);
+        const clasesSuspendidas = await fetchGetSuspendedClases(session?.user.accessToken );
+        setSuspendedClasses(clasesSuspendidas);
+
+        /*
+        const todasClasesResponse = await fetchTodasClases(page, limit, session.user.accessToken);
+          if (!todasClasesResponse.ok) {
+           throw new Error(`Error al obtener todas las clases: ${todasClasesResponse.status}`); 
+           }
+          const todasClases: IClase[] = await todasClasesResponse.json();
+          console.log('Todas las clases:', todasClases);
+
+       const clasesActivasResponse = await fetchClases();
+         if (!clasesActivasResponse.ok) {
+           throw new Error('Error al obtener las clases activas');
+         }
+         const clasesActivas: IClase[] = await clasesActivasResponse.json();
+         console.log('Clases activas:', clasesActivas);
+
+        const clasesRestadas = todasClases.filter((clase: IClase) => 
+          !clasesActivas.some((c: IClase) => c.id === clase.id)
+      );
+      
+        setSuspendedClasses(clasesRestadas);*/
+
       } catch (err) {
         console.error(err);
         setError("Hubo un problema al cargar las clases suspendidas.");
@@ -26,7 +61,7 @@ const SuspendedClasesView = () => {
     };
 
     getSuspendedClasses();
-  }, []);
+  }, [session, page, limit]);
 
   return (
     <div>

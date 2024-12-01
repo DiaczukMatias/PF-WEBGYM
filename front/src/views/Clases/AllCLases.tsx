@@ -1,43 +1,49 @@
 "use client";
-import { usePathname } from "next/navigation";
+import { usePathname } from "next/navigation"; // Importa el hook
 import { useState, useEffect } from "react";
 import ClassCardList from "@/components/CardList/CardList";
-import { getCategoriesActivas } from "@/helpers/Fetch/FetchCategorias";
-import { searchClases, fetchClases } from "@/helpers/Fetch/FetchClases";
+import { getCategories } from "@/helpers/Fetch/FetchCategorias"; // Fetch de categorías
+import { searchClases } from "@/helpers/Fetch/FetchClases"; // Buscar clases con parámetros
+import { fetchTodasClases } from "@/helpers/Fetch/FetchClases"; // Obtener todas las clases
 import { ICategoria } from "@/interfaces/ICategory";
 import { ISearchResult } from "@/interfaces/ISearch";
 import { IProfesor } from "@/interfaces/IProfesor";
-import styles from "./clases.module.css";
+import { useSession } from "next-auth/react";
 
-
-const ClasesView = () => {
-  const pathname = usePathname();
-  const isAdminRoute = pathname === "/admin/clases";
+const AllClasesView = () => {
+  const pathname = usePathname(); // Obtén la ruta actual
+  const isAdminRoute = pathname === "/admin/clases"; // Detecta si es admin
 
   const [categories, setCategories] = useState<ICategoria[]>([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [errorCategories, setErrorCategories] = useState<string | null>(null);
   const [filteredClasses, setFilteredClasses] = useState<ISearchResult[]>([]);
-  const [professorsInFilteredClases, setProfessorsInFilteredClases] = useState<
-    IProfesor[]
-  >([]);
+  const [professorsInFilteredClases, setProfessorsInFilteredClases] = useState<IProfesor[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedProfesor, setSelectedProfesor] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
 
+  const [page] = useState<number> (1);  // Estado para la página
+  const [limit] = useState<number> (10);  // Estado para el límite de clases por página
+  const { data: session } = useSession();
+
+
+  // Fetch categories
   useEffect(() => {
     const fetchCategories = async () => {
       try {
+        if (!session?.user.accessToken) {
+          console.error('El token de acceso no está disponible.');
+          return; // Detener la ejecución
+        }
         setLoadingCategories(true);
-        const data = await getCategoriesActivas();
+        const data = await getCategories(session?.user.accessToken);
         setCategories(data);
       } catch (error) {
         console.error(error)
-        setErrorCategories(
-          "Hubo un problema al cargar las categorías. Intenta más tarde."
-        );
+        setErrorCategories("Hubo un problema al cargar las categorías. Intenta más tarde.");
       } finally {
         setLoadingCategories(false);
       }
@@ -46,16 +52,24 @@ const ClasesView = () => {
     fetchCategories();
   }, []);
 
+  // Fetch classes data
   useEffect(() => {
     const fetchClassesData = async () => {
+
       setLoading(true);
       setError(null);
 
       try {
         let data: ISearchResult[];
-
+        
+        if (!session?.user.accessToken) {
+          console.error('El token de acceso no está disponible.');
+          setLoading(false);
+          return; // Detener la ejecución
+        }
         if (!selectedCategory && !selectedProfesor) {
-          data = await fetchClases();
+          data = await fetchTodasClases( page, limit, session.user.accessToken);
+          
         } else {
           data = await searchClases({
             claseNombre: "",
@@ -85,7 +99,7 @@ const ClasesView = () => {
     };
 
     fetchClassesData();
-  }, [selectedCategory, selectedProfesor]);
+  }, [selectedCategory, selectedProfesor, page, limit]);
 
   const handleClearFilters = () => {
     setSelectedCategory(null);
@@ -93,24 +107,25 @@ const ClasesView = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.filterButtonContainer}>
+    <div>
+      <div className="flex justify-start items-center">
         <button
           onClick={() => setShowFilters(!showFilters)}
-          className={styles.filterButton}
+          className="text-accent bg-primary px-4 py-2 rounded hover:bg-accent2 transition-colors"
         >
-          {showFilters ? "Ocultar Filtros" : "Filtrar Clases"}
+          {showFilters ? "Ocultar Filtros" : "FILTRAR CLASES"}
         </button>
       </div>
 
       {showFilters && (
-        <div className={styles.filtersContainer}>
-          <div>
-            <h3>Categorías</h3>
+        <div className="flex flex-col md:flex-row justify-between my-4 gap-4">
+          {/* Dropdown para Categorías */}
+          <div className="flex flex-col">
+            <h3 className="text-accent font-bold mb-2">Categorías</h3>
             {loadingCategories ? (
               <p>Cargando categorías...</p>
             ) : errorCategories ? (
-              <p className={styles.errorText}>{errorCategories}</p>
+              <p className="text-red-500">{errorCategories}</p>
             ) : (
               <select
                 value={selectedCategory || ""}
@@ -118,7 +133,7 @@ const ClasesView = () => {
                   setSelectedCategory(e.target.value || null);
                   setSelectedProfesor(null);
                 }}
-                className={styles.select}
+                className="border border-accent bg-secondary2 text-primary rounded px-2 py-1 focus:ring-accent focus:border-accent transition"
               >
                 <option value="">Selecciona una categoría</option>
                 {categories.map((category) => (
@@ -130,13 +145,14 @@ const ClasesView = () => {
             )}
           </div>
 
+          {/* Dropdown para Profesores */}
           {selectedCategory && professorsInFilteredClases.length > 0 && (
-            <div>
-              <h3>Profesores</h3>
+            <div className="flex flex-col">
+              <h3 className="text-accent font-bold mb-2">Profesores</h3>
               <select
                 value={selectedProfesor || ""}
                 onChange={(e) => setSelectedProfesor(e.target.value || null)}
-                className={styles.select}
+                className="border border-accent bg-secondary2 text-primary rounded px-2 py-1 focus:ring-accent focus:border-accent transition"
               >
                 <option value="">Selecciona un profesor</option>
                 {professorsInFilteredClases
@@ -155,35 +171,53 @@ const ClasesView = () => {
               </select>
             </div>
           )}
-          <div>
-            <h3>Filtros seleccionados</h3>
-            {selectedCategory && <p>Categoría: {selectedCategory}</p>}
-            {selectedProfesor && <p>Profesor: {selectedProfesor}</p>}
-            <button onClick={handleClearFilters} className={styles.clearButton}>
+
+          {/* Filtros seleccionados */}
+          <div className="w-full md:w-1/3 text-primary p-4 rounded shadow-md">
+            <h3 className="text-accent font-bold mb-2">Filtros seleccionados</h3>
+            <div>
+              {selectedCategory && (
+                <p>
+                  <strong>Categoría:</strong> {selectedCategory}
+                </p>
+              )}
+              {selectedProfesor && (
+                <p>
+                  <strong>Profesor:</strong> {selectedProfesor}
+                </p>
+              )}
+            </div>
+            <button
+              onClick={handleClearFilters}
+              className="text-secondary bg-red-500 py-1 px-3 rounded mt-4 hover:bg-red-600 transition"
+            >
               Limpiar filtros
             </button>
           </div>
         </div>
       )}
 
-      <h2 className={styles.title}>
-        <span className={styles.titleWhite}>CLASES</span>{" "}
-        <span className={styles.titleGreen}>DISPONIBLES</span>
+      <h2 className="text-center font-bold text-2xl text-accent my-4">
+        Clases Disponibles
       </h2>
 
       {loading ? (
-        <p>Cargando clases...</p>
+        <p className="text-white">Cargando clases...</p>
       ) : error ? (
-        <p className={styles.errorText}>{error}</p>
+        <p className="text-red-500">{error}</p>
       ) : filteredClasses.length === 0 ? (
-        <p>No se encontraron resultados para tu búsqueda.</p>
+        <p className="text-secondary2">No se encontraron resultados para tu búsqueda.</p>
       ) : (
         <ClassCardList classes={filteredClasses} />
       )}
 
-      {isAdminRoute && (
-        <div>
-          <button onClick={() => (window.location.href = `/crearClase`)}>
+       {/* Botones adicionales para admin */}
+       {isAdminRoute && (
+        <div className="flex justify-center items-center m-4 gap-6">
+          <button
+            className="submitButton .submitButton:hover"
+            onClick={() => window.location.href = `/crearClase`}
+          >
             Crear Clase
           </button>
         </div>
@@ -192,5 +226,6 @@ const ClasesView = () => {
   );
 };
 
-export default ClasesView;
+
+export default AllClasesView;
 

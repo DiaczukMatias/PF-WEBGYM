@@ -1,6 +1,6 @@
 import { ICategoria } from "@/interfaces/ICategory";
 import { IClase } from "@/interfaces/IClase";
-import { Token } from "../accestoke";
+
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -10,9 +10,14 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
  * Obtiene todas las categorías (ruta pública)
  * @returns {Promise<ICategoria[]>} Array de categorías
  */
-export const getCategories = async (): Promise<ICategoria[]> => {
+export const getCategories = async (accesToken: string): Promise<ICategoria[]> => {
   try {
-    const response = await fetch(`${apiUrl}/categorias/activas`);
+    const response = await fetch(`${apiUrl}/categorias`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${accesToken}`,
+      },
+    });
     if (!response.ok) {
       throw new Error("Error al obtener las categorías.");
     }
@@ -52,7 +57,7 @@ export const getCategoryById = async (id: string): Promise<ICategoria> => {
 
 /**
  * Crea una nueva categoría (ruta protegida)
- * @param {string} nombre- Datos de la categoría
+ * @param {string} nombre Datos de la categoría
 *  @returns {Promise<ICategoria>} Categoría creada
  */
 export const createCategoria = async (
@@ -88,14 +93,19 @@ export const createCategoria = async (
  */
 export const updateCategory = async (
   id: string,
-  categoryData: ICategoria,
+  categoryData: ICategoria, 
+  accesToken :string
 ): Promise<ICategoria> => {
+  //const token = authToken();
+  
+  if (!accesToken) throw new Error("Usuario no autenticado");
+
   try {
     const response = await fetch(`${apiUrl}/categorias/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${Token}`,
+        Authorization: `Bearer ${accesToken}`,
       },
       body: JSON.stringify(categoryData),
     });
@@ -118,12 +128,17 @@ export const updateCategory = async (
  * @param {string} id - ID de la categoría
  * @returns {Promise<void>} Confirmación de eliminación
  */
-export const deleteCategory = async (id: string): Promise<void> => {
+export const deleteCategory = async ( id: string, accesToken :string): Promise<void> => {
+ // const token = authToken();
+
+  
+  if (!accesToken) throw new Error("Usuario no autenticado");
+
   try {
     const response = await fetch(`${apiUrl}/categorias/${id}`, {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${Token}`,
+        Authorization: `Bearer ${accesToken}`,
       },
     });
     if (!response.ok) {
@@ -162,3 +177,38 @@ export const getClassesByCategory = async (categoryId: string): Promise<IClase[]
     return []; // Retorna un array vacío en caso de error
   }
 };
+
+
+
+// hacer fetch falta del back:
+
+//@Get('activas')
+
+ // Obtiene todas las categorías (ruta pública)
+
+
+export const getCategoriesActivas = async (): Promise<ICategoria[]> => {
+  const response = await fetch(`${apiUrl}/categorias/activas`);
+
+  if (!response.ok) {
+    throw new Error("Error al obtener las cayegorias activas");
+  }
+  return response.json();
+};
+
+
+//@Get(':id/activas')
+
+// Obtiene unacategoría activa x id (ruta pública)
+
+
+export const getCategoriaById = async (id: string): Promise<ICategoria[]> => {
+  const response = await fetch(`${apiUrl}/categorias/${id}/activas`);
+
+  if (!response.ok) {
+    throw new Error("Error al obtener las cayegorias activas");
+  }
+  return response.json();
+};
+//  @Patch(':id/estado')  esta en el fetch suspended   
+   // = suspendCategoria 
