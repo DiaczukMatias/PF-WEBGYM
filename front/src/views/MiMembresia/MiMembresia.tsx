@@ -56,6 +56,7 @@ const MiMembresiaView: React.FC = () => {
       setMembresia(null); // Elimina la membresía activa tras cancelarla
     } catch (err) {
       setError("Error al cancelar la membresía.");
+      console.error(err);
     } finally {
       setLoading(false);
     }
