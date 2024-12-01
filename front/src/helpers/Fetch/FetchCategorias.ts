@@ -12,7 +12,7 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
  */
 export const getCategories = async (): Promise<ICategoria[]> => {
   try {
-    const response = await fetch(`${apiUrl}/categorias`);
+    const response = await fetch(`${apiUrl}/categorias/activas`);
     if (!response.ok) {
       throw new Error("Error al obtener las categorías.");
     }

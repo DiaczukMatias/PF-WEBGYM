@@ -1,10 +1,11 @@
 "use client"
+
 import React, { useState, useEffect } from 'react';
 import styles from "./Planes.module.css";
 import { IMembresia } from "@/interfaces/IMembresia";
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { loadStripe } from "@stripe/stripe-js";
-
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 interface PlanesProps {
     membresia: IMembresia[];
 }
@@ -19,7 +20,7 @@ const PlanesCard: React.FC<PlanesProps> = ({membresia}) => {
   const handleSelectPlan = async (planId: string) => {
     try {
       const response = await fetch(
-        `http://localhost:3010/stripe/create-checkout-session`,
+        `${apiUrl}/stripe/create-checkout-session`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

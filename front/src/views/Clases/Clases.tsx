@@ -9,6 +9,7 @@ import { ICategoria } from "@/interfaces/ICategory";
 import { ISearchResult } from "@/interfaces/ISearch";
 import { IProfesor } from "@/interfaces/IProfesor";
 
+
 const ClasesView = () => {
   const pathname = usePathname(); // Obtén la ruta actual
   const isAdminRoute = pathname === "/admin/clases"; // Detecta si es admin
