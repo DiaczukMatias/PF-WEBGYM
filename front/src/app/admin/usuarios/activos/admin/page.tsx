@@ -24,7 +24,7 @@ export default function Admin() {
         const dataUsers = await fetchAllUsers(page, limit, session?.user.accessToken);
         if (Array.isArray(dataUsers)) {
           // Filtrar solo los usuarios con rol 'cliente'
-          const admin = dataUsers.filter(usuarios => usuarios.admin === true);
+          const admin = dataUsers.filter(usuarios => usuarios.rol === "admin");
           setAllUsers(admin);
           setHasMore(admin.length === limit); // Si devuelve menos del límite, no hay más usuarios
         } else {

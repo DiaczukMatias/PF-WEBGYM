@@ -3,14 +3,12 @@ import { IUsuario } from "@/interfaces/IUser";
 import styles from "./ProfileView.module.css";
 import { useEffect, useState } from "react";
 import { fetchAllUsers } from "@/helpers/Fetch/FetchUsers";
-import { useRouter } from "next/navigation";
 import { useSession } from 'next-auth/react';
 import { suspendUser } from "@/helpers/Fetch/FetchSuspend";
 import Swal from "sweetalert2";
 
 export default function AllUsuarios() {
   
-  const router = useRouter();
   const [allUsers, setAllUsers] = useState<IUsuario[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [limit] = useState<number>(8); // Usuarios por página
