@@ -2,7 +2,7 @@
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import ClassCardList from "@/components/CardList/CardList";
-import { getCategories } from "@/helpers/Fetch/FetchCategorias";
+import { getCategoriesActivas } from "@/helpers/Fetch/FetchCategorias";
 import { searchClases, fetchClases } from "@/helpers/Fetch/FetchClases";
 import { ICategoria } from "@/interfaces/ICategory";
 import { ISearchResult } from "@/interfaces/ISearch";
@@ -30,7 +30,7 @@ const ClasesView = () => {
     const fetchCategories = async () => {
       try {
         setLoadingCategories(true);
-        const data = await getCategories();
+        const data = await getCategoriesActivas();
         setCategories(data);
       } catch (error) {
         console.error(error)

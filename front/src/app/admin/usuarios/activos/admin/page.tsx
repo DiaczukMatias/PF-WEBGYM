@@ -2,8 +2,9 @@
 import { IUsuario} from "@/interfaces/IUser";
 import styles from "./ProfileView.module.css";
 import { useEffect, useState } from "react";
-import { fetchUsers } from "@/helpers/Fetch/FetchUsers";
+import { fetchAllUsers } from "@/helpers/Fetch/FetchUsers";
 import { useRouter } from "next/navigation";
+import { useSession } from 'next-auth/react';
 
 export default function Admin() {
   const router = useRouter();
@@ -11,11 +12,16 @@ export default function Admin() {
   const [currentPage, setCurrentPage] = useState(1);
   const [limit] = useState(8); // Usuarios por página
   const [hasMore, setHasMore] = useState(true); // Para controlar si hay más usuarios en páginas siguientes
+  const { data: session } = useSession();
 
   useEffect(() => {
-    const fetchAllUsers = async (page:number, limit:number) => {
+    const fetchUsers = async (page:number, limit:number) => {
       try {
-        const dataUsers = await fetchUsers(page, limit);
+        if (!session?.user.accessToken) {
+          console.error('El token de acceso no está disponible.');
+          return; // Detener la ejecución
+        }
+        const dataUsers = await fetchAllUsers(page, limit, session?.user.accessToken);
         if (Array.isArray(dataUsers)) {
           // Filtrar solo los usuarios con rol 'cliente'
           const admin = dataUsers.filter(usuarios => usuarios.admin === true);
@@ -31,7 +37,7 @@ export default function Admin() {
       }
     };
 
-    fetchAllUsers(currentPage, limit);
+    fetchUsers(currentPage, limit);
   }, [currentPage, limit]);
 
   // Funciones para cambiar de página
@@ -63,6 +69,12 @@ export default function Admin() {
             >
               Editar Perfil
             </button>
+            <button
+           className={styles.editButton}
+              onClick={() => router.push(
+               `/admin/usuarios/crearProfesor/${usuario.id}`)}
+                    >   Crear Profesor
+                </button>
           </div>
         ))}
       </div>

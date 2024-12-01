@@ -341,3 +341,15 @@
 .editButton:hover {
   background-color: #96e004; /* Tono más claro del color acento */
 }
+
+.assignButton {
+  margin-top: 15px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  color: #000;
+  background-color: #3b82f6; /* Color acento */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}

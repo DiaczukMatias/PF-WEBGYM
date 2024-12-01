@@ -5,10 +5,10 @@ import { useEffect, useState } from "react";
 import { fetchAllUsers } from "@/helpers/Fetch/FetchUsers";
 import { useRouter } from "next/navigation";
 import { useSession } from 'next-auth/react';
-import { updateUserRol } from "@/helpers/Fetch/FetchUsers";
+import { suspendUser } from "@/helpers/Fetch/FetchSuspend";
 import Swal from "sweetalert2";
 
-export default function Usuarios() {
+export default function AllUsuarios() {
   
   const router = useRouter();
   const [allUsers, setAllUsers] = useState<IUsuario[]>([]);
@@ -22,7 +22,6 @@ export default function Usuarios() {
     const fetchUsers = async (page:number, limit:number,) => {
       try {
         if (!session?.user.accessToken) {
-            console.error('El token de acceso no está disponible.');
             return; // Detener la ejecución
           }
         const dataUsers = await fetchAllUsers(page, limit, session.user.accessToken );
@@ -52,80 +51,103 @@ export default function Usuarios() {
     if (currentPage > 1) setCurrentPage((prev) => prev - 1);
   };
 
-  const handleAssignAdminRole = async (nombre: string, id: string, nuevoRol: string) => {
-    if (!session?.user.accessToken) {
-      console.error("El token de acceso no está disponible.");
-      return;
-    }
 
+  const handleSuspend = async (usuario: IUsuario) => {
     try {
-       const action = nuevoRol === "admin" ? "cambiar a Admin" : "cambiar a Cliente";
+      if (!session?.user.accessToken) {
+        Swal.fire({
+          title: "Error",
+          text: "No estás autorizado para realizar esta acción",
+          icon: "error",
+          customClass: {
+            cancelButton: "bg-gray-300 text-black",
+          },
+          didOpen: () => {
+            const popup = Swal.getPopup();
+            if (popup) {
+              popup.classList.add("bg-dark", "text-white");
+              popup.style.backgroundColor = "#333";
+              popup.style.color = "white";
+            }
+          },
+        });
+        return;
+      }
+  
       // Confirmación con Swal
       const result = await Swal.fire({
-      title: `¿Estás seguro de que quieres ${action}?`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: `Sí, ${action}`,
-      cancelButtonText: "Cancelar",
-      customClass: {
-        confirmButton: 'bg-accent text-white',
-        cancelButton: 'bg-gray-300 text-black',
-      },
-      didOpen: () => {
-        const popup = Swal.getPopup();
-        if (popup) {
-          popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
-          popup.style.backgroundColor = '#333'; // Fondo oscuro
-          popup.style.color = 'white'; // Texto blanco
-        }
-      }
-    });
-    if (result.isConfirmed) {
-      const updatedUser = await updateUserRol(id, nuevoRol, session.user.accessToken);
-
-     await Swal.fire({
-        title: "Éxito",
-        text: `El rol del usuario ${nombre} se cambio correctamente a  ${nuevoRol}.`,
-        icon: "success",
-        confirmButtonText: 'OK',
+        title: `¿Estás seguro de que quieres ${usuario.estado ? "suspender" : "activar"} este usuario?`,
+        text: usuario.nombre,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: usuario.estado ? "Suspender" : "Activar",
+        cancelButtonText: "Cancelar",
         customClass: {
-          confirmButton: 'bg-accent text-white',
+          confirmButton: usuario.estado ? "bg-red-600 text-white" : "bg-accent text-white",
+          cancelButton: "bg-gray-300 text-black",
         },
         didOpen: () => {
           const popup = Swal.getPopup();
           if (popup) {
-            popup.classList.add('bg-dark', 'text-white');
-            popup.style.backgroundColor = '#333'; // Fondo oscuro
-            popup.style.color = 'white'; // Texto blanco
+            popup.classList.add("bg-dark", "text-white");
+            popup.style.backgroundColor = "#333";
+            popup.style.color = "white";
           }
         },
-      })
-      // Actualizar el estado local para reflejar el cambio
-      setAllUsers((prevUsers) =>
-        prevUsers.map((user) =>
-          user.id === id ? { ...user, rol: updatedUser.rol } : user
-        )
-      )}
+      });
+  
+      if (result.isConfirmed) {
+        // Cambiar el estado del usuario en la API
+        await suspendUser(usuario.id, !usuario.estado, session.user.accessToken);
+  
+        // Actualizar el estado local
+        setAllUsers((prevUsers) =>
+          prevUsers.map((u) =>
+            u.id === usuario.id ? { ...u, estado: !u.estado } : u
+          )
+        );
+  
+        // Notificación de éxito
+        Swal.fire({
+          title: "Éxito",
+          text: `El usuario ha sido ${usuario.estado ? "suspendido" : "activado"} correctamente.`,
+          icon: "success",
+          confirmButtonText: "OK",
+          customClass: {
+            confirmButton: "bg-accent text-white",
+          },
+          didOpen: () => {
+            const popup = Swal.getPopup();
+            if (popup) {
+              popup.classList.add("bg-dark", "text-white");
+              popup.style.backgroundColor = "#333";
+              popup.style.color = "white";
+            }
+          },
+        });
+      }
     } catch (error) {
-      console.error("Error al asignar rol admin:", error);
-
+      console.error("Error al suspender/activar el usuario:", error);
+  
       Swal.fire({
         title: "Error",
         text: "Hubo un problema al realizar la acción. Inténtalo nuevamente.",
         icon: "error",
         customClass: {
-          confirmButton: 'bg-gray-300 text-white', // Botón de confirmación rojo
+          confirmButton: "bg-gray-300 text-white",
         },
         didOpen: () => {
           const popup = Swal.getPopup();
           if (popup) {
-            popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
-            popup.style.backgroundColor = '#333'; // Fondo oscuro
-            popup.style.color = 'white'; // Texto blanco
-          }}
+            popup.classList.add("bg-dark", "text-white");
+            popup.style.backgroundColor = "#333";
+            popup.style.color = "white";
+          }
+        },
       });
     }
   };
+  
 
   return (
     <div className="flex flex-col justify-center items-center text-center">
@@ -141,21 +163,29 @@ export default function Usuarios() {
         <p>Edad: {usuario.edad ?? "Edad no especificada"}</p>
         <p> Rol: {usuario.rol} </p>
       </div>
-     <button
+      {/*<button
         className={styles.editButton}
         onClick={() => router.push(`/editar-usuario/${usuario.id}`)}
       >
         Editar Perfil
       </button>
       <button
-            className={styles.assignButton}
-             onClick={() => handleAssignAdminRole( usuario.nombre,
-              usuario.id,
-              usuario.rol === "admin" ? "cliente" : "admin"
-            )}
-            >
-          {usuario.rol === "admin" ? "Desasignar Rol Admin" : "Asignar Rol Admin"}         
-       </button>
+        className={styles.editButton}
+        onClick={() => router.push(
+          `/admin/usuarios/crearProfesor/${usuario.id}`)}
+      >
+       Crear Profesor
+      </button>*/}
+      <div className="mt-4  flex justify-center">
+             <button
+               className={`${usuario.estado ? "submitButtonSuspend" : "submitButton "}`}
+               onClick={() => handleSuspend(usuario)}
+                >
+                  { usuario.estado
+                    ? "Suspender Usuario"
+                    : "Activar Usuario"}
+                </button>
+            </div>
     </div>
   ))}
 </div>

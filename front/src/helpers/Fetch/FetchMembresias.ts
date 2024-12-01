@@ -132,16 +132,18 @@ export const obtenerHistorialMembresiasAdmin = async (accesToken :string) => {
 };
 
 // Obtener Membresía Activa de un Usuario
-export const obtenerMembresiaActiva = async (usuarioId: string) => {
+export const obtenerMembresiaActiva = async (usuarioId: string, accesToken: string) => {
   try {
     const response = await fetch(
-      `${apiUrl}/membresias/membresia/activa/${usuarioId}`
+      `${apiUrl}/membresias/membresia/activa/${usuarioId}`, {
+        headers: {
+          Authorization: `Bearer ${accesToken}`,
+        },
+      }
     );
     if (response.ok) {
       return await response.json();
-    } else {
-      throw new Error("Usuario sin membresía activa");
-    }
+    } 
   } catch (error) {
     console.error(error);
     throw error;

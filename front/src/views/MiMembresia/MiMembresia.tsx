@@ -18,12 +18,21 @@ const MiMembresiaView: React.FC = () => {
     setError(null);
 
     try {
+      if (!session?.user.accessToken) {
+        console.error('El token de acceso no está disponible.');
+        return; // Detener la ejecución
+      }
       const usuarioId = session.user.id;
-      const membresiaData = await obtenerMembresiaActiva(usuarioId);
-      setMembresia(membresiaData);
+      const membresiaData = await obtenerMembresiaActiva(usuarioId, session.user.accessToken);
+      if (!membresiaData) {
+        // Si no hay membresía activa, simplemente no establezcas un error
+        setMembresia(null);
+      } else {
+        setMembresia(membresiaData);
+      }
     } catch (err) {
       setError("Error al obtener la membresía activa.");
-      console.error(err);
+      console.error("Error al obtener la membresía activa.",err);
     } finally {
       setLoading(false);
     }
@@ -47,7 +56,6 @@ const MiMembresiaView: React.FC = () => {
       setMembresia(null); // Elimina la membresía activa tras cancelarla
     } catch (err) {
       setError("Error al cancelar la membresía.");
-      console.error(err);
     } finally {
       setLoading(false);
     }

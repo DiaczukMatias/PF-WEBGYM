@@ -34,8 +34,12 @@ const AllClasesView = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
+        if (!session?.user.accessToken) {
+          console.error('El token de acceso no está disponible.');
+          return; // Detener la ejecución
+        }
         setLoadingCategories(true);
-        const data = await getCategories();
+        const data = await getCategories(session?.user.accessToken);
         setCategories(data);
       } catch (error) {
         console.error(error)
