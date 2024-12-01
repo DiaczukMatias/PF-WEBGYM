@@ -3,6 +3,8 @@ import React, { useState, ChangeEvent, FormEvent } from "react";
 import Swal from "sweetalert2";
 import { createCategoria } from "@/helpers/Fetch/FetchCategorias";
 import { validateCrearCategoria } from "@/helpers/validate/validateCrearCategoria";
+import { useSession } from 'next-auth/react';
+
 
 
 const CrearCategoria = () => {
@@ -10,6 +12,7 @@ const CrearCategoria = () => {
   const [errors, setErrors] = useState<{ nombre?: string }>({});
   const [inputBlur, setInputBlur] = useState<{ nombre: boolean }>({ nombre: false });
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+  const { data: session } = useSession();
 
   // Maneja los cambios en el input
   const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -22,19 +25,20 @@ const CrearCategoria = () => {
 
   // Maneja el blur en el input
   const handleInputBlur = async () => {
-    const validationError = await validateCrearCategoria(nombre);
+    if (session?.user.accessToken) {
+    const validationError = await validateCrearCategoria(nombre, session?.user.accessToken);
     setInputBlur({ nombre: true });
-    setErrors({ nombre: validationError || undefined});
+    setErrors({ nombre: validationError || undefined});}
   };
 
   // Maneja el envío del formulario
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const validationError = await validateCrearCategoria(nombre);
+    if (session?.user.accessToken) {
+    const validationError = await validateCrearCategoria(nombre, session?.user.accessToken);
     if (validationError) {
       setErrors({ nombre: validationError });
-      return;
+      return;}
     }
 
     try {
