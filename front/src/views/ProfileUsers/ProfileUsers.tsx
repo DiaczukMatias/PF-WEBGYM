@@ -60,7 +60,7 @@ const ProfileUser: React.FC = () => {
           new Date().setMonth(new Date().getMonth() + 6)
         ),
         fechaActualizacion: new Date(),
-        activo: true,
+        activa: true,
       });
 
       // Datos temporales de clases (clasesData)

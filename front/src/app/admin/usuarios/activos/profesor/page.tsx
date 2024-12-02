@@ -144,6 +144,9 @@ export default function Profesores() {
         {allProfesores.map((profesor) => (
           <div key={profesor.id} className={styles.card}>
             <h4 className={styles.userName}>{profesor.nombre.toUpperCase()}</h4>
+            {/*<div className={styles.profilePictureContainer}>
+          <img src={profesor.imagen} alt={profesor.nombre} className={styles.profilePicture} />
+        </div>*/}
             <div className={styles.userDetails}>
               <p>Certificación: {profesor.certificacion ?? "Sin certificación"}</p>
               <p>Descripción: {profesor.descripcion}</p>

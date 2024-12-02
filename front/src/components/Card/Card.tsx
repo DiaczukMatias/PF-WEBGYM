@@ -24,14 +24,16 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
     perfilProfesor,
     disponibilidad,
     id,
-    estado = true,
+    estado,
   } = clase;
 
+  console.log("clase en card:", clase)
   const { data: session } = useSession();
   const router = useRouter();
 
   const rolUsuario = session?.user?.rol;
   const usuarioNombre = session?.user?.name || "";
+  const rolAdmin = rolUsuario === "admin"
 
   const formattedHorario = new Date(fecha).toLocaleString("es-ES", {
     weekday: "long",
@@ -47,12 +49,12 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
     rolUsuario === "cliente" ||
     (rolUsuario === "profesor" && !isClaseDelProfesor);
   const mostrarBotonEditarClase =
-    rolUsuario === "admin" || (rolUsuario === "profesor" && isClaseDelProfesor);
+    rolUsuario === "admin" || (rolUsuario === "profesor" && isClaseDelProfesor ) ;
 
   const [loading, setLoading] = useState(false);
   const [inscripcionLoading, setInscripcionLoading] = useState(false); // Nuevo estado para manejar la carga de la inscripción
 
-  const handleSuspendClass = async (estado: boolean) => {
+  const handleSuspendClass = async (clase: IClase) => {
     try {
       if (!session?.user.accessToken) {
         Swal.fire({
@@ -78,14 +80,14 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
 
           // Confirmación con Swal
     const result = await Swal.fire({
-      title: `¿Estás seguro de que quieres ${estado ? "activar" : "suspender"} la clase?`,
-      text: `${nombre}`,
+      title: `¿Estás seguro de que quieres ${clase.estado ? "activar" : "suspender"} la clase?`,
+      text: `${clase.nombre}`,
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: estado ? "Activar" : "Suspender",
+      confirmButtonText: clase.estado ? "Activar" : "Suspender",
       cancelButtonText: "Cancelar",
       customClass: {
-        confirmButton: estado ? 'bg-accent text-white' : 'bg-red-600 text-white',
+        confirmButton: clase.estado ? 'bg-accent text-white' : 'bg-red-600 text-white',
         cancelButton: 'bg-gray-300 text-black',
       },
       didOpen: () => {
@@ -102,13 +104,13 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
       // Si confirma, realiza la acción
       setLoading(true);
     
-      await suspendClase( id, estado, session.user.accessToken);
+      await suspendClase( clase.id, !clase.estado, session.user.accessToken);
 
       setLoading(false);
 
       Swal.fire({
         title: "Éxito",
-        text: `La clase ha sido ${estado ? "activada" : "suspendida"} correctamente.`,
+        text: `La clase ha sido ${clase.estado ? "activada" : "suspendida"} correctamente.`,
         icon: "success",
         confirmButtonText: 'OK',
         customClass: {
@@ -123,7 +125,7 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
           }
         },
       }).then(() => {
-        router.push("/clases"); // Redirige a la página principal o donde prefieras
+        router.push("/admin/clases"); // Redirige a la página principal o donde prefieras
       });
     }
     } catch (error) {
@@ -211,6 +213,9 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
             {nombre.toUpperCase()}
           </h3>
           <p className="text-sm text-secondary2 mt-1">
+            estado:  {estado ? "supendido" : "activa"}
+          </p>
+          <p className="text-sm text-secondary2 mt-1">
             Categoria: {categoria?.nombre}
           </p>
           <p className="text-sm text-secondary mt-2">
@@ -244,18 +249,18 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
             )}
           </div>
 
-          {mostrarBotonEditarClase && (
+          {rolAdmin && (
             <div className="mt-4  flex justify-center">
              <button
-               className={`${estado ? "submitButtonSuspend" : "submitButton "}`}
-               onClick={() => handleSuspendClass(!estado)}
+               className={`${estado === true ? "submitButtonSuspend" : "submitButton "}`}
+               onClick={() => handleSuspendClass(clase)}
                   disabled={loading}
                 >
                   {loading
-                    ? estado
+                    ? estado === true 
                       ? "Suspendiendo..."
                       : "Activando..."
-                    : estado
+                    : estado === true
                     ? "Suspender Clase"
                     : "Activar Clase"}
                 </button>

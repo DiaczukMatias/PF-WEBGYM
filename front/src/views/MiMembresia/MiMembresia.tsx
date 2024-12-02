@@ -69,12 +69,12 @@ const MiMembresiaView: React.FC = () => {
     setError(null);
 
     try {
-      if (!session?.user.accessToken) {
+   /*   if (!session?.user.accessToken) {
         console.error('El token de acceso no está disponible.');
         return; // Detener la ejecución
-      }
+      }*/
       const usuarioId = session.user.id;
-      await renovarMembresia(usuarioId, session.user.accessToken);
+      await renovarMembresia(usuarioId);
       fetchMembresiaActiva(); // Refresca la membresía tras renovarla
     } catch (err) {
       setError("Error al renovar la membresía.");
