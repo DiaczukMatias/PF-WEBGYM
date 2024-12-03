@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import styles from "./Landing.module.css";
+import styles from "@/views/LandingView/Landing.module.css"
 import { useRouter } from "next/navigation";
 
 

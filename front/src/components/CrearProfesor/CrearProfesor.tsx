@@ -1,7 +1,7 @@
 "use client";
 import { fetchUserById } from '@/helpers/Fetch/FetchUsers';
 import React, { useEffect, useState } from 'react';
-import { isFetchError } from '../../helpers/Fetch/FetchClases';
+import { isFetchError } from '@/helpers/Fetch/FetchClases';
 import { crearPerfilProfesor } from '@/helpers/Fetch/FetchProfesores';
 import { useSession } from 'next-auth/react';
 import Swal from 'sweetalert2';

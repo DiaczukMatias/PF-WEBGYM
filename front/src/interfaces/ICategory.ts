@@ -1,6 +1,5 @@
 
-
-import { IClase } from "./IClase";
+import { IClase } from "@/interfaces/IClase";
 
 export interface ICategoria {
   id: string;

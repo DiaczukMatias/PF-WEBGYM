@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import React from "react";
-import styles from "./ProfileAdmin.module.css";
 import { useSession } from "next-auth/react";
+import styles from "@/views/ProfileAdmin/ProfileAdmin.module.css";
 
 const ProfileAdmin: React.FC = () => {
   const { data: session } = useSession();

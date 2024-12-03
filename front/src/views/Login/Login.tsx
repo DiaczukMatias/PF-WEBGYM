@@ -2,7 +2,8 @@
 import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import Link from "next/link";
 import { validateLoginForm } from "@/helpers/validate/validate";
-import styles from "./Login.module.css";
+import styles from "@/views/Login/Login.module.css";
+
 import { ILoginProps, ILoginErrors } from "@/interfaces/ILogin";
 import Swal from "sweetalert2";
 

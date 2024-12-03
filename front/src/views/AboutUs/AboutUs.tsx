@@ -1,7 +1,7 @@
 "use client";
 import React, { useRef, useEffect, useState } from "react";
 import * as maptilersdk from "@maptiler/sdk";
-import styles from "./AboutUs.module.css";
+import styles from "@/views/AboutUs/AboutUs.module.css";
 import Image from "next/image";
 
 export default function AboutUs() {

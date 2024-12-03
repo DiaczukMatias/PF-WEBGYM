@@ -40,6 +40,7 @@ const planesData = [
       "Revisiones mensuales de estado físico",
     ],
     precio: 19,
+    duracionEnMeses: 6,
   },
   {
     id: "3",
@@ -78,7 +79,7 @@ const PlanesPage: React.FC = () => {
           setMembresias(planesData);
           setUseBackend(false);
         } else {
-          setMembresias(data);  // Si el fetch es exitoso, usar los datos obtenidos
+          setMembresias(data.data.filter((membresia: IMembresia)=> membresia.activa));  // Si el fetch es exitoso, usar los datos obtenidos
           setUseBackend(true);
         }
       } catch (err) {
@@ -98,6 +99,7 @@ const PlanesPage: React.FC = () => {
     duracionEnMeses: membresia.duracionEnMeses,
     features: membresia.features,
     precio: membresia.precio,
+    activa: membresia.activa
   })):  [];
 
   return (
@@ -112,40 +114,3 @@ const PlanesPage: React.FC = () => {
 export default PlanesPage;
 
 
-
-
-/*"use client"; // Asegura que este archivo se ejecute solo en el cliente
-
-import React, { useEffect, useState } from "react";
-import PlanesView from "@/views/Planes/PlanesView";
-import { obtenerMembresias } from "@/helpers/Fetch/FetchMembresias";
-
-const PlanesPage: React.FC = () => {
-  const [fetchFunction, setFetchFunction] = useState([]);
-
-  const [page] = useState<number> (1);  // Estado para la página
-  const [limit] = useState<number> (10);  // Estado para el límite de clases por página
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await obtenerMembresias(page, limit);
-        setFetchFunction(data);
-      } catch (err) {
-        console.error("Error al obtener membresías:", err);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  return (
-    <div className="flex flex-col justify-center items-center text-center">
-      <h1 className="text-accent text-2xl font-bold">Gestión de Planes</h1>
-      <PlanesView fetchPlanes={fetchFunction} />
-    </div>
-  );
-};
-
-export default PlanesPage;
-*/
