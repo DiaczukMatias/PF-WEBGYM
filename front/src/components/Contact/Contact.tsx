@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import styles from "./ContactForm.module.css";
+import styles from "@/components/Contact/ContactForm.module.css"
 import emailjs from "emailjs-com";
 
 const ContactForm: React.FC = () => {

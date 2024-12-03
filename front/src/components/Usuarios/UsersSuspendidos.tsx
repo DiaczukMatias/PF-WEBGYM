@@ -1,6 +1,6 @@
 "use client";
 import { IUsuario } from "@/interfaces/IUser";
-import styles from "./ProfileView.module.css";
+import styles from "@/components/Usuarios/ProfileView.module.css"
 import { useEffect, useState } from "react";
 import { fetchAllUsers } from "@/helpers/Fetch/FetchUsers";
 import { useSession } from 'next-auth/react';

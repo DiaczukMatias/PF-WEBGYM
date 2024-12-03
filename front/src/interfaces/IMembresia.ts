@@ -1,5 +1,5 @@
-import { IUsuario } from "./IUser";
-import { IInscripcion } from "./IInscripcion";
+import { IUsuario } from "@/interfaces/IUser";
+import { IInscripcion } from "@/interfaces/IInscripcion";
 
 export interface IMembresia {
     id?: string;

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Category from '@/components/Categories/Categories'; // Asegúrate de que este componente se encargue de mostrar las categorías
 import { getCategories } from '@/helpers/Fetch/FetchCategorias'; // Traer los datos del backend
-import styles from './CategoriasAdmin.module.css'; // Estilos de la vista de categorías
+import styles from '@/views/CategoriasAdmin/CategoriasAdmin.module.css'; // Estilos de la vista de categorías
 import { ICategoria } from '@/interfaces/ICategory';
 import { FetchError } from '@/interfaces/IErrors';
 import { useSession } from 'next-auth/react';

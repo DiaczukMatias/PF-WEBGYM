@@ -1,7 +1,9 @@
 "use client";
 import React from "react";
 import { useParams } from "next/navigation";
-import styles from "./checkout.module.css";
+import styles from "@/app/checkout/[planId]/checkout.module.css"
+
+
 
 const planes = [
   {

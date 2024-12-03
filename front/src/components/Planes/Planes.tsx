@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useEffect } from 'react';
-import styles from "./Planes.module.css";
+import styles from "@/components/Planes/Planes.module.css";
 import { IMembresia } from "@/interfaces/IMembresia";
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { loadStripe } from "@stripe/stripe-js";

@@ -1,6 +1,6 @@
-import { ICategoria } from "./ICategory";
-import { IPerfilProfesor, IProfesor} from "./IProfesor";
-import { IInscripcion } from "./IInscripcion";
+import { ICategoria } from "@/interfaces/ICategory";
+import { IPerfilProfesor, IProfesor} from "@/interfaces/IProfesor";
+import { IInscripcion } from "@/interfaces/IInscripcion";
 
 export interface IClase {
   id: string; // Identificador único de la clase (UUID)

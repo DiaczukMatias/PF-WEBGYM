@@ -4,7 +4,8 @@ import { registerPost } from "@/helpers/user.fetchFunction";
 import { validateRegisterForm } from "@/helpers/validate/validate";
 import { IRegisterErrors, IRegisterProps } from "@/interfaces/IRegister";
 import React, { useEffect, useState } from "react";
-import styles from "./Register.module.css";
+import styles from "@/views/Register/Register.module.css";
+
 import Link from "next/link";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";

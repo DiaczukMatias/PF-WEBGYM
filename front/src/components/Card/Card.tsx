@@ -28,6 +28,8 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
   } = clase;
 
   console.log("clase en card:", clase)
+
+  
   const { data: session } = useSession();
   const router = useRouter();
 

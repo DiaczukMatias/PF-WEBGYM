@@ -4,7 +4,8 @@ import Swal from "sweetalert2";
 import { validateEditUserForm } from "@/helpers/validate/validate";
 import { fetchUserById, updateUser } from "@/helpers/Fetch/FetchUsers";
 import { IEditUserErrors, IEditUserProps } from "@/interfaces/IEditUser";
-import styles from "./Register.module.css";
+import styles from "@/components/editUser/Register.module.css";
+
 
 const EditUserForm: React.FC = () => {
   const [id, setId] = useState<string>(""); // ID del usuario

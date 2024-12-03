@@ -3,7 +3,8 @@ import React, { useState, useEffect } from "react";
 import { obtenerMembresiaActiva, cancelarMembresia, renovarMembresia } from "@/helpers/Fetch/FetchMembresias";
 import { IMembresia } from "@/interfaces/IMembresia";
 import { useSession } from "next-auth/react";
-import styles from "./MiMembresia.module.css";
+import styles from "@/views/MiMembresia/MiMembresia.module.css";
+
 
 const MiMembresiaView: React.FC = () => {
   const [membresia, setMembresia] = useState<IMembresia | null>(null);

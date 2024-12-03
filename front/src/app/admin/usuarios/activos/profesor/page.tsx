@@ -1,6 +1,6 @@
 "use client";
 import { IPerfilProfesor } from "@/interfaces/IProfesor";
-import styles from "./ProfileView.module.css";
+import styles from "@/app/admin/usuarios/activos/ProfileView.module.css"
 import { useEffect, useState } from "react";
 import { fetchPerfilProfesores } from "@/helpers/Fetch/FetchProfesores";
 import { useSession } from "next-auth/react";
