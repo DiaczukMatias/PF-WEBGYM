@@ -25,7 +25,22 @@ const ProfileProfesor: React.FC = () => {
 
   const database = true; 
   // Si no hay base de datos (cuando database = false), usamos los datos temporales
+ /* 
+   // fetch para tener la imagen actualizada al editar
+   useEffect(() => {
+    const fetchUserForImage = async () => {
+      try {
+        
+        const data = await fetchUserById(session?.user.id || "");
+        setUserIMG(data.imagen);
+      } catch (error) {
+        console.error(error)
+        ;
+      }
+    };
 
+    fetchUserForImage();
+  }, []);*/
 
   useEffect(() => {
   const fetchUserData = async () => {

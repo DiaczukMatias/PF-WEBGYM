@@ -1,9 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import styles from "@/views/ProfileAdmin/ProfileAdmin.module.css";
-
+import { fetchUserById } from "@/helpers/Fetch/FetchUsers";
 const ProfileAdmin: React.FC = () => {
   const { data: session } = useSession();
   console.log('session en profileUser', session);
@@ -11,9 +11,23 @@ const ProfileAdmin: React.FC = () => {
   const userName = session?.user?.name || "Usuario";  // Corregido por posible undefined
   const userMail = session?.user?.email || "Email";
   const userTel = session?.user?.telefono || "Telefono";
-  const userIMG = session?.user?.image || "/FOTOPERFIL.png"; // Imagen predeterminada
+  
   const userID = session?.user.id || ''
+  const [userIMG, setUserIMG] = useState<string>(session?.user.image|| "/FOTOPERFIL.png");
+ /* useEffect(() => {
+    const fetchUserForImage = async () => {
+      try {
+        
+        const data = await fetchUserById(session?.user.id || "");
+        setUserIMG(data.imagen);
+      } catch (error) {
+        console.error(error)
+        ;
+      }
+    };
 
+    fetchUserForImage();
+  }, []);*/
 
 
   return (

@@ -78,6 +78,22 @@ const ProfileUser: React.FC = () => {
     fetchUserData(); // Llamamos a la función para cargar los datos cuando se monta el componente
   }, [session]);
 
+   /* 
+   // fetch para tener la imagen actualizada al editar
+   useEffect(() => {
+    const fetchUserForImage = async () => {
+      try {
+        
+        const data = await fetchUserById(session?.user.id || "");
+        setUserIMG(data.imagen);
+      } catch (error) {
+        console.error(error)
+        ;
+      }
+    };
+
+    fetchUserForImage();
+  }, []);*/
   const renderClasses = () => {
     if (!userClasses || userClasses.length === 0) {
       return (

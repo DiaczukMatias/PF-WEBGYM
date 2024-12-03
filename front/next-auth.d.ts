@@ -5,7 +5,7 @@ import { JWT } from 'next-auth/jwt';//no quitar sino rompe algo en route
 import { IInscripcion } from '@/interfaces/IInscripcion';
 import { IMembresia } from '@/interfaces/IMembresia';
 import { IClase } from '@/interfaces/IClase';
-import { IPerfilProfesor } from '@/interfaces/IProfesor';
+//import { IPerfilProfesor } from '@/interfaces/IProfesor';
 
 declare module 'next-auth' {
   interface User {
@@ -33,6 +33,9 @@ declare module 'next-auth' {
       clase?: IClase[];
       membresia?: IMembresia;
       usuario?: IUsuario;}[] | know;
+    // Nuevas propiedades
+    picture?: string | null; // Imagen para el caso de Google
+    imagen?: string | null;  // Imagen específica de tu backend
   }
 
   interface Session {
@@ -48,5 +51,9 @@ declare module 'next-auth/jwt' {
     telefono?: string | null;
     rol: string;
     accessToken?: string;
+     // Nuevas propiedades
+     image?: string | null;   // Imagen general
+     picture?: string | null; // Imagen para Google
+     imagen?: string | null;  // Imagen de tu backend
   }
 }

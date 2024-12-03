@@ -5,9 +5,10 @@ import { validateEditUserForm } from "@/helpers/validate/validate";
 import { fetchUserById, updateUser } from "@/helpers/Fetch/FetchUsers";
 import { IEditUserErrors, IEditUserProps } from "@/interfaces/IEditUser";
 import styles from "@/components/editUser/Register.module.css";
-
+import { useRouter } from "next/navigation"
 
 const EditUserForm: React.FC = () => {
+  const router = useRouter(); // Hook para redirección
   const [id, setId] = useState<string>(""); // ID del usuario
   const [dataUser, setDataUser] = useState<IEditUserProps>({
     nombre: "",
@@ -142,6 +143,8 @@ const EditUserForm: React.FC = () => {
             popup.style.color = 'white'; // Texto blanco
           }
         },
+      }).then(() => {
+        router.push("/profile"); // Redirección a /profile
       })
     } catch (error) {
       console.error("Error al actualizar usuario:", error);

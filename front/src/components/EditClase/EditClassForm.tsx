@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { fetchClaseById, isFetchError, updateClase } from '@/helpers/Fetch/FetchClases';
+import { fetchClaseById, isFetchError, updateClase } from '../../helpers/Fetch/FetchClases';
 import { useSession } from 'next-auth/react';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
@@ -127,17 +127,6 @@ console.log('valor de disponibilidad:', formData.disponibilidad);
         title: '¡Clase actualizada!',
         text: 'La clase se actualizó correctamente.',
         confirmButtonText: 'OK',
-        customClass: {
-          confirmButton: 'bg-accent text-white',
-        },
-        didOpen: () => {
-          const popup = Swal.getPopup();
-          if (popup) {
-            popup.classList.add('bg-dark', 'text-white');
-            popup.style.backgroundColor = '#333'; // Fondo oscuro
-            popup.style.color = 'white'; // Texto blanco
-          }
-        },
       }).then(() => {
         router.push('/clases'); // Redirige a /clases
       });

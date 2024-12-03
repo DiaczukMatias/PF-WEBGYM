@@ -45,7 +45,7 @@ export const createClase = async ( formData: FormData) => {
 };
 
 // Fetch para actualizar una clase existente
-export const updateClase = async (id: string, updatedClase : FormData, accessToken :string) => {
+export const updateClase = async (id: string, form : FormData, accessToken :string) => {
  
 try {
   const response = await fetch(`${apiUrl}/clases/${id}`, {
@@ -53,10 +53,10 @@ try {
     headers: {
       Authorization: `Bearer ${accessToken}`
     },
-    body: updatedClase,
+    body: form,
   });
   if (!response.ok) {
-    console.error('que recibo en mi objeto:', updateClase);
+    console.error('que recibo en mi objeto:', form);
     const errorResponse = await response.json(); // Captura la respuesta de error
     const errorMessages = errorResponse.message || 'Ha ocurrido un error desconocido';
     throw new Error(errorMessages); // Lanzamos un error con el mensaje del backend
