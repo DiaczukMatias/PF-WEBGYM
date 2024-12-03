@@ -36,8 +36,11 @@ const ProfileProfesor: React.FC = () => {
             return;
           }
           const usuarioId = session?.user.id;
-
-          const fetchedPerfilProfesor = await   fetchPerfilProfesorById(usuarioId);  //para obtener el perfilprofesorID con el  id usuario
+          if (!session?.user.accessToken) {
+            setError('No tienes la autorizacion para acceder a esta información');
+            return;
+          }
+          const fetchedPerfilProfesor = await   fetchPerfilProfesorById(usuarioId, session.user.accessToken);  //para obtener el perfilprofesorID con el  id usuario
            console.log("perfilprofesor:", fetchedPerfilProfesor)
 
             // Extraer las clases del objeto perfil del profesor
