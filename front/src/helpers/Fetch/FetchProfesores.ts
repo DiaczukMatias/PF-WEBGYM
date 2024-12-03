@@ -1,7 +1,4 @@
 import { IPerfilProfesor } from "@/interfaces/IProfesor";
-//import { authToken } from "../accestoke";
-//import { useSession } from "next-auth/react";
-
 
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;

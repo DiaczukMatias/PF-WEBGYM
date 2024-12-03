@@ -7,7 +7,7 @@ import { searchClases, fetchClases } from "@/helpers/Fetch/FetchClases";
 import { ICategoria } from "@/interfaces/ICategory";
 import { ISearchResult } from "@/interfaces/ISearch";
 import { IProfesor } from "@/interfaces/IProfesor";
-import styles from "./clases.module.css";
+import styles from '@/views/Clases/Clases.module.css';
 
 const ClasesView = () => {
   const pathname = usePathname();

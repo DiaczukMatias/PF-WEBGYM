@@ -1,4 +1,4 @@
-import { getCategories } from "../Fetch/FetchCategorias";
+import { getCategories } from "@/helpers/Fetch/FetchCategorias";
 
 export const validateCrearCategoria = async (nombre: string,  accessToken: string): Promise<string | null> => {
   if (!nombre.trim()) {

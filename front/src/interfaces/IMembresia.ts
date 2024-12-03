@@ -1,8 +1,8 @@
-import { IUsuario } from "./IUser";
-import { IInscripcion } from "./IInscripcion";
+import { IUsuario } from "@/interfaces/IUser";
+import { IInscripcion } from "@/interfaces/IInscripcion";
 
 export interface IMembresia {
-    id: string;
+    id?: string;
     nombre: string;
     precio: number;
     descripcion?: string;
@@ -11,7 +11,7 @@ export interface IMembresia {
     fechaCreacion?: Date | string;
     fechaExpiracion?: Date | string;
     fechaActualizacion?: Date | string;
-    activo?: boolean;  // Si es true, la membresía está disponible para nuevos usuarios
+    activa?: boolean;  // Si es true, la membresía está disponible para nuevos usuarios
     usuario?: IUsuario;
     inscripciones?: IInscripcion[];
 }

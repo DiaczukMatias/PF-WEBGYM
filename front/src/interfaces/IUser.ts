@@ -1,6 +1,6 @@
-import { IProfesor } from "./IProfesor";
-import { IMembresia } from "./IMembresia";
-import { IInscripcion } from "./IInscripcion";
+import { IProfesor } from "@/interfaces/IProfesor";
+import { IMembresia } from "@/interfaces/IMembresia";
+import { IInscripcion } from "@/interfaces/IInscripcion";
 
 export enum RolEnum {
     ADMIN = 'admin',

@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client"
 import React, { useState, useEffect } from "react";
-import styles from "./ProfileView.module.css";
+import styles from "@/views/ProflleProfesor/ProfileView.module.css";
 import { useSession } from "next-auth/react";
 import { IClase } from "@/interfaces/IClase";
 import { clasesData } from "@/helpers/datatemporalClases";

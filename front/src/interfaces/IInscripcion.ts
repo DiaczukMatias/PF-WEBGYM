@@ -1,6 +1,6 @@
-import { IClase } from "./IClase";
-import { IMembresia } from "./IMembresia";
-import { IUsuario } from "./IUser";
+import { IClase } from "@/interfaces/IClase";
+import { IMembresia } from "@/interfaces/IMembresia";
+import { IUsuario } from "@/interfaces/IUser";
 
 export interface IInscripcion {
     id: string;

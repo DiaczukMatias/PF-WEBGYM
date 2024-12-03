@@ -1,32 +1,32 @@
+import { IMembresia } from "@/interfaces/IMembresia";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-interface IMembresiaData {
+/*interface IMembresiaData {
   nombre: string;
   precio: number;
   duracionEnMeses: number;
 }
-
+*/
 
 // Crear una nueva Membresía (Admin)
-export const crearMembresia = async (membresiaData: IMembresiaData) => {
+export const crearMembresia = async (membresia: IMembresia) => {
   try {
     const response = await fetch(`${apiUrl}/membresias`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(membresiaData),
+      body: JSON.stringify(membresia),
     });
-
-    if (response.ok) {
-      return await response.json();
-    } else {
-      throw new Error("Error al crear la membresía");
+    if (!response.ok) {
+      throw new Error('Error al crear la membresía');
     }
+
+    return await response.json();
   } catch (error) {
     console.error(error);
-    throw error;
+    throw new Error('Error al crear la membresía');
   }
 };
 
@@ -105,10 +105,9 @@ export const obtenerHistorialMembresias = async ( usuarioId: string, accesToken 
     throw error;
   }
 };
-
+//////////////////////////////////////////////////////////////////////////////////////////////
 // Obtener Historial de Membresías (Admin)
 export const obtenerHistorialMembresiasAdmin = async (accesToken :string) => {
-  //const token = authToken();
 
   
   if (!accesToken) throw new Error("Usuario no autenticado");
@@ -236,20 +235,17 @@ export const actualizarPrecioMembresia = async (
   }
 };
 
-// Renovar Membresía (Admin o Usuario)
-export const renovarMembresia = async ( userId: string, accesToken :string) => {
+
+/////////////////////////////////////////////////////////////////////////////////////////
+// Renovar Membresía (Admin o Usuario) no protegida
+export const renovarMembresia = async ( userId: string) => {
  // const token = authToken();
 
-  if (!accesToken) {
-    console.error("No se encontró token de autorización", accesToken);
-    return null;
-  }
+ 
   try {
     const response = await fetch(`${apiUrl}/membresias/renovar/${userId}`, {
       method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${accesToken}`,
-      },
+      
     });
 
     if (response.ok) {
@@ -263,6 +259,8 @@ export const renovarMembresia = async ( userId: string, accesToken :string) => {
   }
 };
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Cancelar Membresía Activa (Usuario)
 export const cancelarMembresia = async (id: string, accesToken :string) => {
  // const token = authToken();

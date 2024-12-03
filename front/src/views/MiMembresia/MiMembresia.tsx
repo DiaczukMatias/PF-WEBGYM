@@ -3,7 +3,8 @@ import React, { useState, useEffect } from "react";
 import { obtenerMembresiaActiva, cancelarMembresia, renovarMembresia } from "@/helpers/Fetch/FetchMembresias";
 import { IMembresia } from "@/interfaces/IMembresia";
 import { useSession } from "next-auth/react";
-import styles from "./MiMembresia.module.css";
+import styles from "@/views/MiMembresia/MiMembresia.module.css";
+
 
 const MiMembresiaView: React.FC = () => {
   const [membresia, setMembresia] = useState<IMembresia | null>(null);
@@ -69,12 +70,12 @@ const MiMembresiaView: React.FC = () => {
     setError(null);
 
     try {
-      if (!session?.user.accessToken) {
+   /*   if (!session?.user.accessToken) {
         console.error('El token de acceso no está disponible.');
         return; // Detener la ejecución
-      }
+      }*/
       const usuarioId = session.user.id;
-      await renovarMembresia(usuarioId, session.user.accessToken);
+      await renovarMembresia(usuarioId);
       fetchMembresiaActiva(); // Refresca la membresía tras renovarla
     } catch (err) {
       setError("Error al renovar la membresía.");

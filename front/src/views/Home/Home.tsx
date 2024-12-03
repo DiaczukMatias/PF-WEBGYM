@@ -14,7 +14,8 @@ import { fetchClases } from "@/helpers/Fetch/FetchClases";
 import { getCategoriesActivas } from "@/helpers/Fetch/FetchCategorias";
 import { fetchPerfilProfesores } from '@/helpers/Fetch/FetchProfesores';
 //import { fetchProfesoresConClases } from "@/helpers/Fetch/FetchProfesores";
-import styles from "./Home.module.css";
+import styles from "@/views/Home/Home.module.css";
+
 //import { IPerfilProfesor } from '@/inte//rfaces/IProfesor';
 
 const HomeView = () => {
