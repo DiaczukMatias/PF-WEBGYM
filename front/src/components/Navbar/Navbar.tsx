@@ -18,7 +18,7 @@ const Navbar = () => {
   const rolUsuario = session?.user?.rol;
   const esCliente = rolUsuario === "cliente" || undefined ;
   const esAdmin = rolUsuario === "admin";
-  const esProfesor = rolUsuario === "profesor";
+  //const esProfesor = rolUsuario === "profesor";
 
   if (status === "loading") {
     return (

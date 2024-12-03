@@ -261,7 +261,7 @@ export const renovarMembresia = async ( userId: string) => {
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Cancelar Membresía Activa (Usuario)
+// Cancelar Membresía Activa (Usuario) segun admins
 export const cancelarMembresia = async (id: string, accesToken :string) => {
  // const token = authToken();
 
@@ -287,3 +287,31 @@ export const cancelarMembresia = async (id: string, accesToken :string) => {
     throw error;
   }
 };
+
+// Cancelar Membresía Activa (Usuario) 
+export const cancelarUserMembresia = async (accesToken :string) => {
+  // const token = authToken();
+ 
+   if (!accesToken) {
+     console.error("No se encontró token de autorización",accesToken);
+     return null;
+   }
+   try {
+     const response = await fetch(`${apiUrl}/membresias/cancelar/`, {
+       method: "PATCH",
+       headers: {
+         Authorization: `Bearer ${accesToken}`,
+       },
+     });
+ 
+     if (response.ok) {
+       return await response.json();
+     } else {
+       throw new Error("Error al cancelar la membresía");
+     }
+   } catch (error) {
+     console.error(error);
+     throw error;
+   }
+ };
+ 

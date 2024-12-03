@@ -123,16 +123,16 @@ const PlanesCard: React.FC<PlanesProps> = ({membresia}) => {
           >
             {localPlan.map((membresia) => (
               <div
-                key={membresia.id}
-                className={styles.card}
+                 key={membresia.id}
+                 className={styles.card}
                               >
-                {isAdminRoute ? (
-                    <div>
-                    <div className={styles.titulo}>{membresia.nombre}</div>
+                 {isAdminRoute ? (
+                  <div>
+                     <div className={styles.titulo}>{membresia.nombre}</div>
                     <p className={styles.cardDescription}>{membresia.descripcion}</p>
-                    <div className={styles.planContainer}>
+                       <div className={styles.planContainer}>
                       <h3 className={styles.planTitle}>Características</h3>
-                    </div>
+                        </div>
                     <ul className={styles.cardFeatures}>
                       {membresia.features?.map((feature, index) => (
                         <li key={index}>{feature}</li>
