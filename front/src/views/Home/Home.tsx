@@ -107,7 +107,7 @@ const HomeView = () => {
         <span className={styles.whiteText}>NUESTROs</span>
         <span className={styles.greenText}>MEJORES ENTRENADORES</span>
       </div>
-      <Profesores profesores={profesores} limit={3} itemsPerPage={3} />
+      <Profesores profesores={profesores} limit={6} itemsPerPage={3} />
     </div>
   );
 };
