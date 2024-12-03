@@ -74,6 +74,8 @@ const CrearCategoria = () => {
           const popup = Swal.getPopup();
           if (popup) {
             popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+            popup.style.backgroundColor = '#333'; // Fondo oscuro
+            popup.style.color = 'white'; // Texto blanco
           }}
       });
       console.error("Error al crear categoría:", err);
