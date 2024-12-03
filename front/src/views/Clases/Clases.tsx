@@ -9,6 +9,7 @@ import { ISearchResult } from "@/interfaces/ISearch";
 import { IProfesor } from "@/interfaces/IProfesor";
 import styles from '@/views/Clases/Clases.module.css';
 
+
 const ClasesView = () => {
   const pathname = usePathname();
   const isAdminRoute = pathname === "/admin/clases";
