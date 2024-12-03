@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import styles from "./mensaje.module.css";
+import styles from "@/app/stripe/pay/success/checkout/session/mensaje.module.css"
 
 const SuccessPage = () => {
   const router = useRouter();

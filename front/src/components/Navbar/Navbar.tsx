@@ -5,9 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import { FaSpinner } from "react-icons/fa";
-import styles from "./Navbar.module.css";
-import Searchbar from "../SearchBar/SearchBar";
-
+import styles from "@/components/Navbar/Navbar.module.css"
+import Searchbar from "@/components/SearchBar/SearchBar";
 
 const Navbar = () => {
   const { data: session, status } = useSession();
@@ -19,7 +18,7 @@ const Navbar = () => {
   const rolUsuario = session?.user?.rol;
   const esCliente = rolUsuario === "cliente" || undefined ;
   const esAdmin = rolUsuario === "admin";
-  const esProfesor = rolUsuario === "profesor";
+  //const esProfesor = rolUsuario === "profesor";
 
   if (status === "loading") {
     return (
@@ -110,13 +109,6 @@ const Navbar = () => {
                       </Link>
                     )}
                     
-                     {(esCliente || esProfesor) && (
-                    <Link
-                      href="/agenda"
-                      className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
-                    >
-                      Mi Agenda
-                    </Link>)}
                     {esCliente && (
                       <Link
                         href="/miMembresia"

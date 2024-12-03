@@ -3,9 +3,7 @@
 import React, { useEffect, useState } from "react";
 import PlanesCard from "@/components/Planes/Planes";
 import { IMembresia } from '@/interfaces/IMembresia';
-import { obtenerMembresiasInactivas } from "@/helpers/Fetch/FetchMembresias";
-import { useSession } from "next-auth/react";
-
+import { obtenerMembresias } from "@/helpers/Fetch/FetchMembresias";
 
 // Datos temporales (fallback)
 const planesData = [
@@ -42,6 +40,7 @@ const planesData = [
       "Revisiones mensuales de estado físico",
     ],
     precio: 19,
+    duracionEnMeses: 6,
   },
   {
     id: "3",
@@ -62,42 +61,36 @@ const planesData = [
   },
 ];
 
-const PlanesPage: React.FC = () => {
+const Planessuspend: React.FC = () => {
   const [membresias, setMembresias] = useState<IMembresia[]>([]);  // Estado para las membresías
   const [useBackend, setUseBackend] = useState(true);  // Estado para controlar el uso de datos temporales o backend
-  const { data: session } = useSession();
+  const [page] = useState<number>(1);  // Página de las membresías
+  const [limit] = useState<number>(3);  // Límite de membresías por página
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (session?.user.accessToken) {
-          try {
-            const data = await obtenerMembresiasInactivas(session.user.accessToken);  // Obtener los datos
-            console.log("Datos obtenidos:", data);
-
-            if (data.length === 0) {
-              // Si el fetch falla o no hay datos, usa los datos temporales
-              setMembresias(planesData);
-              setUseBackend(false);
-            } else {
-              setMembresias(data);  // Si el fetch es exitoso, usar los datos obtenidos
-              setUseBackend(true);
-            }
-          } catch (err) {
-            console.error("Error al obtener las membresías:", err);
-            setMembresias(planesData);  // Usar datos temporales si hay un error en el fetch
-            setUseBackend(false);
-          }
+        // Intentar obtener los datos desde el backend
+        const data = await obtenerMembresias(page, limit);
+        console.log("Datos obtenidos:", data); 
+        
+        if (data.length === 0) {
+          // Si el fetch falla o no hay datos, usa los datos temporales
+          setMembresias(planesData);
+          setUseBackend(false);
         } else {
-          console.error('El token de acceso no está disponible.');
+          setMembresias(data.data.filter((membresia: IMembresia)=> !membresia.activa));  // Si el fetch es exitoso, usar los datos obtenidos
+          setUseBackend(true);
         }
       } catch (err) {
-        console.error('Error en el bloque principal de fetchData:', err);
+        console.error("Error al obtener las membresías:", err);
+        setMembresias(planesData);  // Usar datos temporales si hay un error en el fetch
+        setUseBackend(false);
       }
     };
 
     fetchData();
-  }, []);   // Ejecutar cuando la página o el límite cambien
+  }, [page, limit]);  // Ejecutar cuando la página o el límite cambien
 
   const mappedPlanes =  Array.isArray(membresias) ? membresias.map((membresia) => ({
     id: membresia.id,
@@ -106,6 +99,7 @@ const PlanesPage: React.FC = () => {
     duracionEnMeses: membresia.duracionEnMeses,
     features: membresia.features,
     precio: membresia.precio,
+    activa: membresia.activa
   })):  [];
 
   return (
@@ -117,61 +111,6 @@ const PlanesPage: React.FC = () => {
   );
 };
 
-export default PlanesPage;
+export default Planessuspend;
 
 
-
-
-
-
-
-/*"use client"
-import PlanesView from "@/views/Planes/PlanesView";
-import React from "react";
-import { obtenerMembresiasInactivas } from "@/helpers/Fetch/FetchMembresias";
-import { useEffect, useState } from "react";
-import { IMembresia } from "@/interfaces/IMembresia";
-import { useSession } from "next-auth/react";
-
-
-const PlanesSuspendidos:React.FC  =  () => {
-  const [membresias, setMembresias] = useState<IMembresia[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const { data: session } = useSession();
-
-  useEffect(() => { 
-  
-    if (session?.user.accessToken) {
-      const fetchMembresias = async () => {
-        if (!session?.user.accessToken) {
-          console.error('El token de acceso no está disponible.');
-          setLoading(false);
-          return; 
-        }
-        try {
-          const data = await obtenerMembresiasInactivas(session.user.accessToken);  // Obtener los datos
-          setMembresias(data);  
-        } catch (error) {
-          console.error("Error al obtener las membresías:", error);
-        } finally {
-          setLoading(false);  
-        }
-      };
-      fetchMembresias();  
-    }
-  }, []); 
-
- 
-  if (loading) {
-    return <div>Cargando...</div>;
-  }
-    return (
-      <div className="flex  flex-col justify-center items-center text-center">
-        <h1 className="text-accent text-3xl font-bold">Gestión de los planes suspendidos</h1>
-        <PlanesView fetchPlanes={membresias}/>
-      </div>
-    );
-  }
-
-  export default PlanesSuspendidos;
-  */

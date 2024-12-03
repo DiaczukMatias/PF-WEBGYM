@@ -105,6 +105,7 @@
 }
 
 .tabs {
+  display: flex;
   font-size: 1.2em;
   border-bottom: 1px solid #444;
   padding-bottom: 10px;
@@ -112,7 +113,6 @@
   cursor: pointer;
   transition: color 0.3s ease;
   gap: 40px;
-  padding-left: 8rem;
 }
 
 .tabs span:hover {
@@ -122,9 +122,11 @@
 .activeTab {
   color: white;
   font-weight: bold;
+  
 }
 
 .tabSeparator {
+  border-right: 1px solid #444;
   margin: 1px 15px;
   color: #444;
   width: 80%;
@@ -193,7 +195,7 @@
 }
 
 .className {
-  margin-right: 16rem;
+  margin-right: 6rem;
   margin-bottom: 1.2rem;
   font-size: 1.2rem;
   font-family: "Oswald", sans-serif;

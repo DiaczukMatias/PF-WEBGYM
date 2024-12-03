@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { fetchClaseById, isFetchError, updateClase } from '../../helpers/Fetch/FetchClases';
+import { fetchClaseById, isFetchError, updateClase } from '@/helpers/Fetch/FetchClases';
 import { useSession } from 'next-auth/react';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';

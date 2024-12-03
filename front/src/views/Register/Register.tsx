@@ -1,10 +1,10 @@
 "use client";
 import { registerPost } from "@/helpers/user.fetchFunction";
-//import { registerPost } from "@/helpers/Fetch/FetchUsers";
 import { validateRegisterForm } from "@/helpers/validate/validate";
 import { IRegisterErrors, IRegisterProps } from "@/interfaces/IRegister";
 import React, { useEffect, useState } from "react";
-import styles from "./Register.module.css";
+import styles from "@/views/Register/Register.module.css";
+
 import Link from "next/link";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
@@ -54,7 +54,9 @@ const RegisterView: React.FC = () => {
           const popup = Swal.getPopup();
           if (popup) {
             popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
-          }}
+            popup.style.backgroundColor = '#333'; // Fondo oscuro
+            popup.style.color = 'white'; // Texto blanco         
+             }}
       });
       return;
     }

@@ -84,8 +84,7 @@ export const fetchClaseById = async (id: string): Promise<IClase> => {
 };
 
 export const fetchClases = async () => {
-  const response = await fetch(`${apiUrl}/clases/activas`,); // es nesecasio poner el page y el limit x como esta configurado el back, si no se rompe xq al no pasarlo pone de skip null o undefides y si o si tiene q ser nuemrico
-
+  const response = await fetch(`${apiUrl}/clases/activas`,); // 
   if (!response.ok) {
     throw new Error("Error al obtener las clases");
   }
@@ -175,3 +174,12 @@ export const fetchClases = async () => {
     }
     };
   
+    export const fetchIncripcionesClases = async () => {
+      const response = await fetch(`${apiUrl}/clases/clase/{claseID}`,); // es nesecasio poner el page y el limit x como esta configurado el back, si no se rompe xq al no pasarlo pone de skip null o undefides y si o si tiene q ser nuemrico
+    
+      if (!response.ok) {
+        throw new Error("Error al obtener las clases");
+      }
+      return response.json();
+    };
+    

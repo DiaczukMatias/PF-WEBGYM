@@ -1,12 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import React, { useState, useEffect } from "react";
-import styles from "./ProfileUsers.module.css";
+import styles from "@/views/ProfileUsers/ProfileUsers.module.css";
 import { useSession } from "next-auth/react";
 import { IClase } from "@/interfaces/IClase";
 import { IMembresia } from "@/interfaces/IMembresia";
 import { clasesData } from "@/helpers/datatemporalClases";
 import { IInscripcion } from "@/interfaces/IInscripcion";
+import { fetchInscripcionesConClase } from "@/helpers/Fetch/FetchIncripciones";
 
 const ProfileUser: React.FC = () => {
   const { data: session } = useSession();
@@ -29,7 +30,7 @@ const ProfileUser: React.FC = () => {
   const database = true; // Cambia esto entre true/false según la necesidad
 
   // Función para obtener las clases del usuario y la membresía
-  const fetchUserData = () => {
+  const fetchUserData = async () => {
     if (database) {
       // Cuando la base de datos esté habilitada, usamos la información de la sesión del usuario.
       if (session?.user) {
@@ -39,8 +40,10 @@ const ProfileUser: React.FC = () => {
         setMembresia(usuario.membresia || null);
 
         //  clases a las que el usuario está inscrito
+        const inscripcion = await fetchInscripcionesConClase(session.user.id)
+        console.log( "inscripciones del usuario", inscripcion)
         const clasesInscritas: IClase[] | null =
-          usuario?.inscripciones?.flatMap(
+          inscripcion.flatMap(
             (inscripcion: IInscripcion) => inscripcion.clase
           ) || null;
 
@@ -60,7 +63,7 @@ const ProfileUser: React.FC = () => {
           new Date().setMonth(new Date().getMonth() + 6)
         ),
         fechaActualizacion: new Date(),
-        activo: true,
+        activa: true,
       });
 
       // Datos temporales de clases (clasesData)
@@ -105,7 +108,7 @@ const ProfileUser: React.FC = () => {
             <div key={clase.id} className={styles.classItem}>
               <h4 className={styles.className}>{clase.nombre.toUpperCase()}</h4>
               <div className={styles.cardClass}>
-                <div className={styles.classImageContainer}>
+               {/* <div className={styles.classImageContainer}>
                   <img
                     src={
                       clase.imagen ||
@@ -114,7 +117,7 @@ const ProfileUser: React.FC = () => {
                     alt={clase.nombre}
                     className={styles.classImage}
                   />
-                </div>
+                </div>*/}
                 <div className={styles.classDetails}>
                   <p className={styles.classDate}>
                     {new Date(clase.fecha).toLocaleDateString()}
@@ -168,7 +171,7 @@ const ProfileUser: React.FC = () => {
           >
             MIS CLASES
           </span>
-          <span className={styles.tabSeparator}>|</span>
+          <span className={styles.tabSeparator}></span>
           <span
             className={`${styles.tab} ${
               activeTab === "PLAN_ACTUAL" ? styles.activeTab : ""
@@ -195,13 +198,16 @@ const ProfileUser: React.FC = () => {
             </p>
            
           </button> <hr className={styles.separator} />
-            <button
-              className={styles.changeplan}
+            <div className="flex justify-center">
+              <button
+              className="submitButton .submitButton:hover "
               onClick={() => (window.location.href = `/planes`)}
             >
 
-              {membresia ? "Si te gustaría cambiar de plan haz clic aquí" : "Ver planes"}
+              {membresia ? "Cambiar plan" : "Ver planes"}
             </button>
+            </div>
+            
           </div>
         )}
       </div>

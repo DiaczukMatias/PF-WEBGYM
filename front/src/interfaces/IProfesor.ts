@@ -1,5 +1,6 @@
-import { IClase } from "./IClase";
-import { IUsuario } from "./IUser";
+import { IClase } from "@/interfaces/IClase";
+import { IUsuario } from "@/interfaces/IUser";
+
 
 export interface IProfesor {
     id: string;                     // Identificador único del profesor

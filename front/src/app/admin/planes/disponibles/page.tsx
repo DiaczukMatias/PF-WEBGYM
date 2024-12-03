@@ -1,4 +1,4 @@
-import PlanesPage from "../page";
+import PlanesPage from "@/app/admin/planes/page";
 
 
 export default function PlanesDisponibles

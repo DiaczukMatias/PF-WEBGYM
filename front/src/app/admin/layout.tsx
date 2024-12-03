@@ -17,8 +17,7 @@ const sidebarItems = [
           { label: "Rol Admin", path: "/admin/usuarios/activos/admin" },
         ],
       },
-    //  { label: "Usuarios Suspendidos", path: "/admin/usuarios/suspendidos" },
-      { label: "Crear Profesor", path: "/admin/usuarios/crearProfesor" },
+        { label: "Usuarios Suspendidos", path: "/admin/usuarios/suspendidos" },
     ],
   },
   {

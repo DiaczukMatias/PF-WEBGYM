@@ -1,9 +1,10 @@
 "use client"
 import React, { useState, useEffect } from "react";
-import { obtenerMembresiaActiva, cancelarMembresia, renovarMembresia } from "@/helpers/Fetch/FetchMembresias";
+//import { /*obtenerHistorialMembresias*/ cancelarMembresia, renovarMembresia } from "@/helpers/Fetch/FetchMembresias";
 import { IMembresia } from "@/interfaces/IMembresia";
 import { useSession } from "next-auth/react";
-import styles from "./MiMembresia.module.css";
+import styles from "@/views/MiMembresia/MiMembresia.module.css";
+
 
 const MiMembresiaView: React.FC = () => {
   const [membresia, setMembresia] = useState<IMembresia | null>(null);
@@ -22,8 +23,8 @@ const MiMembresiaView: React.FC = () => {
         console.error('El token de acceso no está disponible.');
         return; // Detener la ejecución
       }
-      const usuarioId = session.user.id;
-      const membresiaData = await obtenerMembresiaActiva(usuarioId, session.user.accessToken);
+      //const usuarioId = session.user.id;
+      const membresiaData = session.user.membresia //await obtenerHistorialMembresias(usuarioId, session.user.accessToken);
       if (!membresiaData) {
         // Si no hay membresía activa, simplemente no establezcas un error
         setMembresia(null);
@@ -38,7 +39,7 @@ const MiMembresiaView: React.FC = () => {
     }
   };
 
-  const handleCancelarMembresia = async () => {
+  /*const handleCancelarMembresia = async () => {
     if (!membresia?.id) {
       setError("No se puede cancelar la membresía porque falta el ID.");
       return;
@@ -60,8 +61,8 @@ const MiMembresiaView: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
-
+  };*/
+   /*
   const handleRenovarMembresia = async () => {
     if (!session?.user?.id) return;
 
@@ -69,12 +70,12 @@ const MiMembresiaView: React.FC = () => {
     setError(null);
 
     try {
-      if (!session?.user.accessToken) {
+   /*   if (!session?.user.accessToken) {
         console.error('El token de acceso no está disponible.');
         return; // Detener la ejecución
       }
       const usuarioId = session.user.id;
-      await renovarMembresia(usuarioId, session.user.accessToken);
+      await renovarMembresia(usuarioId);
       fetchMembresiaActiva(); // Refresca la membresía tras renovarla
     } catch (err) {
       setError("Error al renovar la membresía.");
@@ -82,7 +83,7 @@ const MiMembresiaView: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  };*/
 
   useEffect(() => {
     fetchMembresiaActiva();
@@ -100,12 +101,14 @@ const MiMembresiaView: React.FC = () => {
 
       {membresia ? (
         <div className={styles.card}>
-          <h3 className={styles.cardTitle}>{membresia.nombre.toUpperCase()}</h3>
+          <h3 className={styles.titu}>{membresia.nombre.toUpperCase()}</h3>
           <p className={styles.cardDescription}>{membresia.descripcion || "Sin descripción"}</p>
 
           <div className={styles.features}>
-            <h4>Características:</h4>
-            <ul>
+          <div className={styles.planContainer}>
+                      <h3 className={styles.planTitle}>Características</h3>
+         </div>
+            <ul className={styles.cardFeatures}>
               {membresia.features?.map((feature, index) => (
                 <li key={index}>{feature}</li>
               ))}
@@ -113,35 +116,35 @@ const MiMembresiaView: React.FC = () => {
           </div>
 
           <div className={styles.details}>
-            <p>
+            <p  className={styles.price}>
               <strong>Precio:</strong> ${membresia.precio}
             </p>
-            <p>
+            <p  className={styles.cardFeatures}>
               <strong>Duración:</strong> {membresia.duracionEnMeses || "No especificado"} meses
             </p>
-            <p>
+            <p  className={styles.cardFeatures}>
               <strong>Fecha de creación:</strong> {new Date(membresia.fechaCreacion || "").toLocaleDateString()}
             </p>
-            <p>
+            <p  className={styles.cardFeatures}>
               <strong>Fecha de expiración:</strong> {new Date(membresia.fechaExpiracion || "").toLocaleDateString()}
             </p>
           </div>
 
-          <div className={styles.actions}>
-            <button
-              className={styles.cancelButton}
+          <div className="flex justify-center items-center gap-4 mb-4">
+          {/*  <button
+              className="submitButtonSuspend m-4"
               onClick={handleCancelarMembresia}
               disabled={loading}
             >
               Cancelar Membresía
             </button>
             <button
-              className={styles.renewButton}
+              className="submitButton submitButton:hover m-4"
               onClick={handleRenovarMembresia}
               disabled={loading}
             >
               Renovar Membresía
-            </button>
+            </button>*/}
           </div>
         </div>
       ) : (

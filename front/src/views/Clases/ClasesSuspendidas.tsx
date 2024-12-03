@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import { fetchGetSuspendedClases } from "@/helpers/Fetch/FetchSuspend";
-//mport { fetchClases, fetchTodasClases } from "@/helpers/Fetch/FetchClases";
+//import { fetchGetSuspendedClases } from "@/helpers/Fetch/FetchSuspend";/mport { fetchClases, fetchTodasClases } from "@/helpers/Fetch/FetchClases";
+import { fetchTodasClases } from "@/helpers/Fetch/FetchClases";
 import ClassCardList from "@/components/CardList/CardList"; // Componente para mostrar las tarjetas
 import { IClase } from "@/interfaces/IClase";
 import { useSession } from "next-auth/react";
@@ -28,12 +28,14 @@ const SuspendedClasesView = () => {
           return; // Detener la ejecución
         }
         setLoading(true);
-        const clasesSuspendidas = await fetchGetSuspendedClases(session?.user.accessToken );
-        setSuspendedClasses(clasesSuspendidas);
+     //   const clasesSuspendidas = await fetchGetSuspendedClases(session?.user.accessToken );
+    //    setSuspendedClasses(clasesSuspendidas);
 
-        /*
-        const todasClasesResponse = await fetchTodasClases(page, limit, session.user.accessToken);
-          if (!todasClasesResponse.ok) {
+        
+        const todasClasesResponse: IClase[] = await fetchTodasClases(page, limit, session.user.accessToken);
+        setSuspendedClasses(todasClasesResponse.filter((clases) => !clases.estado))
+
+        /*  if (!todasClasesResponse.ok) {
            throw new Error(`Error al obtener todas las clases: ${todasClasesResponse.status}`); 
            }
           const todasClases: IClase[] = await todasClasesResponse.json();

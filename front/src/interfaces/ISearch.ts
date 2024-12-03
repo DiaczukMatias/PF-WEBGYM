@@ -1,5 +1,5 @@
-import { IClase } from "./IClase";
-import { IProfesor } from "./IProfesor";
+import { IClase } from "@/interfaces/IClase";
+import { IProfesor } from "@/interfaces/IProfesor";
 
 export interface ISearchParams {
     claseNombre?: string;

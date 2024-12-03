@@ -1,7 +1,4 @@
 import { IPerfilProfesor } from "@/interfaces/IProfesor";
-//import { authToken } from "../accestoke";
-//import { useSession } from "next-auth/react";
-
 
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -42,9 +39,15 @@ export const fetchPerfilProfesores = async () => {
   }
 };
 
-export const fetchPerfilProfesorById = async  (usuarioId: string): Promise<IPerfilProfesor> => {
+export const fetchPerfilProfesorById = async  (usuarioId: string, accesToken: string): Promise<IPerfilProfesor> => {
   try {
-    const response = await fetch(`${apiUrl}/perfilProfesor/${usuarioId}`);
+    const response = await fetch(`${apiUrl}/perfilProfesor/${usuarioId}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accesToken}`,
+        },}
+    );
     if (!response.ok) {
       throw new Error('Error al obtener el perfil del profesor');
     }

@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useEffect } from 'react';
-import styles from "./Planes.module.css";
+import styles from "@/components/Planes/Planes.module.css";
 import { IMembresia } from "@/interfaces/IMembresia";
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { loadStripe } from "@stripe/stripe-js";
@@ -71,17 +71,17 @@ const PlanesCard: React.FC<PlanesProps> = ({membresia}) => {
     );
   };
   
-  const handleTogglePlan = async ( nombre: string) => {
+  const handleTogglePlan = async ( membresia: IMembresia) => {
     if (!session?.user.accessToken) {
       console.error('El token de acceso no está disponible.');
       return; // Detener la ejecución
     }
     try {
-      const updatedMembresia = await  desactivarMembresia( nombre, session.user.accessToken);
+       await  desactivarMembresia( membresia.nombre, session.user.accessToken);
       setLocalPlan((prev) =>
         prev.map((membresia) =>
-          membresia.nombre === nombre
-      ? { ...membresia, activo: updatedMembresia.activo }
+          membresia.nombre === membresia.nombre
+      ? { ...membresia, activa: !membresia.activa }
             : membresia
         )
       );
@@ -92,9 +92,9 @@ const PlanesCard: React.FC<PlanesProps> = ({membresia}) => {
 
   useEffect(() => {
     setLocalPlan(
-      membresia.map((plan) => ({
-        ...plan,
-        activo: plan.activo ?? true, // Si 'activo' no existe, lo inicializa como 'true'.
+      membresia.map((membresia) => ({
+        ...membresia,
+        activa: membresia.activa ?? true, // Si 'activo' no existe, lo inicializa como 'true'.
       }))
     );
   }, [membresia]);
@@ -123,21 +123,22 @@ const PlanesCard: React.FC<PlanesProps> = ({membresia}) => {
           >
             {localPlan.map((membresia) => (
               <div
-                key={membresia.id}
-                className={styles.card}
+                 key={membresia.id}
+                 className={styles.card}
                               >
-                {isAdminRoute ? (
-                    <div>
-                    <div className={styles.titulo}>{membresia.nombre}</div>
+                 {isAdminRoute ? (
+                  <div>
+                     <div className={styles.titulo}>{membresia.nombre}</div>
                     <p className={styles.cardDescription}>{membresia.descripcion}</p>
-                    <div className={styles.planContainer}>
+                       <div className={styles.planContainer}>
                       <h3 className={styles.planTitle}>Características</h3>
-                    </div>
+                        </div>
                     <ul className={styles.cardFeatures}>
                       {membresia.features?.map((feature, index) => (
                         <li key={index}>{feature}</li>
                       ))}
                     </ul>
+
                     <div className={styles.price}>{membresia.precio}$</div>
                     <div className={styles.buttonsContainer}>
                       <button
@@ -147,14 +148,14 @@ const PlanesCard: React.FC<PlanesProps> = ({membresia}) => {
                         Editar Plan
                       </button>
                       <button
-                      onClick={() => handleTogglePlan( membresia.nombre)}
+                      onClick={() => handleTogglePlan(membresia)}
                       className={`ml-4 ${
-                        membresia.activo 
+                        membresia.activa === true 
                           ? 'submitButtonSuspend'
                           : 'submitButton'
                       }`}
                     >
-                      {membresia.activo  ? 'Suspender' : 'Activar'}
+                      {membresia.activa === true ? 'Suspender' : 'Activar'}
                     </button>
                     
                     </div>
@@ -174,8 +175,12 @@ const PlanesCard: React.FC<PlanesProps> = ({membresia}) => {
                    <div className={styles.price}>{membresia.precio}$</div>
                       <button
                        className={styles.button}
-                       onClick={() => handleSelectPlan(membresia.id)}
-                      >
+                       onClick={() => {
+                        if (membresia.id) {
+                          handleSelectPlan(membresia.id);
+                        }
+                      }}
+                    >
                       ELEGIR PLAN
                       </button>
                 </div>  

@@ -37,6 +37,7 @@ const DetailsClass = async ({ params }: { params: Promise<{ id: string }> })  =>
     perfilProfesor: clase.perfilProfesor && typeof clase.perfilProfesor === 'object' && !Array.isArray(clase.perfilProfesor)
       ? { ...clase.perfilProfesor, clases: undefined }
       : undefined,
+      estado: true,
   };
   
   

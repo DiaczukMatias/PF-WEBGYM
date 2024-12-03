@@ -1,13 +1,13 @@
 "use client";
 import { IUsuario } from "@/interfaces/IUser";
-import styles from "@/components/Usuarios/ProfileView.module.css";
+import styles from "@/components/Usuarios/ProfileView.module.css"
 import { useEffect, useState } from "react";
 import { fetchAllUsers } from "@/helpers/Fetch/FetchUsers";
 import { useSession } from 'next-auth/react';
 import { suspendUser } from "@/helpers/Fetch/FetchSuspend";
 import Swal from "sweetalert2";
 
-export default function AllUsuarios() {
+export default function UsersSuspend() {
   
   const [allUsers, setAllUsers] = useState<IUsuario[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,7 +24,7 @@ export default function AllUsuarios() {
           }
         const dataUsers = await fetchAllUsers(page, limit, session.user.accessToken );
         if (Array.isArray(dataUsers)) {
-          setAllUsers(dataUsers);
+          setAllUsers(dataUsers.filter((usuario) => !usuario.estado));
           console.log("data usar all users:", dataUsers)
           setHasMore(dataUsers.length === limit); // Si devuelve menos del límite, no hay más usuarios
         } else {
@@ -161,19 +161,7 @@ export default function AllUsuarios() {
         <p>Edad: {usuario.edad ?? "Edad no especificada"}</p>
         <p> Rol: {usuario.rol} </p>
       </div>
-      {/*<button
-        className={styles.editButton}
-        onClick={() => router.push(`/editar-usuario/${usuario.id}`)}
-      >
-        Editar Perfil
-      </button>
-      <button
-        className={styles.editButton}
-        onClick={() => router.push(
-          `/admin/usuarios/crearProfesor/${usuario.id}`)}
-      >
-       Crear Profesor
-      </button>*/}
+   
       <div className="mt-4  flex justify-center">
              <button
                className={`${usuario.estado ? "submitButtonSuspend" : "submitButton "}`}
