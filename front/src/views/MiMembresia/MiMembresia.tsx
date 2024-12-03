@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useEffect } from "react";
-import { /*obtenerHistorialMembresias*/ cancelarMembresia, renovarMembresia } from "@/helpers/Fetch/FetchMembresias";
+//import { /*obtenerHistorialMembresias*/ cancelarMembresia, renovarMembresia } from "@/helpers/Fetch/FetchMembresias";
 import { IMembresia } from "@/interfaces/IMembresia";
 import { useSession } from "next-auth/react";
 import styles from "@/views/MiMembresia/MiMembresia.module.css";
@@ -39,7 +39,7 @@ const MiMembresiaView: React.FC = () => {
     }
   };
 
-  const handleCancelarMembresia = async () => {
+  /*const handleCancelarMembresia = async () => {
     if (!membresia?.id) {
       setError("No se puede cancelar la membresía porque falta el ID.");
       return;
@@ -61,8 +61,8 @@ const MiMembresiaView: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
-
+  };*/
+   /*
   const handleRenovarMembresia = async () => {
     if (!session?.user?.id) return;
 
@@ -73,7 +73,7 @@ const MiMembresiaView: React.FC = () => {
    /*   if (!session?.user.accessToken) {
         console.error('El token de acceso no está disponible.');
         return; // Detener la ejecución
-      }*/
+      }
       const usuarioId = session.user.id;
       await renovarMembresia(usuarioId);
       fetchMembresiaActiva(); // Refresca la membresía tras renovarla
@@ -83,7 +83,7 @@ const MiMembresiaView: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  };*/
 
   useEffect(() => {
     fetchMembresiaActiva();
