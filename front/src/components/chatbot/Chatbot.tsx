@@ -28,7 +28,7 @@ const Chatbot: React.FC = () => {
         s.addEventListener("load", function () {
           window.myLandbot = new window.Landbot.Livechat({
             configUrl:
-              "https://storage.googleapis.com/landbot.online/v3/H-2686288-MPBDES1YW46RP2RX/index.json",
+              "https://storage.googleapis.com/landbot.online/v3/H-2705464-Z4I32PAP4MU4Q6V4/index.json",
           });
         });
         s.src = "https://cdn.landbot.io/landbot-3/landbot-3.0.0.js";
