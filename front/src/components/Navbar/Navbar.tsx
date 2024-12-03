@@ -109,13 +109,6 @@ const Navbar = () => {
                       </Link>
                     )}
                     
-                     {(esCliente || esProfesor) && (
-                    <Link
-                      href="/agenda"
-                      className="block px-4 py-2 hover:bg-gray-200 hover:text-[#b6ff04]"
-                    >
-                      Mi Agenda
-                    </Link>)}
                     {esCliente && (
                       <Link
                         href="/miMembresia"
