@@ -3,14 +3,27 @@ import { IRegisterProps } from "@/interfaces/IRegister";
 import Swal from "sweetalert2";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-export const registerPost = async (userData: IRegisterProps) => {
+export const registerPost = async (userData: IRegisterProps, file?: File) => {
   try {
+    // Crear una instancia de FormData
+    const formData = new FormData();
+     // Agregar campos al FormData
+     formData.append("nombre", userData.nombre);
+     formData.append("email", userData.email);
+     formData.append("contrasena", userData.contrasena);
+     formData.append("confirmarContrasena", userData.confirmarContrasena);
+     formData.append("edad", String(userData.edad)); // Convertir número a string
+     formData.append("telefono", String(userData.telefono)); // Convertir número a string
+ 
+     // Agregar la imagen solo si está presente
+     if (file) {
+       formData.append("imagen", file);
+     }
+     // Hacer el fetch con `multipart/form-data`
+
     const response = await fetch(`${apiUrl}/usuarios/register`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userData),
+      body: formData, // Enviar FormData
     });
 
     const responseData = await response.json();
