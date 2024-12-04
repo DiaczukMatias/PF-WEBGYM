@@ -63,7 +63,25 @@ const CrearCategoria = () => {
 
     try {
       await createCategoria(formData, session.user.accessToken);
-      Swal.fire("Éxito", "Categoría creada correctamente", "success");
+      Swal.fire({
+        icon: "success",
+        title:  "Categoria creada con éxito",
+        showConfirmButton: false,
+        timer: 3000,
+        customClass: {
+          confirmButton: 'bg-accent text-white',
+        },
+        didOpen: () => {
+          const popup = Swal.getPopup();
+          if (popup) {
+            popup.classList.add('bg-dark', 'text-white');
+            popup.style.backgroundColor = '#333'; // Fondo oscuro
+            popup.style.color = 'white'; // Texto blanco
+          }
+        },
+      });
+
+
       setNombre("");
       setImagen(null);
       setInputBlur({ nombre: false });

@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useEffect } from "react";
-//import { /*obtenerHistorialMembresias*/ cancelarMembresia, renovarMembresia } from "@/helpers/Fetch/FetchMembresias";
+import { fetchUserById } from "@/helpers/Fetch/FetchUsers";
 import { IMembresia } from "@/interfaces/IMembresia";
 import { useSession } from "next-auth/react";
 import styles from "@/views/MiMembresia/MiMembresia.module.css";
@@ -19,12 +19,12 @@ const MiMembresiaView: React.FC = () => {
     setError(null);
 
     try {
-      if (!session?.user.accessToken) {
-        console.error('El token de acceso no está disponible.');
-        return; // Detener la ejecución
+      if (!session?.user.id) {
+        console.error('inicie sesion');
+        return; 
       }
-      //const usuarioId = session.user.id;
-      const membresiaData = session.user.membresia //await obtenerHistorialMembresias(usuarioId, session.user.accessToken);
+      const userData = await fetchUserById(session?.user.id);
+      const membresiaData = userData.membresia 
       if (!membresiaData) {
         // Si no hay membresía activa, simplemente no establezcas un error
         setMembresia(null);

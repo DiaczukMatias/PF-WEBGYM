@@ -71,7 +71,7 @@ const HomeView = () => {
     .map((categoria) => ({
       id: categoria.id,
       nombre: categoria.nombre,
-      imagen: `/images/categories/${normalizeName(categoria.nombre)}.png`, // Genera la ruta de imagen directamente
+      imagen: categoria.imagen ||`/images/categories/${normalizeName(categoria.nombre)}.png`, // Genera la ruta de imagen directamente
     }));
 
   const handleSeeMoreClick = () => {
