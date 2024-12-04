@@ -116,7 +116,7 @@ const EditClassForm: React.FC = () => {
     }
     
     console.log('disponibilidad tipo:', typeof formData.disponibilidad);
-console.log('valor de disponibilidad:', formData.disponibilidad);
+
 
     try {     
       
