@@ -40,7 +40,7 @@ const planesData = [
       "Revisiones mensuales de estado físico",
     ],
     precio: 19,
-    duracionEnMeses: 6,
+    duracionEnMeses: 1,
   },
   {
     id: "3",

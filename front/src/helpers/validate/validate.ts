@@ -103,6 +103,16 @@ export  function validateRegisterForm(values: IRegisterProps): IRegisterErrors {
     errors.confirmarContrasena = "Las contraseñas no coinciden";
   }
 
+  if (values.imagen) {
+    if (!(values.imagen instanceof File)) {
+      errors.imagen = "La imagen debe ser un archivo válido";
+    } else if (!["image/jpeg", "image/png"].includes(values.imagen.type)) {
+      errors.imagen = "Solo se permiten imágenes en formato JPEG o PNG";
+    } else if (values.imagen.size > 10 * 1024 * 1024) { // 10MB
+      errors.imagen = "La imagen no debe exceder los 10MB";
+    }
+  }
+
   return errors;
 }
 

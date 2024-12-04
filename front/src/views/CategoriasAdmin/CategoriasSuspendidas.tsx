@@ -52,7 +52,7 @@ const CategoriasSuspendidasView = () => {
     .map((categoria) => ({
       id: categoria.id,
       nombre: categoria.nombre,
-      imagen: `/images/categories/${normalizeName(categoria.nombre)}.png`,
+      imagen:  categoria.imagen || `/images/categories/${normalizeName(categoria.nombre)}.png`,
     }));
 
   if (loading) {

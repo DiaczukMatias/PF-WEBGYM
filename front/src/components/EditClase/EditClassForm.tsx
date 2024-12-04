@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { fetchClaseById, isFetchError, updateClase } from '@/helpers/Fetch/FetchClases';
+import { fetchClaseById, isFetchError, updateClase } from '../../helpers/Fetch/FetchClases';
 import { useSession } from 'next-auth/react';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
@@ -123,10 +123,11 @@ console.log('valor de disponibilidad:', formData.disponibilidad);
       await updateClase(id!, form, session?.user.accessToken); 
       // Alerta de éxito
       Swal.fire({
-        icon: 'success',
-        title: '¡Clase actualizada!',
-        text: 'La clase se actualizó correctamente.',
-        confirmButtonText: 'OK',
+        position: "top",
+        icon: "success",
+        title:  "Clase actualizada con éxito",
+        showConfirmButton: false,
+        timer: 1500,
         customClass: {
           confirmButton: 'bg-accent text-white',
         },

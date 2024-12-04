@@ -18,20 +18,21 @@ const RegisterView: React.FC = () => {
     confirmarContrasena: "",
     edad: "",
     telefono: "",
+    imagen: undefined,
   };
 
   const [dataUser, setDataUser] = useState<IRegisterProps>(initialState);
-  const [errors, setErrors] = useState<IRegisterErrors>(initialState);
-  const [inputBlur, setInputBlur] = useState(initialState);
+  const [errors, setErrors] = useState<IRegisterErrors>({});
+  const [inputBlur, setInputBlur] = useState<Partial<IRegisterProps>>({});
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false); // Estado para el envío
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setDataUser({
-      ...dataUser,
-      [name]: value,
-    });
+    const { name, value, files } = event.target;
+    setDataUser((prevState) => ({
+      ...prevState,
+      [name]: name === "imagen" && files ? files[0] : value, // Si es el campo de imagen, guarda el archivo.
+    }));
   };
 
   const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -44,9 +45,9 @@ const RegisterView: React.FC = () => {
 
     if (Object.keys(errors).length) {
       Swal.fire({
-        icon: "error",
         title: "Oops...",
         text: "Hay errores en el formulario",
+        icon: "error",
         customClass: {
           confirmButton: 'bg-gray-300 text-white', // Botón de confirmación rojo
         },
@@ -56,23 +57,28 @@ const RegisterView: React.FC = () => {
             popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
             popup.style.backgroundColor = '#333'; // Fondo oscuro
             popup.style.color = 'white'; // Texto blanco         
-             }}
+             }
+          },
       });
       return;
     }
 
-    const formattedDataUser = {
-      ...dataUser,
-      edad: Number(dataUser.edad),
-      telefono: Number(dataUser.telefono),
-    };
+    const formData = new FormData(event.currentTarget);
+  const file = formData.get("imagen") as File | null;
 
-    // setIsSubmitting(true);
+  const userData = {
+    nombre: formData.get("nombre") as string,
+    email: formData.get("email") as string,
+    contrasena: formData.get("contrasena") as string,
+    confirmarContrasena: formData.get("confirmarContrasena") as string,
+    edad: Number(formData.get("edad")),
+    telefono: Number(formData.get("telefono")),
+  };
     try {
-      const result = await registerPost(formattedDataUser);
-      console.log("console log del resultado: " + result);
+      const result = await registerPost(userData, file || undefined);
+      console.log("console log del resultado: " , result);
 
-      if (result && result.usuarioId) {
+      if (result) {
         router.push("/login");
       }
     } catch (error) {
@@ -214,6 +220,23 @@ const RegisterView: React.FC = () => {
             {inputBlur.edad && errors.edad && (
               <span className={styles.errorMessage}>{errors.edad}</span>
             )}
+          </div>
+          {/* Imagen */}
+          <div>
+            <label htmlFor="age" className={styles.label}></label>
+            <input
+              id="imagen"
+              name="imagen"
+              type="file"
+              accept="image/*"
+              onChange={handleChange}
+              onBlur={handleInputBlur}              
+              className={styles.inputField}
+            />
+            <br />
+            {inputBlur.imagen && errors.imagen && (
+  <span className={styles.errorMessage}>{errors.imagen}</span>
+)}
           </div>
 
           <div>

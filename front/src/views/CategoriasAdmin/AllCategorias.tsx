@@ -15,7 +15,7 @@ const AllCategorias= () => {
   const [error, setError] = useState<FetchError | null>(null);
   const { data: session } = useSession();
 
-
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -55,7 +55,7 @@ const AllCategorias= () => {
     .map((categoria) => ({
       id: categoria.id,
       nombre: categoria.nombre,
-      imagen: `/images/categories/${normalizeName(categoria.nombre)}.png`,
+      imagen:  categoria.imagen ||`/images/categories/${normalizeName(categoria.nombre)}.png`,
     }));
 
   if (loading) {
