@@ -27,21 +27,23 @@ console.log('Authorization para rutas  protegidas: ',authHeader().Authorization)
 */// Funciones para cada operación HTTP
 
 // Fetch para crear una nueva clase
-export const createClase = async ( formData: FormData) => {
+export const createClase = async ( formData: FormData, accessToken :string) => {
 
   const response = await fetch(`${apiUrl}/clases`, {
     method: "POST",
     headers: {
       // No necesitamos especificar Content-Type cuando usamos FormData
       // El navegador se encarga de añadir el encabezado adecuado
+      Authorization: `Bearer ${accessToken}`
     },
     body: formData, // Directamente el FormData aquí
   });
-
-  if (!response.ok) {
-    throw new Error("Error al crear la clase");
+  console.log('respuestas del servidor', response);
+  
+  if (!response.ok ) {
+    throw new Error(`Error del servidor: ${response.status} ${response.statusText}`);;
   }
-  return response.json();
+  return response
 };
 
 // Fetch para actualizar una clase existente

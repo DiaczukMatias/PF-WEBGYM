@@ -13,7 +13,7 @@ const EditClassForm: React.FC = () => {
   const { data: session } = useSession();
   const router = useRouter(); // Hook para redirección
   
-  console.log('user session ',session?.user.accessToken);
+  console.log('user session en edit class ',session?.user.accessToken);
   
   const [formData, setFormData] = useState<{
     id: string;
@@ -26,6 +26,8 @@ const EditClassForm: React.FC = () => {
     perfilProfesorId: string;
     categoriaNombre: string;
     profesorNombre: string;
+    dia: string;
+    hora: string;
   }>({
     id: '',
     nombre: '',
@@ -37,6 +39,8 @@ const EditClassForm: React.FC = () => {
     perfilProfesorId: '',
     categoriaNombre: '',
     profesorNombre: '',
+    dia : '',
+    hora: ''  
   });
   
 
@@ -53,11 +57,13 @@ const EditClassForm: React.FC = () => {
     if (id) {
       fetchClaseById(id)
         .then((claseData) => {
+          const [dia, hora] = claseData.fecha.split(" ");
           // Asignar los valores de la API, pero no sobrescribir la imagen
           const updatedClaseData = {
             ...claseData,
             perfilProfesorId: claseData.perfilProfesor?.id || '',
-            fecha: typeof claseData.fecha === 'string' ? claseData.fecha.slice(0, 16) : new Date(claseData.fecha).toISOString().slice(0, 16),
+            dia: dia || "",
+            hora: hora || "",
             disponibilidad: claseData.disponibilidad ?? 0,
             categoriaId: claseData.categoria ? claseData.categoria.id : '',
             categoriaNombre: claseData.categoria ? claseData.categoria.nombre : '',
@@ -75,7 +81,7 @@ const EditClassForm: React.FC = () => {
     }
   }, [id]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -100,7 +106,7 @@ const EditClassForm: React.FC = () => {
     const form = new FormData();
     form.append('nombre', formData.nombre);
     form.append('descripcion', formData.descripcion);
-    form.append('fecha', formData.fecha);
+    form.append("fecha", `${formData.dia} ${formData.hora}`);
     form.append('disponibilidad', formData.disponibilidad.toString());
     form.append('categoriaId', formData.categoriaId);
     form.append('perfilProfesorId', formData.perfilProfesorId);
@@ -195,17 +201,45 @@ console.log('valor de disponibilidad:', formData.disponibilidad);
         </div>
 
         {/* Fecha y Hora */}
+        {/* Día y hora */}
         <div className="mb-4">
-          <label htmlFor="fecha" className="block text-sm font-medium">Fecha y Hora</label>
-          <input
-            type="datetime-local"
-            id="fecha"
-            name="fecha"
-            value={formData.fecha}
-            onChange={handleChange}
-            required
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md bg-transparent"
-          />
+          <label htmlFor="fecha" className="block text-sm font-medium">
+            Día y Hora:
+          </label>
+          <div className="flex gap-2">
+            <select
+              id="dia"
+              name="dia"
+              value={formData.dia}
+              onChange={handleChange}
+              className="p-2 w-1/2 border border-gray-300 rounded-md bg-transparent"
+            >
+              <option value="">Selecciona un día</option>
+              <option value="Lunes">Lunes</option>
+              <option value="Martes">Martes</option>
+              <option value="Miércoles">Miércoles</option>
+              <option value="Jueves">Jueves</option>
+              <option value="Viernes">Viernes</option>
+              <option value="Sábado">Sábado</option>
+            </select>
+            <select
+              id="hora"
+              name="hora"
+              value={formData.hora}
+              onChange={handleChange}
+              className="p-2 w-1/2 border border-gray-300 rounded-md bg-transparent"
+            >
+              <option value="">Selecciona una hora</option>
+              {Array.from({ length: 12 }, (_, i) => {
+                const hour = 9 + i;
+                return (
+                  <option key={hour} value={`${hour}:00`}>
+                    {hour}:00
+                  </option>
+                );
+              })}
+            </select>
+          </div>
         </div>
 
         {/* Cupos disponibles */}
