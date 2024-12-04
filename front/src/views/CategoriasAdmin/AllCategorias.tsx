@@ -56,6 +56,7 @@ const AllCategorias= () => {
       id: categoria.id,
       nombre: categoria.nombre,
       imagen:  categoria.imagen ||`/images/categories/${normalizeName(categoria.nombre)}.png`,
+      estado: categoria.estado ?? true, // Si 'activo' no existe, lo inicializa como 'true'.
     }));
 
   if (loading) {
