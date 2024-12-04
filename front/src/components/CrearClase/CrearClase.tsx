@@ -15,8 +15,8 @@ const CrearClaseForm: React.FC = () => {
   const [categories, setCategories] = useState<ICategoria[]>([]);
   const [profesores, setProfesores] = useState<IPerfilProfesor[]>([]); // Para almacenar los profesores
   const { data: session } = useSession();
-
-
+  console.log('session en crearCalse', session);
+  
   const [nuevaClase, setNuevaClase] = useState<ICrearClase>({
     nombre: "",
     descripcion: "",
@@ -99,6 +99,7 @@ const CrearClaseForm: React.FC = () => {
     e.preventDefault();
 
     console.log("Datos enviados: ", nuevaClase); // Verificar qué datos se envían
+    
     const nuevosErrores = await validateCrearClase(nuevaClase);
     setErrores(nuevosErrores);
     console.log("Errores de validación:", nuevosErrores); // Mostrar los errores de validación si existen
@@ -112,7 +113,7 @@ const CrearClaseForm: React.FC = () => {
         const formData = new FormData();
         formData.append("nombre", nuevaClase.nombre);
     formData.append("descripcion", nuevaClase.descripcion);
-    formData.append("fecha", new Date(nuevaClase.fecha).toISOString())
+    formData.append("fecha", nuevaClase.fecha)
     formData.append("categoriaId", nuevaClase.categoriaId);
     formData.append("disponibilidad", nuevaClase.disponibilidad.toString());
     formData.append("perfilProfesorId", nuevaClase.perfilProfesorId);
@@ -120,7 +121,7 @@ const CrearClaseForm: React.FC = () => {
       formData.append("imagen", nuevaClase.imagen);
     }
 
-    const response = await createClase( formData);
+    const response = await createClase( formData, session?.user.accessToken || '');
     if (!response.ok) {
       throw new Error("Error al crear la clase");
     }
@@ -213,19 +214,57 @@ Swal.fire({
         </div>
 
         <div className="mb-4">
-          <label htmlFor="fecha" className="block text-sm font-medium">
-            Fecha:
-          </label>
-          <input
-            type="datetime-local"
-            id="fecha"
-            name="fecha"
-            value={nuevaClase.fecha}
-            onChange={handleChange}
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md bg-transparent"
-          />
-          {errores.fecha && <div className="text-red-500 text-sm mt-1">{errores.fecha}</div>}
-        </div>
+  <label htmlFor="fecha" className="block text-sm font-medium">
+    Día y Hora:
+  </label>
+  <div className="flex gap-2">
+    {/* Selector de días */}
+    <select
+      id="dia"
+      name="dia"
+      onChange={(e) =>
+        setNuevaClase((prevClase) => ({
+          ...prevClase,
+          fecha: `${e.target.value} ${prevClase.fecha.split(" ")[1] || "09:00"}`,
+        }))
+      }
+      className="p-2 w-1/2 border border-gray-300 rounded-md bg-transparent"
+    >
+      <option value="">Selecciona un día</option>
+      <option value="Lunes">Lunes</option>
+      <option value="Martes">Martes</option>
+      <option value="Miércoles">Miércoles</option>
+      <option value="Jueves">Jueves</option>
+      <option value="Viernes">Viernes</option>
+      <option value="Sábado">Sábado</option>
+    </select>
+
+    {/* Selector de horas */}
+    <select
+      id="hora"
+      name="hora"
+      onChange={(e) =>
+        setNuevaClase((prevClase) => ({
+          ...prevClase,
+          fecha: `${prevClase.fecha.split(" ")[0] || "Lunes"} ${e.target.value}`,
+        }))
+      }
+      className="p-2 w-1/2 border border-gray-300 rounded-md bg-transparent"
+    >
+      <option value="">Selecciona una hora</option>
+      {Array.from({ length: 12 }, (_, i) => {
+        const hour = 9 + i;
+        return (
+          <option key={hour} value={`${hour}:00`}>
+            {hour}:00
+          </option>
+        );
+      })}
+    </select>
+  </div>
+  {errores.fecha && <div className="text-red-500 text-sm mt-1">{errores.fecha}</div>}
+</div>
+
 
         <div className="mb-4">
           <label htmlFor="categoria" className="block text-sm font-medium">
