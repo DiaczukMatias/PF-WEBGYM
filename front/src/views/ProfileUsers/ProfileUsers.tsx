@@ -8,6 +8,7 @@ import { IMembresia } from "@/interfaces/IMembresia";
 import { clasesData } from "@/helpers/datatemporalClases";
 import { IInscripcion } from "@/interfaces/IInscripcion";
 import { fetchInscripcionesConClase } from "@/helpers/Fetch/FetchIncripciones";
+import { fetchUserById } from "@/helpers/Fetch/FetchUsers";
 
 const ProfileUser: React.FC = () => {
   const { data: session } = useSession();
@@ -16,13 +17,13 @@ const ProfileUser: React.FC = () => {
   const userName = session?.user?.name || "Usuario"; // Corregido por posible undefined
   const userMail = session?.user?.email || "Email";
   const userTel = session?.user?.telefono || "Telefono";
-  const userIMG = session?.user?.image || "/FOTOPERFIL.png"; // Imagen predeterminada
+  
 
   const userID = session?.user.id
 
   
   const [activeTab, setActiveTab] = useState<"MIS_CLASES" | "PLAN_ACTUAL">("MIS_CLASES");
-
+  const [userIMG, setUserIMG] = useState<string>(session?.user.image || "/FOTOPERFIL.png");
   const [userClasses, setUserClasses] = useState<IClase[] | null>(null);
   const [membresia, setMembresia] = useState<IMembresia | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -78,6 +79,22 @@ const ProfileUser: React.FC = () => {
     fetchUserData(); // Llamamos a la función para cargar los datos cuando se monta el componente
   }, [session]);
 
+   
+   // fetch para tener la imagen actualizada al editar
+   useEffect(() => {
+    const fetchUserForImage = async () => {
+      try {
+        
+        const data = await fetchUserById(session?.user.id || "");
+        setUserIMG(data.imagen);
+      } catch (error) {
+        console.error(error)
+        ;
+      }
+    };
+
+    fetchUserForImage();
+  }, []);
   const renderClasses = () => {
     if (!userClasses || userClasses.length === 0) {
       return (

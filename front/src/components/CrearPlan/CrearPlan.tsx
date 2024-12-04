@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { IMembresia } from "@/interfaces/IMembresia";
 import { crearMembresia } from "@/helpers/Fetch/FetchMembresias";
+import Swal from "sweetalert2";
 
 const CrearPlanForm: React.FC = () => {
   const [nuevoPlan, setNuevoPlan] = useState<IMembresia>({
@@ -62,7 +63,20 @@ const CrearPlanForm: React.FC = () => {
       (nuevoPlan.duracionEnMeses ?? 0) <= 0  ||
       !(nuevoPlan.features?.every((feature) => feature.trim()))
         ) {
-      alert("Por favor, complete todos los campos correctamente.");
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Por favor, complete todos los campos correctamente.",
+            customClass: {
+              confirmButton: 'bg-gray-300 text-white', // Botón de confirmación rojo
+            },
+            didOpen: () => {
+              const popup = Swal.getPopup();
+              if (popup) {
+                popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+              }}
+          });
+      
       return;
     }
     console.log("Datos que se enviarán:", nuevoPlan);
@@ -71,7 +85,25 @@ const CrearPlanForm: React.FC = () => {
     try {
       const response = await crearMembresia(nuevoPlan);
       if (response) {
-        alert("Membresía creada con éxito");
+        Swal.fire({
+          position: "top",
+          icon: "success",
+          title:  "Membresía creada con éxito",
+          showConfirmButton: false,
+          timer: 1500,
+          customClass: {
+            confirmButton: 'bg-accent text-white',
+          },
+          didOpen: () => {
+            const popup = Swal.getPopup();
+            if (popup) {
+              popup.classList.add('bg-dark', 'text-white');
+              popup.style.backgroundColor = '#333'; // Fondo oscuro
+              popup.style.color = 'white'; // Texto blanco
+            }
+          },
+        });
+        
         setNuevoPlan({
           nombre: "",
           descripcion: "",
@@ -81,7 +113,20 @@ const CrearPlanForm: React.FC = () => {
         });
       }
     } catch (error) {
-      alert("Hubo un error al crear la membresía.");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Hubo un error al crear la membresía.",
+        customClass: {
+          confirmButton: 'bg-gray-300 text-white', // Botón de confirmación rojo
+        },
+        didOpen: () => {
+          const popup = Swal.getPopup();
+          if (popup) {
+            popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+          }}
+      });
+      
       console.log(error)
     }
   };

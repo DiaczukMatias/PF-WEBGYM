@@ -149,8 +149,8 @@ const EditUserForm: React.FC = () => {
           }
         },
       }).then(() => {
-        router.push("/profile"); // Redirige a la página principal o donde prefieras
-      });
+        router.push("/profile"); // Redirección a /profile
+      })
     } catch (error) {
       console.error("Error al actualizar usuario:", error);
       Swal.fire({

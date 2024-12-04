@@ -15,7 +15,7 @@ const AllCategorias= () => {
   const [error, setError] = useState<FetchError | null>(null);
   const { data: session } = useSession();
 
-
+  
   useEffect(() => {
     const fetchData = async () => {
       try {

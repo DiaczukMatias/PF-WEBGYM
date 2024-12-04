@@ -5,6 +5,7 @@ export interface IRegisterErrors {
   confirmarContrasena?:string;
   telefono?: number |string;
   edad?: number |string;
+  imagen?: string;
 }
 
 export interface IRegisterProps {
@@ -14,6 +15,7 @@ export interface IRegisterProps {
   confirmarContrasena:string;
   telefono: number | string;
   edad: number | string;
+  imagen?: File;
 }
 
 

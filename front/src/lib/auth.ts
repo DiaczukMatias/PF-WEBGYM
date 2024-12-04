@@ -16,7 +16,7 @@ export const authOptions: AuthOptions = {
       credentials: {
         email: { label: 'Email', type: 'text' },
         contrasena: { label: 'Password', type: 'password' },
-      },
+      }, 
       async authorize(credentials) {
         const { email, contrasena } = credentials!;
         const res = await fetch(`${apiUrl}/usuarios/login`, {
@@ -56,7 +56,7 @@ export const authOptions: AuthOptions = {
         token.email = user.email;
         token.rol = user.rol;
         token.telefono = user.telefono || null;
-        token.picture = user.image || null;
+        token.image = user.picture || user.imagen || null;
         token.accessToken = user.accessToken;
         token.membresia = user.membresia || null;
         token.inscripciones = user.inscripciones || null;
@@ -124,7 +124,7 @@ export const authOptions: AuthOptions = {
         telefono: token.telefono!,
         rol: token.rol!,
         accessToken: token.accessToken!,
-        image: token.picture!,
+        image: token.image!,
         membresia: token.membresia,
         inscripciones: token.inscripciones,
 
