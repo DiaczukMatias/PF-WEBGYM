@@ -7,6 +7,7 @@ import { IClase } from "@/interfaces/IClase";
 import { clasesData } from "@/helpers/datatemporalClases";
 import { fetchPerfilProfesorById /*fetchClasesPorProfesor*/ } from "@/helpers/Fetch/FetchProfesores";
 import { IUsuario, RolEnum } from "@/interfaces/IUser";
+import { fetchUserById } from "@/helpers/Fetch/FetchUsers";
 
 const ProfileProfesor: React.FC = () => {
   const { data: session } = useSession();
@@ -15,9 +16,9 @@ const ProfileProfesor: React.FC = () => {
   const userName = session?.user.name || "Usuario";
   const userMail = session?.user.email || "Email";
   const userTel = session?.user.telefono || "telefono";
-  const userImagen = session?.user.image || "/images/profesor/jessicaroberts.png"
+ 
   const userID = session?.user.id || ""
-
+  const [userIMG, setUserIMG] = useState<string>(session?.user.image|| "/FOTOPERFIL.png");
   const [activeTab, setActiveTab] = useState<"ALUMNOS" | "CLASES">("ALUMNOS");
   const [userClasses, setUserClasses] = useState<IClase[] | null>(null);
   const [userAlumnos, setUserAlumnos] = useState<IUsuario[] | null>(null);
@@ -25,7 +26,7 @@ const ProfileProfesor: React.FC = () => {
 
   const database = true; 
   // Si no hay base de datos (cuando database = false), usamos los datos temporales
- /* 
+  
    // fetch para tener la imagen actualizada al editar
    useEffect(() => {
     const fetchUserForImage = async () => {
@@ -40,7 +41,7 @@ const ProfileProfesor: React.FC = () => {
     };
 
     fetchUserForImage();
-  }, []);*/
+  }, []);
 
   useEffect(() => {
   const fetchUserData = async () => {
@@ -233,7 +234,7 @@ const ProfileProfesor: React.FC = () => {
       <div className={styles.profileSection}>
         <div className={styles.profilePictureContainer}>
           <img
-            src={userImagen}
+            src={userIMG}
             alt="Profile"
             className={styles.profilePicture}
           />

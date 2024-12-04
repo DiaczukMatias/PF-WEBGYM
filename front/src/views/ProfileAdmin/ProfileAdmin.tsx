@@ -14,7 +14,7 @@ const ProfileAdmin: React.FC = () => {
   
   const userID = session?.user.id || ''
   const [userIMG, setUserIMG] = useState<string>(session?.user.image|| "/FOTOPERFIL.png");
- /* useEffect(() => {
+  useEffect(() => {
     const fetchUserForImage = async () => {
       try {
         
@@ -27,7 +27,7 @@ const ProfileAdmin: React.FC = () => {
     };
 
     fetchUserForImage();
-  }, []);*/
+  }, []);
 
 
   return (
