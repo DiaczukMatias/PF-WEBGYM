@@ -63,10 +63,11 @@ export const suspendProfesor = async ( id: string, estado: boolean, accesToken :
 
 export const suspendCategoria = async (id: string, estado: boolean, accesToken :string) => {
 
-
+  try {
   const response = await fetch(`${apiUrl}/categorias/${id}/estado`, {
     method: "PATCH",
     headers: {
+      "Content-Type": "application/json",
       Authorization: `Bearer ${accesToken}`,
     },
     body: JSON.stringify({estado}),
@@ -74,12 +75,16 @@ export const suspendCategoria = async (id: string, estado: boolean, accesToken :
   });
 
   if (!response.ok) {
+    const error = await response.json(); // Verificar si el servidor envía un mensaje de error
+      console.error("Error del servidor:", error);
     throw new Error("Error al cambiar el estado de la categoría");
-  }
+  } 
+  return response.json();  // Retorna los datos de la respuesta si la solicitud fue exitosa
 
-  return response.json();
-};
-
+  }catch (error) {
+    console.error("Error al suspender/activar la categoría:", error);
+    throw error;
+};}
 
 // Función para obtener las clases suspendidas
 export const fetchGetSuspendedClases = async (accesToken :string) => {
@@ -120,4 +125,5 @@ export const fetchGetSuspendedCategorias = async (accesToken :string) => {
 
   // Retorna los datos de la respuesta en formato JSON
   return response.json();
-};
+}
+
