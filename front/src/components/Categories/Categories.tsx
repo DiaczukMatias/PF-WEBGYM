@@ -5,6 +5,7 @@ import { ICategoria } from '@/interfaces/ICategory';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { suspendCategoria } from '@/helpers/Fetch/FetchSuspend';
 import { useSession } from 'next-auth/react';
+import Swal from 'sweetalert2';
 
 
 interface CategoryProps {
@@ -35,30 +36,89 @@ const Category: React.FC<CategoryProps> = ({ categories }) => {
     );
   };
 
-  const handleToggleCategory = async (id: string, activo: boolean ) => {
+  const handleToggleCategory = async (categoria:ICategoria ) => {
     try {
       if (!session?.user.accessToken) {
         console.error('El token de acceso no está disponible.');
         return; // Detener la ejecución
       }
-      const updatedCategory = await suspendCategoria( id, activo, session?.user.accessToken);
-      setLocalCategories((prev) =>
-        prev.map((categories) =>
-          categories.id === id
-            ? { ...categories, estado: updatedCategory.activo }
-            : categories
+
+      // Confirmación con Swal
+      const result = await Swal.fire({
+        title: `¿Estás seguro de que quieres ${categoria.estado ? "suspender" : "activar"} esta categoria?`,
+        text: categoria.nombre,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: categoria.estado ? "Suspender" : "Activar",
+        cancelButtonText: "Cancelar",
+        customClass: {
+          confirmButton: categoria.estado ? "bg-red-600 text-white" : "bg-accent text-white",
+          cancelButton: "bg-gray-300 text-black",
+        },
+        didOpen: () => {
+          const popup = Swal.getPopup();
+          if (popup) {
+            popup.classList.add("bg-dark", "text-white");
+            popup.style.backgroundColor = "#333";
+            popup.style.color = "white";
+          }
+        },
+      });
+
+      if (result.isConfirmed) {
+
+     await suspendCategoria( categoria.id, !categoria.estado, session?.user.accessToken);
+       // Actualizar el estado local
+       setLocalCategories((prevUsers) =>
+        prevUsers.map((c) =>
+          c.id === categoria.id ? { ...c, estado: !c.estado } : c
         )
       );
-    } catch (error) {
-      console.error('Error al cambiar el estado de la categoría:', error);
+       // Notificación de éxito
+       Swal.fire({
+        title: "Éxito",
+        text: `La categoria ${categoria.nombre} ha sido ${categoria.estado ? "suspendido" : "activado"} correctamente.`,
+        icon: "success",
+        confirmButtonText: "OK",
+        customClass: {
+          confirmButton: "bg-accent text-white",
+        },
+        didOpen: () => {
+          const popup = Swal.getPopup();
+          if (popup) {
+            popup.classList.add("bg-dark", "text-white");
+            popup.style.backgroundColor = "#333";
+            popup.style.color = "white";
+          }
+        },
+      });
     }
-  };
+  } catch (error) {
+    console.error("Error al suspender/activar la categoria:", error);
+
+    Swal.fire({
+      title: "Error",
+      text: "Hubo un problema al realizar la acción. Inténtalo nuevamente.",
+      icon: "error",
+      customClass: {
+        confirmButton: "bg-gray-300 text-white",
+      },
+      didOpen: () => {
+        const popup = Swal.getPopup();
+        if (popup) {
+          popup.classList.add("bg-dark", "text-white");
+          popup.style.backgroundColor = "#333";
+          popup.style.color = "white";
+        }
+      },
+    });
+  }
+};
 
   useEffect(() => {
     setLocalCategories(
       categories.map((categories) => ({
         ...categories,
-        activo: categories.activo ?? true, // Si 'activo' no existe, lo inicializa como 'true'.
       }))
     );
   }, [categories]);
@@ -99,11 +159,11 @@ const Category: React.FC<CategoryProps> = ({ categories }) => {
                     {categoria.nombre.toUpperCase()}
                     </h1>
                     <button
-                      onClick={() => handleToggleCategory(categoria.id ,!categoria.activo)}
+                      onClick={() => handleToggleCategory(categoria)}
                         className={`ml-4 ${
-                          categoria.activo  ? 'submitButtonSuspend': 'submitButton'}`}
+                          categoria.estado  ? 'submitButtonSuspend': 'submitButton'}`}
                     >
-                      {categoria.activo ? 'Suspender' : 'Activar'}
+                      {categoria.estado ? 'Suspender' : 'Activar'}
                     </button>
                   </div>
                 ) : (

@@ -15,10 +15,6 @@ const ProfileUser: React.FC = () => {
   const { data: session } = useSession();
   console.log("session en profileUser", session);
 
-  /*const userName = session?.user?.name || "Usuario"; // Corregido por posible undefined
-  const userMail = session?.user?.email || "Email";
-  const userTel = session?.user?.telefono || "Telefono";*/
-  
 
   const userID = session?.user.id
 

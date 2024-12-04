@@ -5,7 +5,7 @@ export interface ICategoria {
   id: string;
   nombre: string;
   clases?: IClase[];
-  activo?: boolean;  
+  estado?: boolean;  
   imagen?: string;
 
 }
