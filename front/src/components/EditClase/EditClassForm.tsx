@@ -123,10 +123,22 @@ console.log('valor de disponibilidad:', formData.disponibilidad);
       await updateClase(id!, form, session?.user.accessToken); 
       // Alerta de éxito
       Swal.fire({
-        icon: 'success',
-        title: '¡Clase actualizada!',
-        text: 'La clase se actualizó correctamente.',
-        confirmButtonText: 'OK',
+        position: "top",
+        icon: "success",
+        title:  "Clase actualizada con éxito",
+        showConfirmButton: false,
+        timer: 1500,
+        customClass: {
+          confirmButton: 'bg-accent text-white',
+        },
+        didOpen: () => {
+          const popup = Swal.getPopup();
+          if (popup) {
+            popup.classList.add('bg-dark', 'text-white');
+            popup.style.backgroundColor = '#333'; // Fondo oscuro
+            popup.style.color = 'white'; // Texto blanco
+          }
+        },
       }).then(() => {
         router.push('/clases'); // Redirige a /clases
       });
