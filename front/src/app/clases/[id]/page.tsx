@@ -1,4 +1,3 @@
-// src/app/clase/[id]/page.tsx
 //import { clasesData } from "@/helpers/datatemporalClases";
 import ClassCard from "@/components/Card/Card";
 import { fetchClaseById } from "@/helpers/Fetch/FetchClases";
@@ -37,6 +36,7 @@ const DetailsClass = async ({ params }: { params: Promise<{ id: string }> })  =>
     perfilProfesor: clase.perfilProfesor && typeof clase.perfilProfesor === 'object' && !Array.isArray(clase.perfilProfesor)
       ? { ...clase.perfilProfesor, clases: undefined }
       : undefined,
+      estado: clase.estado ?? true, // Si 'activo' no existe, lo inicializa como 'true'.
     //  estado: true,
   };
   

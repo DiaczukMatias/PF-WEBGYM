@@ -21,7 +21,7 @@ const CategoriasSuspendidasView = () => {
           return; // Detener la ejecución
         }
         const fetchedCategorias: ICategoria[] = await getCategories(session?.user.accessToken); // Cambiar por fetchGetSuspendedCategorias()
-        setCategorias(fetchedCategorias);
+        setCategorias(fetchedCategorias.filter((categoria) => !categoria.estado));
 
         if (fetchedCategorias.length === 0) {
           setError({ message: 'No hay categorías existentes' });
@@ -53,6 +53,7 @@ const CategoriasSuspendidasView = () => {
       id: categoria.id,
       nombre: categoria.nombre,
       imagen:  categoria.imagen || `/images/categories/${normalizeName(categoria.nombre)}.png`,
+      estado: categoria.estado ?? true, // Si 'activo' no existe, lo inicializa como 'true'.
     }));
 
   if (loading) {
@@ -61,11 +62,6 @@ const CategoriasSuspendidasView = () => {
 
   return (
     <div>
-      <h2 className={styles.title}>
-        <span className={styles.whiteText}> Nuestras</span>
-        <span className={styles.greenText}>Categorías</span>
-      </h2>
-
       {error ? (
         <div className={styles.errorMessage}>{error.message}</div>
       ) : (

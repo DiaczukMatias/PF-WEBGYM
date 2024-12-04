@@ -34,7 +34,7 @@ const sidebarItems = [
     path: "/admin/categorias",
     subItems: [
       { label: "Categorías Activas", path: "/admin/categorias/activas" },
-    //  { label: "Categorías Suspendidas", path: "/admin/categorias/suspendidas" },
+      { label: "Categorías Suspendidas", path: "/admin/categorias/suspendidas" },
       { label: "Crear Categoría", path: "/admin/categorias/crear" },
     ],
   },
@@ -43,7 +43,7 @@ const sidebarItems = [
     path: "/admin/planes",
     subItems: [
       { label: "Planes Disponibles", path: "/admin/planes/disponibles" },
-     // { label: "Usuarios Miembros", path: "/admin/planes/miembros" },
+      { label: "Usuarios Miembros", path: "/admin/planes/miembros" },
       { label: "Crear Nuevo Plan", path: "/admin/planes/crear" },
       { label: "Planes Suspendidos", path: "/admin/planes/suspendidos" },
 
