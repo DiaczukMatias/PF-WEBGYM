@@ -1,12 +1,12 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { validateCrearClase } from "@/helpers/validate/validateCrearClase";
-import { createClase } from "@/helpers/Fetch/FetchClases";
 import { ICrearClase } from "@/interfaces/IClase";
+import { IPerfilProfesor } from "@/interfaces/IProfesor";
 import { ICategoria } from "@/interfaces/ICategory";
 import { getCategories } from "@/helpers/Fetch/FetchCategorias";
 import { fetchPerfilProfesores } from "@/helpers/Fetch/FetchProfesores";
-import { IPerfilProfesor } from "@/interfaces/IProfesor";
+import { createClase } from "@/helpers/Fetch/FetchClases";
 import { useSession } from 'next-auth/react';
 import Swal from "sweetalert2";
 

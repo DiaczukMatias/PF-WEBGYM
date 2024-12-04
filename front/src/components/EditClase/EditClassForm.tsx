@@ -13,7 +13,7 @@ const EditClassForm: React.FC = () => {
   const { data: session } = useSession();
   const router = useRouter(); // Hook para redirección
   
-  console.log('user session ',session?.user.accessToken);
+  console.log('user session en edit class ',session?.user.accessToken);
   
   const [formData, setFormData] = useState<{
     id: string;
