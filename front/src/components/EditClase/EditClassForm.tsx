@@ -119,7 +119,7 @@ const EditClassForm: React.FC = () => {
 console.log('valor de disponibilidad:', formData.disponibilidad);
 
     try {     
-      console.log("datos a enviar a la solicitud: ", id, form, session?.user.accessToken);
+      
       if (!session?.user.accessToken) {
         console.error('El token de acceso no está disponible.');
         setErrorMessage('No estás autenticado. Por favor, inicia sesión.');
