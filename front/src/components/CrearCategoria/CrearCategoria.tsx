@@ -42,7 +42,19 @@ const CrearCategoria = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!session?.user.accessToken) {
-      Swal.fire("Error", "No estás autenticado", "error");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Error no estás autenticado",
+        customClass: {
+          confirmButton: 'bg-gray-300 text-white', // Botón de confirmación rojo
+        },
+        didOpen: () => {
+          const popup = Swal.getPopup();
+          if (popup) {
+            popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+          }}
+      });
       return;
     }
 
@@ -53,7 +65,20 @@ const CrearCategoria = () => {
     }
 
     if (!imagen) {
-      Swal.fire("Error", "Debes seleccionar una imagen", "error");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Debes seleccionar una imagen",
+        customClass: {
+          confirmButton: 'bg-gray-300 text-white', // Botón de confirmación rojo
+        },
+        didOpen: () => {
+          const popup = Swal.getPopup();
+          if (popup) {
+            popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+          }}
+      });
+      
       return;
     }
 
@@ -63,13 +88,42 @@ const CrearCategoria = () => {
 
     try {
       await createCategoria(formData, session.user.accessToken);
-      Swal.fire("Éxito", "Categoría creada correctamente", "success");
+      Swal.fire({
+        position: "top",
+        icon: "success",
+        title:  "Categoría creada con éxito",
+        showConfirmButton: false,
+        timer: 1500,
+        customClass: {
+          confirmButton: 'bg-accent text-white',
+        },
+        didOpen: () => {
+          const popup = Swal.getPopup();
+          if (popup) {
+            popup.classList.add('bg-dark', 'text-white');
+            popup.style.backgroundColor = '#333'; // Fondo oscuro
+            popup.style.color = 'white'; // Texto blanco
+          }
+        },
+      });
       setNombre("");
       setImagen(null);
       setInputBlur({ nombre: false });
       setErrors({});
     } catch (err) {
-      Swal.fire("Error", "Hubo un error al crear la categoría", "error");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Hubo un error al crear la categoría.",
+        customClass: {
+          confirmButton: 'bg-gray-300 text-white', // Botón de confirmación rojo
+        },
+        didOpen: () => {
+          const popup = Swal.getPopup();
+          if (popup) {
+            popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+          }}
+      });
       console.error("Error al crear categoría:", err);
     }
   };
