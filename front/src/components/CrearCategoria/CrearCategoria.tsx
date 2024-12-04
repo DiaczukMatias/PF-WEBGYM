@@ -42,7 +42,19 @@ const CrearCategoria = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!session?.user.accessToken) {
-      Swal.fire("Error", "No estás autenticado", "error");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Error no estás autenticado",
+        customClass: {
+          confirmButton: 'bg-gray-300 text-white', // Botón de confirmación rojo
+        },
+        didOpen: () => {
+          const popup = Swal.getPopup();
+          if (popup) {
+            popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+          }}
+      });
       return;
     }
 
@@ -53,7 +65,20 @@ const CrearCategoria = () => {
     }
 
     if (!imagen) {
-      Swal.fire("Error", "Debes seleccionar una imagen", "error");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Debes seleccionar una imagen",
+        customClass: {
+          confirmButton: 'bg-gray-300 text-white', // Botón de confirmación rojo
+        },
+        didOpen: () => {
+          const popup = Swal.getPopup();
+          if (popup) {
+            popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+          }}
+      });
+      
       return;
     }
 
@@ -81,16 +106,15 @@ const CrearCategoria = () => {
         },
       });
 
-
       setNombre("");
       setImagen(null);
       setInputBlur({ nombre: false });
       setErrors({});
     } catch (err) {
       Swal.fire({
-        title: "Error",
-        text: "Hubo un error al crear la categoría",
         icon: "error",
+        title: "Oops...",
+        text: "Hubo un error al crear la categoría.",
         customClass: {
           confirmButton: 'bg-gray-300 text-white', // Botón de confirmación rojo
         },
@@ -98,6 +122,7 @@ const CrearCategoria = () => {
           const popup = Swal.getPopup();
           if (popup) {
             popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+
             popup.style.backgroundColor = '#333'; // Fondo oscuro
             popup.style.color = 'white'; // Texto blanco
           }}
