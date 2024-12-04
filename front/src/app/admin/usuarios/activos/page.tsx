@@ -224,7 +224,7 @@ export default function Usuarios() {
 
   return (
     <div className="flex flex-col justify-center items-center text-center">
-      <h1 className="text-accent text-3xl font-bold">Todos los Usuarios</h1>
+      <h1 className="text-accent text-3xl font-bold">Todos los Usuarios Activos</h1>
 
       <div className={styles.gridContainer}>
   {allUsers.map((usuario) => (
