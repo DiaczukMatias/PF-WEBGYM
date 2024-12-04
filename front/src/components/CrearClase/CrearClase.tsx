@@ -8,6 +8,7 @@ import { getCategories } from "@/helpers/Fetch/FetchCategorias";
 import { fetchPerfilProfesores } from "@/helpers/Fetch/FetchProfesores";
 import { IPerfilProfesor } from "@/interfaces/IProfesor";
 import { useSession } from 'next-auth/react';
+import Swal from "sweetalert2";
 
 
 const CrearClaseForm: React.FC = () => {
@@ -123,7 +124,24 @@ const CrearClaseForm: React.FC = () => {
     if (!response.ok) {
       throw new Error("Error al crear la clase");
     }
-      alert("Clase creada con éxito");
+    Swal.fire({
+      position: "top",
+      icon: "success",
+      title:  "Clase creada con éxito",
+      showConfirmButton: false,
+      timer: 1500,
+      customClass: {
+        confirmButton: 'bg-accent text-white',
+      },
+      didOpen: () => {
+        const popup = Swal.getPopup();
+        if (popup) {
+          popup.classList.add('bg-dark', 'text-white');
+          popup.style.backgroundColor = '#333'; // Fondo oscuro
+          popup.style.color = 'white'; // Texto blanco
+        }
+      },
+    });
       setNuevaClase({
         nombre: "",
         descripcion: "",
@@ -139,7 +157,19 @@ const CrearClaseForm: React.FC = () => {
       console.log("Datos a enviar:", nuevaClase);
 console.log("Errores de validación:", errores);
 
-      alert("Error al crear la clase");
+Swal.fire({
+  icon: "error",
+  title: "Oops...",
+  text: "Error al crear la clase",
+  customClass: {
+    confirmButton: 'bg-gray-300 text-white', // Botón de confirmación rojo
+  },
+  didOpen: () => {
+    const popup = Swal.getPopup();
+    if (popup) {
+      popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+    }}
+});
     }
   };
 
