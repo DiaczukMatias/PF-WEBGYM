@@ -45,9 +45,9 @@ const RegisterView: React.FC = () => {
 
     if (Object.keys(errors).length) {
       Swal.fire({
-        icon: "error",
         title: "Oops...",
         text: "Hay errores en el formulario",
+        icon: "error",
         customClass: {
           confirmButton: 'bg-gray-300 text-white', // Botón de confirmación rojo
         },
@@ -57,7 +57,8 @@ const RegisterView: React.FC = () => {
             popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
             popup.style.backgroundColor = '#333'; // Fondo oscuro
             popup.style.color = 'white'; // Texto blanco         
-             }}
+             }
+          },
       });
       return;
     }

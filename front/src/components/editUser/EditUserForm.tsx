@@ -5,10 +5,13 @@ import { validateEditUserForm } from "@/helpers/validate/validate";
 import { fetchUserById, updateUser } from "@/helpers/Fetch/FetchUsers";
 import { IEditUserErrors, IEditUserProps } from "@/interfaces/IEditUser";
 import styles from "@/components/editUser/Register.module.css";
-import { useRouter } from "next/navigation"
+import { useRouter } from "next/navigation";
+
+
 
 const EditUserForm: React.FC = () => {
-  const router = useRouter(); // Hook para redirección
+  const router = useRouter();
+
   const [id, setId] = useState<string>(""); // ID del usuario
   const [dataUser, setDataUser] = useState<IEditUserProps>({
     nombre: "",
@@ -108,6 +111,8 @@ const EditUserForm: React.FC = () => {
           const popup = Swal.getPopup();
           if (popup) {
             popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+            popup.style.backgroundColor = '#333'; // Fondo oscuro
+            popup.style.color = 'white'; // Texto blanco
           }}
       });
       return;
@@ -159,6 +164,8 @@ const EditUserForm: React.FC = () => {
           const popup = Swal.getPopup();
           if (popup) {
             popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+            popup.style.backgroundColor = '#333'; // Fondo oscuro
+            popup.style.color = 'white'; // Texto blanco
           }}
       });
     } finally {

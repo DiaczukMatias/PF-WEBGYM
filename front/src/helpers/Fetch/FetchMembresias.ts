@@ -32,7 +32,7 @@ export const crearMembresia = async (membresia: IMembresia) => {
 
 // Comprar una Membresía (Usuario Autenticado)
 export const comprarMembresia = async (
-  usuarioId: string,
+
   membresiaId: string,
   accesToken :string
 ) => {
@@ -49,7 +49,6 @@ export const comprarMembresia = async (
         "Content-Type": "application/json",
         Authorization: `Bearer ${accesToken}`,
       },
-      body: JSON.stringify({ usuarioId }),
     });
 
     if (response.ok) {

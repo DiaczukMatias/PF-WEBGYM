@@ -65,8 +65,8 @@ const Category: React.FC<CategoryProps> = ({ categories }) => {
 
 
   return (
-    <div className="relative m-4 py-4">
-      <div className="flex items-center lg:mx-16">
+    <div className="relative m-4 py-4  ml-40 flex items-center justify-center">
+      <div className="flex items-center w-4/5 m-4 ">
         <button
           onClick={handleScrollLeft}
           className="flex items-center justify-center w-12 h-12 rounded-full shadow-md hover:bg-accent2"
@@ -74,7 +74,7 @@ const Category: React.FC<CategoryProps> = ({ categories }) => {
         >
           <FaChevronLeft size={20} color="white" />
         </button>
-        <div className="overflow-hidden w-full">
+        <div className="overflow-hidden w-4/5">
           <div
             className="flex transition-transform duration-300"
             style={{
@@ -89,14 +89,14 @@ const Category: React.FC<CategoryProps> = ({ categories }) => {
                 {isAdminRoute ? (
                   <div className="text-center">
                     <Image
-                      src={`/images/categories/${categoria.nombre.toLowerCase()}.png`}
+                      src={categoria.imagen ||`/images/categories/${categoria.nombre.toLowerCase()}.png`}
                       alt={categoria.nombre}
                       width={150}
                       height={150}
                       className="w-auto rounded-lg object-contain sm:min-h-24 sm:max-h-48 md:min-h-28 md:max-h-64 lg:min-h-36 lg:max-h-72 border border-accent"
                       />
-    <h1 className="text-center sm:text-lg md:text-xl lg:text-2xl font-semibold mb-4 mt-4 text-white text-shadow-lg fontOswaldSans-serif">
-         {categoria.nombre.toUpperCase()}
+             <h1 className="text-center sm:text-lg md:text-xl lg:text-2xl font-semibold mb-4 mt-4 text-white text-shadow-lg fontOswaldSans-serif">
+                    {categoria.nombre.toUpperCase()}
                     </h1>
                     <button
                       onClick={() => handleToggleCategory(categoria.id ,!categoria.activo)}
@@ -109,7 +109,7 @@ const Category: React.FC<CategoryProps> = ({ categories }) => {
                 ) : (
                   <a href={`/clases`} className="text-center">
                     <Image
-                      src={`/images/categories/${categoria.nombre.toLowerCase()}.png`}
+                      src={categoria.imagen ||`/images/categories/${categoria.nombre.toLowerCase()}.png`}
                       alt={categoria.nombre}
                       width={150}
                       height={150}

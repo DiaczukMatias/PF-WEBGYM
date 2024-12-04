@@ -9,14 +9,15 @@ import { clasesData } from "@/helpers/datatemporalClases";
 import { IInscripcion } from "@/interfaces/IInscripcion";
 import { fetchInscripcionesConClase } from "@/helpers/Fetch/FetchIncripciones";
 import { fetchUserById } from "@/helpers/Fetch/FetchUsers";
+import { IUsuario } from "@/interfaces/IUser";
 
 const ProfileUser: React.FC = () => {
   const { data: session } = useSession();
   console.log("session en profileUser", session);
 
-  const userName = session?.user?.name || "Usuario"; // Corregido por posible undefined
+  /*const userName = session?.user?.name || "Usuario"; // Corregido por posible undefined
   const userMail = session?.user?.email || "Email";
-  const userTel = session?.user?.telefono || "Telefono";
+  const userTel = session?.user?.telefono || "Telefono";*/
   
 
   const userID = session?.user.id
@@ -25,21 +26,20 @@ const ProfileUser: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"MIS_CLASES" | "PLAN_ACTUAL">("MIS_CLASES");
   const [userIMG, setUserIMG] = useState<string>(session?.user.image || "/FOTOPERFIL.png");
   const [userClasses, setUserClasses] = useState<IClase[] | null>(null);
+
+  const [userData, setUserData]= useState<IUsuario | null>(null)
+
   const [membresia, setMembresia] = useState<IMembresia | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const database = true; // Cambia esto entre true/false según la necesidad
 
-  // Función para obtener las clases del usuario y la membresía
+  // Función para obtener las clases del usuario 
   const fetchUserData = async () => {
     if (database) {
       // Cuando la base de datos esté habilitada, usamos la información de la sesión del usuario.
       if (session?.user) {
-        const usuario = session.user;
-
-        // Asignamos la membresía si existe
-        setMembresia(usuario.membresia || null);
-
+    
         //  clases a las que el usuario está inscrito
         const inscripcion = await fetchInscripcionesConClase(session.user.id)
         console.log( "inscripciones del usuario", inscripcion)
@@ -54,18 +54,6 @@ const ProfileUser: React.FC = () => {
       }
     } else {
       // Si no hay base de datos (cuando database = false), usamos los datos temporales
-      setMembresia({
-        id: "1",
-        nombre: "PRO PLAN",
-        precio: 99,
-        duracionEnMeses: 6,
-        fechaCreacion: new Date(),
-        fechaExpiracion: new Date(
-          new Date().setMonth(new Date().getMonth() + 6)
-        ),
-        fechaActualizacion: new Date(),
-        activa: true,
-      });
 
       // Datos temporales de clases (clasesData)
       setUserClasses(clasesData);
@@ -86,7 +74,10 @@ const ProfileUser: React.FC = () => {
       try {
         
         const data = await fetchUserById(session?.user.id || "");
+        setUserData(data)
         setUserIMG(data.imagen);
+        
+         setMembresia(data.membresia || null);
       } catch (error) {
         console.error(error)
         ;
@@ -161,11 +152,11 @@ const ProfileUser: React.FC = () => {
           <img src={userIMG} alt="Profile" className={styles.profilePicture} />
         </div>
         <h3 className={`${styles.name} ${styles.oswaldText}`}>
-          {userName.toUpperCase()}
+          {userData?.nombre.toUpperCase()}
         </h3>
         <ul className={styles.contactInfo}>
-          <li>📞 +{userTel}</li>
-          <li>📧 {userMail}</li>
+          <li>📞 +{userData?.telefono}</li>
+          <li>📧 {userData?.email}</li>
         </ul>
         <div className="flex justify-center items-center m-4">
                   <button

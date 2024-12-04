@@ -3,9 +3,12 @@ import React, { useState, useEffect } from 'react';
 import styles from "@/components/Planes/Planes.module.css";
 import { IMembresia } from "@/interfaces/IMembresia";
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import { loadStripe } from "@stripe/stripe-js";
+//import { loadStripe } from "@stripe/stripe-js";
 import { desactivarMembresia } from '@/helpers/Fetch/FetchMembresias';
 import { useSession } from 'next-auth/react';
+
+import { useRouter } from "next/navigation";
+
 
 interface PlanesProps {
     membresia: IMembresia[];
@@ -19,22 +22,29 @@ const PlanesCard: React.FC<PlanesProps> = ({membresia}) => {
   const itemsPerPage = 3;
   const { data: session } = useSession();
 
-  const handleSelectPlan = async (planId: string) => {
+  const router = useRouter();
+
+
+  const handleSelectPlan = async (membresia: IMembresia) => {
     try {
-      const response = await fetch(
-        `http://localhost:3010/stripe/create-checkout-session`,
+    /*  const response = await fetch(
+        `https://proyecto21a.onrender.com/membresias/checkout`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ planId }),
+          body: JSON.stringify({ membresiaId: membresia.id,
+            precio: membresia.precio,
+            email: session?.user.email, }),
         }
       );
       if (!response.ok) {
         throw new Error("Error al crear la sesión de Stripe");
       }
-      const { sessionId, url } = await response.json();
+      const { sessionId, url } = await response.json();*/
+      localStorage.setItem("membresia elegida:", JSON.stringify(membresia));
+      router.push("/stripe/pay/success/checkout/session");
 
-      console.log("URL", url);
+    /*  console.log("URL", url);
       console.log("Session ID", sessionId);
 
       const stripe = await loadStripe(
@@ -45,10 +55,7 @@ const PlanesCard: React.FC<PlanesProps> = ({membresia}) => {
         throw new Error("No se pudo cargar el SDK de Stripe");
       }
       window.open(url, "_blank");
-      // const result = await stripe.redirectToCheckout({ sessionId });
-      // if (result.error) {
-      //   console.error("Error al redirigir al checkout:", result.error);
-      // }
+     */
     } catch (error) {
       console.error("Error al redirigir a Stripe:", error);
     }
@@ -177,7 +184,7 @@ const PlanesCard: React.FC<PlanesProps> = ({membresia}) => {
                        className={styles.button}
                        onClick={() => {
                         if (membresia.id) {
-                          handleSelectPlan(membresia.id);
+                          handleSelectPlan(membresia);
                         }
                       }}
                     >
