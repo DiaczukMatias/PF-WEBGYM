@@ -7,6 +7,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { desactivarMembresia } from '@/helpers/Fetch/FetchMembresias';
 import { useSession } from 'next-auth/react';
 
+import { useRouter } from "next/navigation";
 
 
 interface PlanesProps {
@@ -21,6 +22,7 @@ const PlanesCard: React.FC<PlanesProps> = ({membresia}) => {
   const itemsPerPage = 3;
   const { data: session } = useSession();
 
+  const router = useRouter();
 
 
   const handleSelectPlan = async (membresia: IMembresia) => {
@@ -40,6 +42,7 @@ const PlanesCard: React.FC<PlanesProps> = ({membresia}) => {
       }
       const { sessionId, url } = await response.json();
       localStorage.setItem("membresia elegida:", JSON.stringify(membresia));
+      router.push(url);
 
       console.log("URL", url);
       console.log("Session ID", sessionId);
