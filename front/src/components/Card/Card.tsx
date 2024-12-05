@@ -171,9 +171,18 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
         },
       })      }
     } catch (error) {
+      let errorMessage = "Hubo un problema al realizar la acción. Inténtalo nuevamente.";
+      if (error instanceof Response) {
+        try {
+          const errorData = await error.json();
+          errorMessage = errorData.message || errorMessage;
+        } catch {
+          // Si no se puede parsear, usa el mensaje genérico
+        }
+      }
       Swal.fire({
         title: "Error",
-        text: "Hubo un problema al realizar la acción. Inténtalo nuevamente.",
+        text: errorMessage,
         icon: "error",
         customClass: {
           confirmButton: 'bg-gray-300 text-white', // Botón de confirmación rojo
@@ -184,7 +193,7 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
             popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
           }}
       });
-      console.error("Error al inscribirse:", error);
+      
     } 
   };
 
