@@ -29,7 +29,7 @@ const EditPlanForm: React.FC = () => {
             title: "Error",
             text: "No se encontró la membresía con el ID especificado.",
           });
-          router.push("/membresias"); // Redirige si no encuentra la membresía
+          router.push("/admin/planes"); // Redirige si no encuentra la membresía
         }
       } catch (error) {
         console.error("Error al obtener la membresía:", error);
@@ -75,7 +75,7 @@ const EditPlanForm: React.FC = () => {
           title: "Membresía actualizada",
           text: "El precio de la membresía se actualizó con éxito.",
         });
-        router.push("/membresias"); // Redirige después de actualizar
+        router.push("/admin/planes"); // Redirige después de actualizar
       }
     } catch (error) {
       Swal.fire({

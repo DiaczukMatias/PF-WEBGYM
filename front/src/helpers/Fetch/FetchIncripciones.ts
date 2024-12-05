@@ -13,7 +13,7 @@ export const createInscripcion = async (usuarioId: string, claseId: string) => {
     });
   
     if (!response.ok) {
-      throw new Error("Error al crear la inscripción");
+      throw response;
     }
   
     return response.json();
