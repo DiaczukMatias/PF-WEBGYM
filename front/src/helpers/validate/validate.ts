@@ -171,7 +171,9 @@ export function validateEditUserForm(values: IEditUserProps): IEditUserErrors {
     }
   }
   // Validación de la contraseña
-    if (values.contrasena.length < 8) {
+  if (!values.contrasena) {
+    errors.contrasena = "";
+  } else if (values.contrasena.length < 8) {
     errors.contrasena = "La contraseña debe tener al menos 8 caracteres";
   } else if (!/[A-Z]/.test(values.contrasena)) {
     errors.contrasena = "La contraseña debe incluir al menos una letra mayúscula";
