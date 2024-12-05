@@ -133,11 +133,11 @@ const AllClasesView = () => {
                   setSelectedCategory(e.target.value || null);
                   setSelectedProfesor(null);
                 }}
-                className="border border-accent bg-secondary2 text-primary rounded px-2 py-1 focus:ring-accent focus:border-accent transition"
+                className="select-custom mt-1 p-2 w-full border-2 border-lime-400 rounded-md bg-gray-800 text-white hover:border-lime-300 focus:outline-none focus:ring-2 focus:ring-lime-300 focus:ring-opacity-50"
               >
-                <option value="">Selecciona una categoría</option>
+                <option value="" className="bg-gray-700 text-gray-400">Selecciona una categoría</option>
                 {categories.map((category) => (
-                  <option key={category.id} value={category.nombre}>
+                  <option className="bg-gray-800 text-white hover:bg-gray-700 hover:text-lime-300" key={category.id} value={category.nombre}>
                     {category.nombre}
                   </option>
                 ))}
@@ -152,9 +152,9 @@ const AllClasesView = () => {
               <select
                 value={selectedProfesor || ""}
                 onChange={(e) => setSelectedProfesor(e.target.value || null)}
-                className="border border-accent bg-secondary2 text-primary rounded px-2 py-1 focus:ring-accent focus:border-accent transition"
+                className="select-custom mt-1 p-2 w-full border-2 border-lime-400 rounded-md bg-gray-800 text-white hover:border-lime-300 focus:outline-none focus:ring-2 focus:ring-lime-300 focus:ring-opacity-50"
               >
-                <option value="">Selecciona un profesor</option>
+                <option value="" className="bg-gray-700 text-gray-400">Selecciona un profesor</option>
                 {professorsInFilteredClases
                   .filter((profesor) => profesor?.id)
                   .reduce((unique, profesor) => {
@@ -164,7 +164,7 @@ const AllClasesView = () => {
                     return unique;
                   }, [] as IProfesor[])
                   .map((profesor) => (
-                    <option key={profesor.id} value={profesor.nombre}>
+                    <option className="bg-gray-800 text-white hover:bg-gray-700 hover:text-lime-300" key={profesor.id} value={profesor.nombre}>
                       {profesor.nombre}
                     </option>
                   ))}
