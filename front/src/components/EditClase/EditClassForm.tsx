@@ -53,7 +53,9 @@ const EditClassForm: React.FC = () => {
     if (id  && !Array.isArray(id)) {
       fetchClaseById(id)
         .then((claseData) => {
+
           const [dia, hora] = claseData.fecha ? claseData.fecha.split(" ") : ["", ""]
+
           // Asignar los valores de la API, pero no sobrescribir la imagen
           const updatedClaseData = {
             ...claseData,
@@ -115,9 +117,11 @@ const EditClassForm: React.FC = () => {
 
 
     try {     
+
       if (!id || Array.isArray(id)) {
         throw new Error('El ID no es válido.'); // O manejarlo de forma más específica
     }
+
       if (!session?.user.accessToken) {
         console.error('El token de acceso no está disponible.');
         setErrorMessage('No estás autenticado. Por favor, inicia sesión.');
