@@ -210,28 +210,28 @@ const EditClassForm: React.FC = () => {
               name="dia"
               value={formData.dia}
               onChange={handleChange}
-              className="p-2 w-1/2 border border-gray-300 rounded-md bg-transparent"
+              className="select-custom mt-1 p-2 w-full border-2 border-lime-400 rounded-md bg-gray-800 text-white hover:border-lime-300 focus:outline-none focus:ring-2 focus:ring-lime-300 focus:ring-opacity-50"
             >
-              <option value="">Selecciona un día</option>
-              <option value="Lunes">Lunes</option>
-              <option value="Martes">Martes</option>
-              <option value="Miércoles">Miércoles</option>
-              <option value="Jueves">Jueves</option>
-              <option value="Viernes">Viernes</option>
-              <option value="Sábado">Sábado</option>
+              <option className="bg-gray-700 text-gray-400" value="">Selecciona un día</option>
+              <option className="bg-gray-800 text-white hover:bg-gray-700 hover:text-lime-300" value="Lunes">Lunes</option>
+              <option className="bg-gray-800 text-white hover:bg-gray-700 hover:text-lime-300" value="Martes">Martes</option>
+              <option className="bg-gray-800 text-white hover:bg-gray-700 hover:text-lime-300" value="Miércoles">Miércoles</option>
+              <option className="bg-gray-800 text-white hover:bg-gray-700 hover:text-lime-300" value="Jueves">Jueves</option>
+              <option className="bg-gray-800 text-white hover:bg-gray-700 hover:text-lime-300" value="Viernes">Viernes</option>
+              <option className="bg-gray-800 text-white hover:bg-gray-700 hover:text-lime-300" value="Sábado">Sábado</option>
             </select>
             <select
               id="hora"
               name="hora"
               value={formData.hora}
               onChange={handleChange}
-              className="p-2 w-1/2 border border-gray-300 rounded-md bg-transparent"
+              className="select-custom mt-1 p-2 w-full border-2 border-lime-400 rounded-md bg-gray-800 text-white hover:border-lime-300 focus:outline-none focus:ring-2 focus:ring-lime-300 focus:ring-opacity-50"
             >
-              <option value="">Selecciona una hora</option>
+              <option value="" className="bg-gray-700 text-gray-400">Selecciona una hora</option>
               {Array.from({ length: 12 }, (_, i) => {
                 const hour = 9 + i;
                 return (
-                  <option key={hour} value={`${hour}:00`}>
+                  <option className="bg-gray-800 text-white hover:bg-gray-700 hover:text-lime-300" key={hour} value={`${hour}:00`}>
                     {hour}:00
                   </option>
                 );
