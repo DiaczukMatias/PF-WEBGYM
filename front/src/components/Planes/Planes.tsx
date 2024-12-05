@@ -42,7 +42,7 @@ const PlanesCard: React.FC<PlanesProps> = ({membresia}) => {
       }
       const { sessionId, url } = await response.json();
       localStorage.setItem("membresia elegida:", JSON.stringify(membresia));
-      router.push("URL");
+      router.push(url);
 
       console.log("URL", url);
       console.log("Session ID", sessionId);
