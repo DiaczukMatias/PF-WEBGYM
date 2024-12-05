@@ -4,12 +4,12 @@ import React, { useEffect, useState } from 'react';
 import { fetchClaseById, isFetchError, updateClase } from '../../helpers/Fetch/FetchClases';
 import { useSession } from 'next-auth/react';
 import Swal from 'sweetalert2';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 
 const EditClassForm: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [id, setId] = useState<string | null>(null); 
+  const { id } = useParams();
   const { data: session } = useSession();
   const router = useRouter(); // Hook para redirección
   
@@ -45,19 +45,15 @@ const EditClassForm: React.FC = () => {
   
 
   // Obtén el ID de la URL en el cliente
-  useEffect(() => {
-    const pathname = window?.location?.pathname;
-    const extractedId = pathname.split('/').pop() || '';
-    setId(extractedId);
-  }, []);
+  
 
   // Carga los datos de la clase cuando se obtenga el ID
   useEffect(() => {
     
-    if (id) {
+    if (id  && !Array.isArray(id)) {
       fetchClaseById(id)
         .then((claseData) => {
-          const [dia, hora] = claseData.fecha.split(" ");
+          const [dia, hora] = claseData.fecha ? claseData.fecha.split(" ") : ["", ""]
           // Asignar los valores de la API, pero no sobrescribir la imagen
           const updatedClaseData = {
             ...claseData,
@@ -119,7 +115,9 @@ const EditClassForm: React.FC = () => {
 
 
     try {     
-      
+      if (!id || Array.isArray(id)) {
+        throw new Error('El ID no es válido.'); // O manejarlo de forma más específica
+    }
       if (!session?.user.accessToken) {
         console.error('El token de acceso no está disponible.');
         setErrorMessage('No estás autenticado. Por favor, inicia sesión.');
