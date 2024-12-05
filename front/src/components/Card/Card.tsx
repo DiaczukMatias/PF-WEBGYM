@@ -169,7 +169,11 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
             popup.style.color = 'white'; // Texto blanco
           }
         },
-      })      }
+      }).then(() => {
+        router.push("/profile"); // Redirige al perfil después de cerrar el SweetAlert
+      });     
+      
+     }
     } catch (error) {
       let errorMessage = "Hubo un problema al realizar la acción. Inténtalo nuevamente.";
       if (error instanceof Response) {
