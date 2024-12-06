@@ -175,19 +175,13 @@ export const obtenerMembresiasInactivas = async (accesToken :string) => {
 };
 
 // Desactivar Membresía (Admin)
-export const desactivarMembresia = async ( nombre: string, accesToken :string) => {
+export const desactivarMembresia = async ( nombre: string) => {
  // const token = authToken();
 
-  if (!accesToken) {
-    console.error("No se encontró token de autorización");
-    return null;
-  }
+  
   try {
     const response = await fetch(`${apiUrl}/membresias/desactivar/${nombre}`, {
       method: "PUT",
-      headers: {
-        Authorization: `Bearer ${accesToken}`,
-      },
     });
 
     if (response.ok) {

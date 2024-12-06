@@ -6,7 +6,7 @@ import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { loadStripe } from "@stripe/stripe-js";
 import { desactivarMembresia } from '@/helpers/Fetch/FetchMembresias';
 import { useSession } from 'next-auth/react';
-
+import Swal from 'sweetalert2';
 import { useRouter } from "next/navigation";
 
 
@@ -79,29 +79,106 @@ const PlanesCard: React.FC<PlanesProps> = ({membresia}) => {
   };
   
   const handleTogglePlan = async ( membresia: IMembresia) => {
-    if (!session?.user.accessToken) {
-      console.error('El token de acceso no está disponible.');
-      return; // Detener la ejecución
-    }
     try {
-       await  desactivarMembresia( membresia.nombre, session.user.accessToken);
+    if (!session?.user.accessToken) {
+      Swal.fire({
+        title: "Error",
+        text: "No estás autorizado para realizar esta acción",
+        icon: "error",
+        customClass: {
+          cancelButton: "bg-gray-300 text-black",
+        },
+        didOpen: () => {
+          const popup = Swal.getPopup();
+          if (popup) {
+            popup.classList.add("bg-dark", "text-white");
+            popup.style.backgroundColor = "#333";
+            popup.style.color = "white";
+          }
+        },
+      });
+      return;
+    }
+
+  // Confirmación con Swal
+  const result = await Swal.fire({
+    title: `¿Estás seguro de que quieres ${membresia.activa ? "suspender" : "activar"} este plan?`,
+    text: membresia.nombre,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: membresia.activa ? "Suspender" : "Activar",
+    cancelButtonText: "Cancelar",
+    customClass: {
+      confirmButton: membresia.activa ? "bg-red-600 text-white" : "bg-accent text-white",
+      cancelButton: "bg-gray-300 text-black",
+    },
+    didOpen: () => {
+      const popup = Swal.getPopup();
+      if (popup) {
+        popup.classList.add("bg-dark", "text-white");
+        popup.style.backgroundColor = "#333";
+        popup.style.color = "white";
+      }
+    },
+  });
+
+  if (result.isConfirmed){
+       await  desactivarMembresia( membresia.nombre);
+
       setLocalPlan((prev) =>
-        prev.map((membresia) =>
-          membresia.nombre === membresia.nombre
-      ? { ...membresia, activa: !membresia.activa }
-            : membresia
+        prev.map((m) =>
+          m.nombre === membresia.nombre? { ...m, activa: !m.activa } : m
         )
       );
-    } catch (error) {
+
+      
+        // Notificación de éxito
+        Swal.fire({
+          title: "Éxito",
+          text: `El plan ha sido ${membresia.activa ? "suspendido" : "activado"} correctamente.`,
+          icon: "success",
+          confirmButtonText: "OK",
+          customClass: {
+            confirmButton: "bg-accent text-white",
+          },
+          didOpen: () => {
+            const popup = Swal.getPopup();
+            if (popup) {
+              popup.classList.add("bg-dark", "text-white");
+              popup.style.backgroundColor = "#333";
+              popup.style.color = "white";
+            }
+          },
+        });
+      }
+     } catch (error) {
       console.error('Error al cambiar el estado del plan', error);
+
+      Swal.fire({
+        title: "Error",
+        text: "Hubo un problema al realizar la acción. Inténtalo nuevamente.",
+        icon: "error",
+        customClass: {
+          confirmButton: "bg-gray-300 text-white",
+        },
+        didOpen: () => {
+          const popup = Swal.getPopup();
+          if (popup) {
+            popup.classList.add("bg-dark", "text-white");
+            popup.style.backgroundColor = "#333";
+            popup.style.color = "white";
+          }
+        },
+      });
     }
-  };
+  }
+  
 
   useEffect(() => {
     setLocalPlan(
       membresia.map((membresia) => ({
         ...membresia,
-        activa: membresia.activa ?? true, // Si 'activo' no existe, lo inicializa como 'true'.
+       // activa: membresia.activa ?? true, // Si 'activo' no existe, lo inicializa como 'true'.
       }))
     );
   }, [membresia]);
@@ -157,12 +234,12 @@ const PlanesCard: React.FC<PlanesProps> = ({membresia}) => {
                       <button
                       onClick={() => handleTogglePlan(membresia)}
                       className={`ml-4 ${
-                        membresia.activa === true 
+                        membresia.activa  
                           ? 'submitButtonSuspend'
                           : 'submitButton'
                       }`}
                     >
-                      {membresia.activa === true ? 'Suspender' : 'Activar'}
+                      {membresia.activa ? 'Suspender' : 'Activar'}
                     </button>
                     
                     </div>
@@ -209,6 +286,7 @@ const PlanesCard: React.FC<PlanesProps> = ({membresia}) => {
     </div>
   );
 };
+
 
 
 export default PlanesCard
