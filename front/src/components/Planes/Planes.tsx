@@ -4,7 +4,8 @@ import styles from "@/components/Planes/Planes.module.css";
 import { IMembresia } from "@/interfaces/IMembresia";
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { loadStripe } from "@stripe/stripe-js";
-import { desactivarMembresia } from '@/helpers/Fetch/FetchMembresias';
+//import { desactivarMembresia } from '@/helpers/Fetch/FetchMembresias';
+import { suspendPlan } from '@/helpers/Fetch/FetchSuspend';
 import { useSession } from 'next-auth/react';
 import Swal from 'sweetalert2';
 import { useRouter } from "next/navigation";
@@ -123,7 +124,10 @@ const PlanesCard: React.FC<PlanesProps> = ({membresia}) => {
   });
 
   if (result.isConfirmed){
-       await  desactivarMembresia( membresia.nombre);
+    if (!membresia.id)
+       return;
+
+       await  suspendPlan(membresia.id, !membresia.activa, session.user.accessToken);
 
       setLocalPlan((prev) =>
         prev.map((m) =>
