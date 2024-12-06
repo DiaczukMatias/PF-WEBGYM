@@ -12,7 +12,7 @@ export default function Clientes() {
   const router = useRouter();
   const [allUsers, setAllUsers] = useState<IUsuario[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [limit] = useState(8); // Usuarios por página
+  const [limit] = useState(40); // Usuarios por página
   const [hasMore, setHasMore] = useState(true); // Para controlar si hay más usuarios en páginas siguientes
   const { data: session } = useSession();
 
