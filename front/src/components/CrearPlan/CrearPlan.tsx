@@ -74,6 +74,8 @@ const CrearPlanForm: React.FC = () => {
               const popup = Swal.getPopup();
               if (popup) {
                 popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+                popup.style.backgroundColor = "#333";
+                popup.style.color = "white";
               }}
           });
       
@@ -124,6 +126,8 @@ const CrearPlanForm: React.FC = () => {
           const popup = Swal.getPopup();
           if (popup) {
             popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+            popup.style.backgroundColor = "#333";
+            popup.style.color = "white";
           }}
       });
       

@@ -138,6 +138,8 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
           const popup = Swal.getPopup();
           if (popup) {
             popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+            popup.style.backgroundColor = "#333";
+            popup.style.color = "white";
           }}
       });
     }
@@ -195,6 +197,8 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
           const popup = Swal.getPopup();
           if (popup) {
             popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+            popup.style.backgroundColor = "#333";
+            popup.style.color = "white";
           }}
       });
       
@@ -220,9 +224,6 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
           <h3 className="text-center text-2xl font-semibold text-accent .fontOswaldSans-serif">
             {nombre.toUpperCase()}
           </h3>
-          <p className="text-sm text-secondary2 mt-1">
-            estado:  {estado ? "supendido" : "activa"}
-          </p>
           <p className="text-sm text-secondary2 mt-1">
             Categoria: {categoria?.nombre}
           </p>
