@@ -219,9 +219,6 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
             {nombre.toUpperCase()}
           </h3>
           <p className="text-sm text-secondary2 mt-1">
-            estado:  {estado ? "supendido" : "activa"}
-          </p>
-          <p className="text-sm text-secondary2 mt-1">
             Categoria: {categoria?.nombre}
           </p>
           <p className="text-sm text-secondary mt-2">
