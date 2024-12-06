@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import { FaSpinner } from "react-icons/fa";
 import styles from "@/components/Navbar/Navbar.module.css"
-import Searchbar from "@/components/SearchBar/SearchBar";
+//import Searchbar from "@/components/SearchBar/SearchBar";
 
 const Navbar = () => {
   const { data: session, status } = useSession();
@@ -131,7 +131,7 @@ const Navbar = () => {
               </div>
             </>
           )}
-          <Searchbar />
+       {/*   <Searchbar />*/}
         </div>
         {esAdmin && (
         <div>
