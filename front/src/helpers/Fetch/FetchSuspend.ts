@@ -127,3 +127,21 @@ export const fetchGetSuspendedCategorias = async (accesToken :string) => {
   return response.json();
 }
 
+export const suspendPlan = async ( id: string, activa: boolean, accesToken :string) => {
+
+
+  const response = await fetch(`${apiUrl}/membresias/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accesToken}`,
+    },
+    body: JSON.stringify({activa}),
+  });
+
+  if (!response.ok) {
+    throw new Error("Error al suspender la clase");
+  }
+
+  return response.json();
+};
