@@ -156,7 +156,7 @@ const PlanesCard: React.FC<PlanesProps> = ({membresia}) => {
 
       Swal.fire({
         title: "Error",
-        text: "Hubo un problema al realizar la acción. Inténtalo nuevamente.",
+        text: `Hubo un problema al realizar la acción. Inténtalo nuevamente.  `,
         icon: "error",
         customClass: {
           confirmButton: "bg-gray-300 text-white",
