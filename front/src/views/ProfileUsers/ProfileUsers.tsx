@@ -191,7 +191,7 @@ const ProfileUser: React.FC = () => {
         ) : (
           <div className={styles.plan}>
 
-            <button  onClick={() => (window.location.href = `/miMembrasia`)} className={styles.membershipCard}>
+            <button  onClick={() => (window.location.href = `/miMembresia`)} className={styles.membershipCard}>
             <h3>{membresia?.nombre || "No tienes plan activo"}</h3>
             <p>{membresia ? `$${membresia.precio} USD` : "Hazte socio para poder disfrutar de nuestras clases y todos los beneficios"}</p>
             <p >
