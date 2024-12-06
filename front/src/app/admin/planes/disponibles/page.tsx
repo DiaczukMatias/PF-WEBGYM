@@ -5,7 +5,7 @@ export default function PlanesDisponibles
 () {
     return (
       <div className="flex flex-col justify-center items-center text-center">
-      <h1 className="text-accent text-3xl font-bold">Planes disponibles:</h1>
+      <h1 className="text-accent text-3xl font-bold">Gestión de planes disponibles:</h1>
          <PlanesView/>
 
       </div>
