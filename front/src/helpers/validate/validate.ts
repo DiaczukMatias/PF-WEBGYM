@@ -123,7 +123,7 @@ export function validateEditUserForm(values: IEditUserProps): IEditUserErrors {
   // Validación del nombre
   if (!values.nombre) {
     errors.nombre = "El nombre es un campo obligatorio";
-  } else if (values.nombre.length < 3) {
+  }  if (values.nombre.length < 3) {
     errors.nombre = "El nombre debe tener al menos 3 caracteres";
   } else if (values.nombre.length > 80) {
     errors.nombre = "El nombre no debe exceder los 80 caracteres";
@@ -172,7 +172,7 @@ export function validateEditUserForm(values: IEditUserProps): IEditUserErrors {
   }
   // Validación de la contraseña
   if (!values.contrasena) {
-    errors.contrasena = "La contraseña es un campo obligatorio";
+    errors.contrasena = "";
   } else if (values.contrasena.length < 8) {
     errors.contrasena = "La contraseña debe tener al menos 8 caracteres";
   } else if (!/[A-Z]/.test(values.contrasena)) {

@@ -4,16 +4,16 @@ import React, { useEffect, useState } from 'react';
 import { fetchClaseById, isFetchError, updateClase } from '../../helpers/Fetch/FetchClases';
 import { useSession } from 'next-auth/react';
 import Swal from 'sweetalert2';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 
 const EditClassForm: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [id, setId] = useState<string | null>(null); 
+  const { id } = useParams();
   const { data: session } = useSession();
   const router = useRouter(); // Hook para redirección
   
-  console.log('user session ',session?.user.accessToken);
+  console.log('user session en edit class ',session?.user.accessToken);
   
   const [formData, setFormData] = useState<{
     id: string;
@@ -26,6 +26,8 @@ const EditClassForm: React.FC = () => {
     perfilProfesorId: string;
     categoriaNombre: string;
     profesorNombre: string;
+    dia: string;
+    hora: string;
   }>({
     id: '',
     nombre: '',
@@ -37,27 +39,29 @@ const EditClassForm: React.FC = () => {
     perfilProfesorId: '',
     categoriaNombre: '',
     profesorNombre: '',
+    dia : '',
+    hora: ''  
   });
   
 
   // Obtén el ID de la URL en el cliente
-  useEffect(() => {
-    const pathname = window?.location?.pathname;
-    const extractedId = pathname.split('/').pop() || '';
-    setId(extractedId);
-  }, []);
+  
 
   // Carga los datos de la clase cuando se obtenga el ID
   useEffect(() => {
     
-    if (id) {
+    if (id  && !Array.isArray(id)) {
       fetchClaseById(id)
         .then((claseData) => {
+
+          const [dia, hora] = claseData.fecha ? claseData.fecha.split(" ") : ["", ""]
+
           // Asignar los valores de la API, pero no sobrescribir la imagen
           const updatedClaseData = {
             ...claseData,
             perfilProfesorId: claseData.perfilProfesor?.id || '',
-            fecha: typeof claseData.fecha === 'string' ? claseData.fecha.slice(0, 16) : new Date(claseData.fecha).toISOString().slice(0, 16),
+            dia: dia || "",
+            hora: hora || "",
             disponibilidad: claseData.disponibilidad ?? 0,
             categoriaId: claseData.categoria ? claseData.categoria.id : '',
             categoriaNombre: claseData.categoria ? claseData.categoria.nombre : '',
@@ -75,7 +79,7 @@ const EditClassForm: React.FC = () => {
     }
   }, [id]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -100,7 +104,7 @@ const EditClassForm: React.FC = () => {
     const form = new FormData();
     form.append('nombre', formData.nombre);
     form.append('descripcion', formData.descripcion);
-    form.append('fecha', formData.fecha);
+    form.append("fecha", `${formData.dia} ${formData.hora}`);
     form.append('disponibilidad', formData.disponibilidad.toString());
     form.append('categoriaId', formData.categoriaId);
     form.append('perfilProfesorId', formData.perfilProfesorId);
@@ -110,10 +114,14 @@ const EditClassForm: React.FC = () => {
     }
     
     console.log('disponibilidad tipo:', typeof formData.disponibilidad);
-console.log('valor de disponibilidad:', formData.disponibilidad);
+
 
     try {     
-      console.log("datos a enviar a la solicitud: ", id, form, session?.user.accessToken);
+
+      if (!id || Array.isArray(id)) {
+        throw new Error('El ID no es válido.'); // O manejarlo de forma más específica
+    }
+
       if (!session?.user.accessToken) {
         console.error('El token de acceso no está disponible.');
         setErrorMessage('No estás autenticado. Por favor, inicia sesión.');
@@ -195,17 +203,45 @@ console.log('valor de disponibilidad:', formData.disponibilidad);
         </div>
 
         {/* Fecha y Hora */}
+        {/* Día y hora */}
         <div className="mb-4">
-          <label htmlFor="fecha" className="block text-sm font-medium">Fecha y Hora</label>
-          <input
-            type="datetime-local"
-            id="fecha"
-            name="fecha"
-            value={formData.fecha}
-            onChange={handleChange}
-            required
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md bg-transparent"
-          />
+          <label htmlFor="fecha" className="block text-sm font-medium">
+            Día y Hora:
+          </label>
+          <div className="flex gap-2">
+            <select
+              id="dia"
+              name="dia"
+              value={formData.dia}
+              onChange={handleChange}
+              className="select-custom mt-1 p-2 w-full border-2 border-lime-400 rounded-md bg-gray-800 text-white hover:border-lime-300 focus:outline-none focus:ring-2 focus:ring-lime-300 focus:ring-opacity-50"
+            >
+              <option className="bg-gray-700 text-gray-400" value="">Selecciona un día</option>
+              <option className="bg-gray-800 text-white hover:bg-gray-700 hover:text-lime-300" value="Lunes">Lunes</option>
+              <option className="bg-gray-800 text-white hover:bg-gray-700 hover:text-lime-300" value="Martes">Martes</option>
+              <option className="bg-gray-800 text-white hover:bg-gray-700 hover:text-lime-300" value="Miércoles">Miércoles</option>
+              <option className="bg-gray-800 text-white hover:bg-gray-700 hover:text-lime-300" value="Jueves">Jueves</option>
+              <option className="bg-gray-800 text-white hover:bg-gray-700 hover:text-lime-300" value="Viernes">Viernes</option>
+              <option className="bg-gray-800 text-white hover:bg-gray-700 hover:text-lime-300" value="Sábado">Sábado</option>
+            </select>
+            <select
+              id="hora"
+              name="hora"
+              value={formData.hora}
+              onChange={handleChange}
+              className="select-custom mt-1 p-2 w-full border-2 border-lime-400 rounded-md bg-gray-800 text-white hover:border-lime-300 focus:outline-none focus:ring-2 focus:ring-lime-300 focus:ring-opacity-50"
+            >
+              <option value="" className="bg-gray-700 text-gray-400">Selecciona una hora</option>
+              {Array.from({ length: 12 }, (_, i) => {
+                const hour = 9 + i;
+                return (
+                  <option className="bg-gray-800 text-white hover:bg-gray-700 hover:text-lime-300" key={hour} value={`${hour}:00`}>
+                    {hour}:00
+                  </option>
+                );
+              })}
+            </select>
+          </div>
         </div>
 
         {/* Cupos disponibles */}
