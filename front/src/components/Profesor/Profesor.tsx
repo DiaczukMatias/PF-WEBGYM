@@ -76,7 +76,7 @@ const Profesores: React.FC<ProfesorProps> = ({ profesores, itemsPerPage, limit }
                 <a href={`/clases`} className="text-center">
                   {profesor.imagen ? (
                     <Image
-                      src={ `/images/profesor/${normalizeName(profesor.nombre)}.png`}
+                      src={ profesor.imagen ||`/images/profesor/${normalizeName(profesor.nombre)}.png`}
                       alt={profesor.nombre}
                       width={300}
                       height={400}
