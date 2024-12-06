@@ -254,15 +254,15 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
           {rolAdmin && (
             <div className="mt-4  flex justify-center">
              <button
-               className={`${estado === true ? "submitButtonSuspend" : "submitButton "}`}
+               className={`${estado===true  ? "submitButtonSuspend" : "submitButton "}`}
                onClick={() => handleSuspendClass(clase)}
                   disabled={loading}
                 >
                   {loading
-                    ? estado === true 
+                    ? estado 
                       ? "Suspendiendo..."
                       : "Activando..."
-                    : estado === true
+                    : estado
                     ? "Suspender Clase"
                     : "Activar Clase"}
                 </button>

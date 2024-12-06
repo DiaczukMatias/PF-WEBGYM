@@ -78,6 +78,7 @@ const Planessuspend: React.FC = () => {
           // Si el fetch falla o no hay datos, usa los datos temporales
           setMembresias(planesData);
           setUseBackend(false);
+          console.log("usando datos temporales",useBackend)
         } else {
           setMembresias(data.data.filter((membresia: IMembresia)=> !membresia.activa));  // Si el fetch es exitoso, usar los datos obtenidos
           setUseBackend(true);
@@ -105,7 +106,6 @@ const Planessuspend: React.FC = () => {
   return (
     <div className="flex flex-col justify-center items-center text-center">
       <h1 className="text-accent text-2xl font-bold">Gestión de Planes</h1>
-      <p>{useBackend ? "Datos del backend" : "Datos temporales"}</p>  {/* Mensaje de respaldo */}
       <PlanesCard membresia={mappedPlanes} />  {/* Mostrar los planes */}
     </div>
   );
