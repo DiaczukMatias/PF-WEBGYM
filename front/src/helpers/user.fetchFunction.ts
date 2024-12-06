@@ -60,6 +60,8 @@ export const registerPost = async (userData: IRegisterProps, file?: File) => {
           const popup = Swal.getPopup();
           if (popup) {
             popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+            popup.style.backgroundColor = "#333";
+            popup.style.color = "white";
           }}
       });
     } else if (response.status === 500) {
@@ -75,6 +77,8 @@ export const registerPost = async (userData: IRegisterProps, file?: File) => {
           const popup = Swal.getPopup();
           if (popup) {
             popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+            popup.style.backgroundColor = "#333";
+            popup.style.color = "white";
           }}
       });
     } else {
@@ -94,6 +98,8 @@ export const registerPost = async (userData: IRegisterProps, file?: File) => {
           const popup = Swal.getPopup();
           if (popup) {
             popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+            popup.style.backgroundColor = "#333";
+            popup.style.color = "white";
           }}
       });
     } else {
@@ -109,6 +115,8 @@ export const registerPost = async (userData: IRegisterProps, file?: File) => {
           const popup = Swal.getPopup();
           if (popup) {
             popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+            popup.style.backgroundColor = "#333";
+            popup.style.color = "white";
           }}
       });
     }

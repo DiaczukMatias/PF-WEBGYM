@@ -145,6 +145,8 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
           const popup = Swal.getPopup();
           if (popup) {
             popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+            popup.style.backgroundColor = "#333";
+            popup.style.color = "white";
           }}
       });
     }
@@ -189,6 +191,8 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
           const popup = Swal.getPopup();
           if (popup) {
             popup.classList.add('bg-dark', 'text-white'); // Fondo oscuro y texto blanco
+            popup.style.backgroundColor = "#333";
+            popup.style.color = "white";
           }}
       });
       console.error("Error al inscribirse:", error);

@@ -106,7 +106,7 @@ const PlanesPage: React.FC = () => {
 
   return (
     <div className="flex flex-col justify-center items-center text-center">
-      <h1 className="text-accent text-2xl font-bold">Gestión de Planes</h1>
+      <h1 className="text-accent text-2xl font-bold">Gestión de todos los Planes</h1>
       <PlanesCard membresia={mappedPlanes} />  {/* Mostrar los planes */}
     </div>
   );
