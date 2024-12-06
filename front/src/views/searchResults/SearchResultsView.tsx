@@ -69,6 +69,6 @@ const SearchResultsView: React.FC = () => {
       <ClassCardList classes={results} /> {/* Aquí se pasa el array de clases */}
     </div>
   );
-};
+}
 
 export default SearchResultsView;
