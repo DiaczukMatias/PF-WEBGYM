@@ -26,7 +26,7 @@ const AllClasesView = () => {
   const [showFilters, setShowFilters] = useState(false);
 
   const [page] = useState<number> (1);  // Estado para la página
-  const [limit] = useState<number> (20);  // Estado para el límite de clases por página
+  const [limit] = useState<number> (30);  // Estado para el límite de clases por página
   const { data: session } = useSession();
 
 
