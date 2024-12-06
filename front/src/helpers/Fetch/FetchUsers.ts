@@ -20,13 +20,7 @@ function isFetchError(error: unknown): error is FetchError {
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-/*// Función para configurar los headers de autorización
-const authHeader = () => ({
-  Authorization: `Bearer ${Token}`,
-  'Content-Type': 'application/json',
-});
-console.log('Authorization para rutas  protegidas: ',authHeader().Authorization);
-*/ 
+
 // Funciones para cada operación HTTP
 
 // 1. Iniciar sesión (No protegida)
@@ -361,7 +355,7 @@ export const registerPost = async (userData: IRegisterProps) => {
       }
     );
 
-    console.log("DATOS PASADOS AL BODY", userData);
+    
 
     const responseData = await response.json();
 
