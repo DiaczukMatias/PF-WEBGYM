@@ -25,7 +25,6 @@ export default function UsuariosConMembresia() {
         const dataUsers = await fetchAllUsers(page, limit, session.user.accessToken );
         if (Array.isArray(dataUsers)) {
           setUsersMember(dataUsers.filter((usuario)  => usuario.membresia));
-          console.log("data user con membresia:", dataUsers)
           setHasMore(dataUsers.length === limit); // Si devuelve menos del límite, no hay más usuarios
         } else {
           console.error("La respuesta no tiene el formato esperado:", dataUsers);
@@ -55,7 +54,6 @@ export default function UsuariosConMembresia() {
 
 const handleCancelarMembresia = async (usuario: IUsuario) => {
     if (!usuario.membresia?.id) {
-      console.log("No se encontro membresia");
       return;
     }
   

@@ -25,8 +25,6 @@ export const authOptions: AuthOptions = {
           body: JSON.stringify({ email, contrasena }),
         });
         const user = await res.json();
-        console.log('res en authorize', res);
-        console.log('user en authorize', user);
         
         if (res.ok && user) {
          
@@ -61,12 +59,9 @@ export const authOptions: AuthOptions = {
         token.membresia = user.membresia || null;
         token.inscripciones = user.inscripciones || null;
     
-        console.log("Token actualizado: ", token);
     
         // Si el flujo proviene de Google
         if (account?.provider === 'google') {
-          console.log('datos de account', account);
-          console.log('Datos proporcionados por Google:', user);
           
     
           try {
@@ -81,9 +76,6 @@ export const authOptions: AuthOptions = {
               imagen: user.image || null,
             };
             
-            console.log('Valor de id enviado al backend:', googleUserData.id);
-            console.log('Datos enviados al backend:', googleUserData);
-    
             const response = await fetch(`${apiUrl}/auth/google-login`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -91,7 +83,6 @@ export const authOptions: AuthOptions = {
             });
     
             const googleUser = await response.json();
-            console.log("Usuario sincronizado con backend:", googleUser);
     
             if (response.ok && googleUser) {
               token.id = googleUser.usuario.id;
@@ -105,10 +96,8 @@ export const authOptions: AuthOptions = {
           }
         } else {
           // Log específico para credenciales
-          console.log('Datos proporcionados por credenciales:', user);
         }
       }
-      console.log('este es el token final antes de retornar: ', token);
       
       return token;
     }
@@ -129,7 +118,6 @@ export const authOptions: AuthOptions = {
         inscripciones: token.inscripciones,
 
       };
-      console.log('session del usuario desde auth.ts: ', session.user);
       return session;
     },
   }

@@ -76,13 +76,11 @@ const RegisterView: React.FC = () => {
   };
     try {
       const result = await registerPost(userData, file || undefined);
-      console.log("console log del resultado: " , result);
 
       if (result) {
         router.push("/login");
       }
     } catch (error) {
-      console.log("errores en el registro", error);
       console.error("Error en el registro:", error);
     } finally {
       setIsSubmitting(false);
@@ -92,7 +90,6 @@ const RegisterView: React.FC = () => {
   useEffect(() => {
     const errors = validateRegisterForm(dataUser);
     setErrors(errors);
-    console.log(dataUser);
   }, [dataUser]);
 
   useEffect(() => {

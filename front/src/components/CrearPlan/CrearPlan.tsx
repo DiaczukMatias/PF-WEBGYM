@@ -81,7 +81,6 @@ const CrearPlanForm: React.FC = () => {
       
       return;
     }
-    console.log("Datos que se enviarán:", nuevoPlan);
     
 
     try {
@@ -115,6 +114,8 @@ const CrearPlanForm: React.FC = () => {
         });
       }
     } catch (error) {
+      console.error("Error al crear membresia:", error);
+
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -131,7 +132,6 @@ const CrearPlanForm: React.FC = () => {
           }}
       });
       
-      console.log(error)
     }
   };
 

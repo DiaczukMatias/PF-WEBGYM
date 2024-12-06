@@ -8,7 +8,6 @@ import ProfileAdmin from "@/views/ProfileAdmin/ProfileAdmin";
 const Profile :React.FC = () => {
 
   const { data: session } = useSession();
-  console.log('sesssion user: ', session?.user);
   const rolUsuario = session?.user?.rol;
   const esCliente = rolUsuario === "cliente" ;
   const esAdmin = rolUsuario === "admin";

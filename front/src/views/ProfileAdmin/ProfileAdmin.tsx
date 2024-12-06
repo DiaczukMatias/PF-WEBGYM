@@ -7,7 +7,6 @@ import { fetchUserById } from "@/helpers/Fetch/FetchUsers";
 import { IUsuario } from "@/interfaces/IUser";
 const ProfileAdmin: React.FC = () => {
   const { data: session } = useSession();
-  console.log('session en profileUser', session);
 
  /* const userName = session?.user?.name || "Usuario";  // Corregido por posible undefined
   const userMail = session?.user?.email || "Email";

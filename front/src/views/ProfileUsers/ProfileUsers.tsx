@@ -13,7 +13,6 @@ import { IUsuario } from "@/interfaces/IUser";
 
 const ProfileUser: React.FC = () => {
   const { data: session } = useSession();
-  console.log("session en profileUser", session);
 
 
   const userID = session?.user.id
@@ -38,7 +37,6 @@ const ProfileUser: React.FC = () => {
     
         //  clases a las que el usuario está inscrito
         const inscripcion = await fetchInscripcionesConClase(session.user.id)
-        console.log( "inscripciones del usuario", inscripcion)
         const clasesInscritas: IClase[] | null =
           inscripcion.flatMap(
             (inscripcion: IInscripcion) => inscripcion.clase
@@ -55,7 +53,8 @@ const ProfileUser: React.FC = () => {
       setUserClasses(clasesData);
 
       setError(null);
-      console.log("log del error", error);
+      console.error( error);
+
     }
   };
 
