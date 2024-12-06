@@ -81,11 +81,11 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
 
           // Confirmación con Swal
     const result = await Swal.fire({
-      title: `¿Estás seguro de que quieres ${clase.estado ? "activar" : "suspender"} la clase?`,
+      title: `¿Estás seguro de que quieres ${clase.estado ? "suspender" : "activar" } la clase?`,
       text: `${clase.nombre}`,
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: clase.estado ? "Activar" : "Suspender",
+      confirmButtonText: clase.estado ?  "Suspender" :  "Activar",
       cancelButtonText: "Cancelar",
       customClass: {
         confirmButton: clase.estado ? 'bg-accent text-white' : 'bg-red-600 text-white',
@@ -111,7 +111,7 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
 
       Swal.fire({
         title: "Éxito",
-        text: `La clase ha sido ${clase.estado ? "activada" : "suspendida"} correctamente.`,
+        text: `La clase ha sido ${clase.estado ? "suspendida" :  "activada" } correctamente.`,
         icon: "success",
         confirmButtonText: 'OK',
         customClass: {
