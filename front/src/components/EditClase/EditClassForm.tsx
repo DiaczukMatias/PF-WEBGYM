@@ -13,7 +13,6 @@ const EditClassForm: React.FC = () => {
   const { data: session } = useSession();
   const router = useRouter(); // Hook para redirección
   
-  console.log('user session en edit class ',session?.user.accessToken);
   
   const [formData, setFormData] = useState<{
     id: string;
@@ -113,8 +112,6 @@ const EditClassForm: React.FC = () => {
       form.append('imagen', formData.imagen); // Solo se envía si el usuario seleccionó una nueva imagen
     }
     
-    console.log('disponibilidad tipo:', typeof formData.disponibilidad);
-
 
     try {     
 

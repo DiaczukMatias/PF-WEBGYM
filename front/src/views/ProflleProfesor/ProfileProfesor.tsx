@@ -11,7 +11,6 @@ import { fetchUserById } from "@/helpers/Fetch/FetchUsers";
 
 const ProfileProfesor: React.FC = () => {
   const { data: session } = useSession();
-  console.log('session en profileProfesor', session);
 
   const userName = session?.user.name || "Usuario";
   const userMail = session?.user.email || "Email";
@@ -57,13 +56,13 @@ const ProfileProfesor: React.FC = () => {
             return;
           }
           const fetchedPerfilProfesor = await   fetchPerfilProfesorById(usuarioId, session.user.accessToken);  //para obtener el perfilprofesorID con el  id usuario
-           console.log("perfilprofesor:", fetchedPerfilProfesor)
 
             // Extraer las clases del objeto perfil del profesor
           const clasesProfesor = fetchedPerfilProfesor.clases || [];
 
           if (!clasesProfesor) {
             setError('No se encontró el perfilProfesorId.');
+            console.error( error);
             return;
           }
 
@@ -131,7 +130,6 @@ const ProfileProfesor: React.FC = () => {
       ]); 
 
       setError(null);
-      console.log('log del error', error)
     }
   };
     fetchUserData(); // Llamamos a la función para cargar los datos cuando se monta el componente

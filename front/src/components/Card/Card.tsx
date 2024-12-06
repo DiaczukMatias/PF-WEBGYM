@@ -27,7 +27,6 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
     estado,
   } = clase;
 
-  console.log("clase en card:", clase)
 
   
   const { data: session } = useSession();
@@ -178,6 +177,7 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
      }
     } catch (error) {
 
+      console.error("Error al inscribirse a la clase:", error);
 
       const text1 = "Hubo un problema al realizar la acción. Inténtalo nuevamente.";
    const text2 = "Si no tienes un plan activo, no podrás inscribirte. Puedes consultar nuestras opciones de planes aquí:";
