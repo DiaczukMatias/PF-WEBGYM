@@ -167,7 +167,7 @@ const ProfileProfesor: React.FC = () => {
                   <img src={clase.imagen || `/images/clases/${clase.nombre.toLowerCase()}.jpg`} alt={clase.nombre} className={styles.classImage} />
                 </div>
                 <div className={styles.classDetails}>
-                  <p className={styles.classDate}>{new Date(clase.fecha).toLocaleDateString()}</p>
+                  <p className={styles.classDate}>{clase.fecha}</p>
                   <p className={styles.classProfessor}>
                     Incriptos:  {clase.inscripciones?.length || "No hay isncriptos"}
                   </p>
