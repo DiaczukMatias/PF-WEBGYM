@@ -13,7 +13,7 @@ const SuspendedClasesView = () => {
   const [error, setError] = useState<string | null>(null);
  
   const [page] = useState<number> (1);  // Estado para la página
-  const [limit] = useState<number> (10);  // Estado para el límite de clases por página
+  const [limit] = useState<number> (15);  // Estado para el límite de clases por página
   const { data: session } = useSession();
 
 
