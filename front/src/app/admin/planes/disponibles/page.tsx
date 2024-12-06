@@ -1,4 +1,4 @@
-import PlanesPage from "@/app/admin/planes/page";
+import PlanesView from "@/views/Planes/PlanesView";
 
 
 export default function PlanesDisponibles
@@ -6,7 +6,7 @@ export default function PlanesDisponibles
     return (
       <div className="flex flex-col justify-center items-center text-center">
       <h1 className="text-accent text-3xl font-bold">Planes disponibles:</h1>
-         <PlanesPage/>
+         <PlanesView/>
 
       </div>
     );
