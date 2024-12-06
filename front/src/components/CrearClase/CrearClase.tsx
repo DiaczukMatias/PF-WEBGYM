@@ -1,12 +1,12 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { validateCrearClase } from "@/helpers/validate/validateCrearClase";
-import { createClase } from "@/helpers/Fetch/FetchClases";
 import { ICrearClase } from "@/interfaces/IClase";
+import { IPerfilProfesor } from "@/interfaces/IProfesor";
 import { ICategoria } from "@/interfaces/ICategory";
 import { getCategories } from "@/helpers/Fetch/FetchCategorias";
 import { fetchPerfilProfesores } from "@/helpers/Fetch/FetchProfesores";
-import { IPerfilProfesor } from "@/interfaces/IProfesor";
+import { createClase } from "@/helpers/Fetch/FetchClases";
 import { useSession } from 'next-auth/react';
 import Swal from "sweetalert2";
 
@@ -15,8 +15,8 @@ const CrearClaseForm: React.FC = () => {
   const [categories, setCategories] = useState<ICategoria[]>([]);
   const [profesores, setProfesores] = useState<IPerfilProfesor[]>([]); // Para almacenar los profesores
   const { data: session } = useSession();
-
-
+  console.log('session en crearCalse', session);
+  
   const [nuevaClase, setNuevaClase] = useState<ICrearClase>({
     nombre: "",
     descripcion: "",
@@ -94,6 +94,7 @@ const CrearClaseForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+
     const nuevosErrores = await validateCrearClase(nuevaClase);
     setErrores(nuevosErrores);
 
@@ -106,7 +107,7 @@ const CrearClaseForm: React.FC = () => {
         const formData = new FormData();
         formData.append("nombre", nuevaClase.nombre);
     formData.append("descripcion", nuevaClase.descripcion);
-    formData.append("fecha", new Date(nuevaClase.fecha).toISOString())
+    formData.append("fecha", nuevaClase.fecha)
     formData.append("categoriaId", nuevaClase.categoriaId);
     formData.append("disponibilidad", nuevaClase.disponibilidad.toString());
     formData.append("perfilProfesorId", nuevaClase.perfilProfesorId);
@@ -114,7 +115,7 @@ const CrearClaseForm: React.FC = () => {
       formData.append("imagen", nuevaClase.imagen);
     }
 
-    const response = await createClase( formData);
+    const response = await createClase( formData, session?.user.accessToken || '');
     if (!response.ok) {
       throw new Error("Error al crear la clase");
     }
@@ -207,19 +208,57 @@ Swal.fire({
         </div>
 
         <div className="mb-4">
-          <label htmlFor="fecha" className="block text-sm font-medium">
-            Fecha:
-          </label>
-          <input
-            type="datetime-local"
-            id="fecha"
-            name="fecha"
-            value={nuevaClase.fecha}
-            onChange={handleChange}
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md bg-transparent"
-          />
-          {errores.fecha && <div className="text-red-500 text-sm mt-1">{errores.fecha}</div>}
-        </div>
+  <label htmlFor="fecha" className="block text-sm font-medium">
+    Día y Hora:
+  </label>
+  <div className="flex gap-2">
+    {/* Selector de días */}
+    <select
+      id="dia"
+      name="dia"
+      onChange={(e) =>
+        setNuevaClase((prevClase) => ({
+          ...prevClase,
+          fecha: `${e.target.value} ${prevClase.fecha.split(" ")[1] || "09:00"}`,
+        }))
+      }
+      className="select-custom mt-1 p-2 w-full border-2 border-lime-400 rounded-md bg-gray-800 text-white hover:border-lime-300 focus:outline-none focus:ring-2 focus:ring-lime-300 focus:ring-opacity-50"
+    >
+      <option className="bg-gray-700 text-gray-400" value="">Selecciona un día</option>
+      <option className="bg-gray-800 text-white hover:bg-gray-700 hover:text-lime-300" value="Lunes">Lunes</option>
+      <option className="bg-gray-800 text-white hover:bg-gray-700 hover:text-lime-300" value="Martes">Martes</option>
+      <option className="bg-gray-800 text-white hover:bg-gray-700 hover:text-lime-300" value="Miércoles">Miércoles</option>
+      <option className="bg-gray-800 text-white hover:bg-gray-700 hover:text-lime-300" value="Jueves">Jueves</option>
+      <option className="bg-gray-800 text-white hover:bg-gray-700 hover:text-lime-300" value="Viernes">Viernes</option>
+      <option className="bg-gray-800 text-white hover:bg-gray-700 hover:text-lime-300" value="Sábado">Sábado</option>
+    </select>
+
+    {/* Selector de horas */}
+    <select
+      id="hora"
+      name="hora"
+      onChange={(e) =>
+        setNuevaClase((prevClase) => ({
+          ...prevClase,
+          fecha: `${prevClase.fecha.split(" ")[0] || "Lunes"} ${e.target.value}`,
+        }))
+      }
+      className="select-custom mt-1 p-2 w-full border-2 border-lime-400 rounded-md bg-gray-800 text-white hover:border-lime-300 focus:outline-none focus:ring-2 focus:ring-lime-300 focus:ring-opacity-50"
+    >
+      <option value="" className="bg-gray-700 text-gray-400">Selecciona una hora</option>
+      {Array.from({ length: 12 }, (_, i) => {
+        const hour = 9 + i;
+        return (
+          <option className="bg-gray-800 text-white hover:bg-gray-700 hover:text-lime-300" key={hour} value={`${hour}:00`}>
+            {hour}:00
+          </option>
+        );
+      })}
+    </select>
+  </div>
+  {errores.fecha && <div className="text-red-500 text-sm mt-1">{errores.fecha}</div>}
+</div>
+
 
         <div className="mb-4">
           <label htmlFor="categoria" className="block text-sm font-medium">
@@ -230,16 +269,16 @@ Swal.fire({
             name="categoriaId"
             value={nuevaClase.categoriaId}
             onChange={handleChange}
-            className="mt-1 p-2 w-full border border-white rounded-md bg-transparent text-white hover:border-green-500 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-opacity-50"
+            className="select-custom mt-1 p-2 w-full border-2 border-lime-400 rounded-md bg-gray-800 text-white hover:border-lime-300 focus:outline-none focus:ring-2 focus:ring-lime-300 focus:ring-opacity-50"
           >
-            <option value="" className="bg-gray-700 text-white">
+            <option value="" className="bg-gray-700 text-gray-400">
               Selecciona una categoría
             </option>
             {categories.map((categoria) => (
               <option
                 key={categoria.id}
                 value={categoria.id}
-                className="bg-transparent text-white  hover:text-green-500"
+                className="bg-gray-800 text-white hover:bg-gray-700 hover:text-lime-300"
               >
                 {categoria.nombre}
               </option>
@@ -276,16 +315,16 @@ Swal.fire({
             name="perfilProfesorId"
             value={nuevaClase.perfilProfesorId}
             onChange={handleChange}
-            className="mt-1 p-2 w-full border border-white rounded-md bg-transparent text-white hover:border-green-500 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-opacity-50"
+            className="select-custom mt-1 p-2 w-full border-2 border-lime-400 rounded-md bg-gray-800 text-white hover:border-lime-300 focus:outline-none focus:ring-2 focus:ring-lime-300 focus:ring-opacity-50"
           >
-            <option value="" className="bg-gray-700 text-white">
+            <option value="" className="bg-gray-700 text-gray-400">
               Selecciona un profesor
             </option>
             {profesores.map((profesores) => (
               <option
                 key={profesores.id}
                 value={profesores.id}
-                className="bg-transparent text-white hover:text-green-500"
+                className="bg-gray-700 text-gray-400"
               >
                 {profesores.nombre}
               </option>
