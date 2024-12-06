@@ -355,7 +355,7 @@ export const registerPost = async (userData: IRegisterProps) => {
       }
     );
 
-    console.log("DATOS PASADOS AL BODY", userData);
+    
 
     const responseData = await response.json();
 

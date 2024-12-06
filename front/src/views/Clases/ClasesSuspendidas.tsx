@@ -46,7 +46,7 @@ const SuspendedClasesView = () => {
            throw new Error('Error al obtener las clases activas');
          }
          const clasesActivas: IClase[] = await clasesActivasResponse.json();
-         console.log('Clases activas:', clasesActivas);
+         
 
         const clasesRestadas = todasClases.filter((clase: IClase) => 
           !clasesActivas.some((c: IClase) => c.id === clase.id)
