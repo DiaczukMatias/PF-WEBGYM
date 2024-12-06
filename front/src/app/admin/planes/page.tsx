@@ -72,7 +72,6 @@ const PlanesPage: React.FC = () => {
       try {
         // Intentar obtener los datos desde el backend
         const data = await obtenerMembresias(page, limit);
-        console.log("Datos obtenidos:", data); 
         
         if (data.length === 0) {
           // Si el fetch falla o no hay datos, usa los datos temporales

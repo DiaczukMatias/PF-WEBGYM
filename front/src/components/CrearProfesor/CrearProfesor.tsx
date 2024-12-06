@@ -15,7 +15,6 @@ const CrearProfeForm: React.FC = () => {
   const { data: session } = useSession();
   const router = useRouter(); // Hook para redirección
   
-  console.log('user session ',session?.user.accessToken);
   
   const [formData, setFormData] = useState<{
     usuariID: string;

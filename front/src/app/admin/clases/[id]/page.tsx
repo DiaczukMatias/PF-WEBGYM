@@ -1,4 +1,3 @@
-// src/app/clase/[id]/page.tsx
 //import { clasesData } from "@/helpers/datatemporalClases";
 import ClassCard from "@/components/Card/Card";
 import { fetchClaseById } from "@/helpers/Fetch/FetchClases";
@@ -20,7 +19,6 @@ const DetailsClass = async ({ params }: { params: Promise<{ id: string }> })  =>
    try {
     // Fetch de datos desde la API
     clase = await fetchClaseById(id);
-    console.log("clases data :", clase)
   } catch (error : unknown) {
     const fetchError = error as FetchError;
     // Renderizar mensaje de error si el fetch falla

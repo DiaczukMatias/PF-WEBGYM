@@ -25,7 +25,6 @@ export default function AllUsuarios() {
         const dataUsers = await fetchAllUsers(page, limit, session.user.accessToken );
         if (Array.isArray(dataUsers)) {
           setAllUsers(dataUsers);
-          console.log("data usar all users:", dataUsers)
           setHasMore(dataUsers.length === limit); // Si devuelve menos del límite, no hay más usuarios
         } else {
           console.error("La respuesta no tiene el formato esperado:", dataUsers);

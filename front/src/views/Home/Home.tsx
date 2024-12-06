@@ -26,8 +26,6 @@ const HomeView = () => {
   const [categorias, setCategorias] = useState(categoriesData);
   const [profesores, setProfesores] = useState(profesoresData); // Para almacenar los profesores
 
-  console.log("clases en el home ", clases);
-  console.log("categorias en el home ", categorias);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,7 +40,6 @@ const HomeView = () => {
           setCategorias(fetchedCategorias);
           setProfesores(fetchedProfesores);
 
-          console.log("set clases home:", setClases);
         } catch (error) {
           console.error("Error al obtener datos del backend:", error);
         }
@@ -80,7 +77,6 @@ const HomeView = () => {
     }
   };
 
-  console.log("clases del fetchdada home:", clases);
 
   return (
     <div>

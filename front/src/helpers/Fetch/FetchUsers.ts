@@ -178,7 +178,6 @@ export const fetchAllUsers = async (page = 1, limit = 6, accesToken:string) => {
 
 // 4. Obtener un usuario por ID
 export const fetchUserById = async (id: string) => {
-  console.log('ID en la funcion fetchUserById ' + id );
   
   if (!id) {
     throw new Error("El ID proporcionado es inválido");
@@ -187,7 +186,6 @@ export const fetchUserById = async (id: string) => {
     const response = await fetch(`${apiUrl}/usuarios/${id}`, {
       headers: {"Content-Type": "application/json"},
     });
-    console.log(`URL Fetch: ${apiUrl}/usuarios/${id}`);
     
     
     if (!response.ok) throw new Error(await response.text());

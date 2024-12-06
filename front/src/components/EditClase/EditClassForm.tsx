@@ -13,7 +13,6 @@ const EditClassForm: React.FC = () => {
   const { data: session } = useSession();
   const router = useRouter(); // Hook para redirección
   
-  console.log('user session ',session?.user.accessToken);
   
   const [formData, setFormData] = useState<{
     id: string;
@@ -109,11 +108,8 @@ const EditClassForm: React.FC = () => {
       form.append('imagen', formData.imagen); // Solo se envía si el usuario seleccionó una nueva imagen
     }
     
-    console.log('disponibilidad tipo:', typeof formData.disponibilidad);
-console.log('valor de disponibilidad:', formData.disponibilidad);
 
     try {     
-      console.log("datos a enviar a la solicitud: ", id, form, session?.user.accessToken);
       if (!session?.user.accessToken) {
         console.error('El token de acceso no está disponible.');
         setErrorMessage('No estás autenticado. Por favor, inicia sesión.');

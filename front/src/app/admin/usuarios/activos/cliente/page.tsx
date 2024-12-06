@@ -79,7 +79,6 @@ export default function Clientes() {
     });
     if (result.isConfirmed) {
       const updatedUser = await updateUserRol(id, "admin", session.user.accessToken);
-      console.log("Usuario actualizado:", updatedUser);
 
      await Swal.fire({
         title: "Éxito",

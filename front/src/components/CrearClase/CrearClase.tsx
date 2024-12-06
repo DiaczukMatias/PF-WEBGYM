@@ -37,12 +37,9 @@ const CrearClaseForm: React.FC = () => {
           return; // Detener la ejecución
         }
         const categoriasData = await getCategories(session?.user.accessToken);
-        console.log("Categorías obtenidas:", categoriasData); // Para verificar si las categorías se cargan correctamente
         const profesoresData = await fetchPerfilProfesores(); // Llamar a la función para obtener los profesores
         setCategories(categoriasData);
         setProfesores(profesoresData);
-        console.log("profesoresdata:",profesoresData)
-        console.log("categoriesdata:", categoriasData)
 
       } catch (error) {
         console.error("Error al obtener las categorías o perfil profesores:", error);
@@ -59,7 +56,6 @@ const CrearClaseForm: React.FC = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    console.log(`Cambio detectado en ${name}:`, value);
 
     setNuevaClase((prevClase) => ({
       ...prevClase,
@@ -98,10 +94,8 @@ const CrearClaseForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log("Datos enviados: ", nuevaClase); // Verificar qué datos se envían
     const nuevosErrores = await validateCrearClase(nuevaClase);
     setErrores(nuevosErrores);
-    console.log("Errores de validación:", nuevosErrores); // Mostrar los errores de validación si existen
 
     if (Object.keys(nuevosErrores).length > 0) {
       return;
@@ -154,8 +148,6 @@ const CrearClaseForm: React.FC = () => {
       setErrores({});
     } catch (error) {
       console.error("Error al crear la clase:", error);
-      console.log("Datos a enviar:", nuevaClase);
-console.log("Errores de validación:", errores);
 
 Swal.fire({
   icon: "error",
