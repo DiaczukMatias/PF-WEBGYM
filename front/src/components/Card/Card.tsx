@@ -180,13 +180,21 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
         },
       })      }
     } catch (error) {
+
+      const text1 = "Hubo un problema al realizar la acción. Inténtalo nuevamente.";
+   const text2 = "Si no tienes un plan activo, no podrás inscribirte. Puedes consultar nuestras opciones de planes aquí:";
+
       Swal.fire({
         title: "Error",
-        text: "Hubo un problema al realizar la acción. Inténtalo nuevamente.",
+        html: `${text1}<br><br>${text2}`, 
         icon: "error",
+        showCancelButton: true,
+        confirmButtonText: "Ir a Planes", // Texto del botón principal
+        cancelButtonText: "Cerrar", // Texto del botón secundario
         customClass: {
-          confirmButton: 'bg-gray-300 text-white', // Botón de confirmación rojo
-        },
+           confirmButton: "bg-accent text-black", // Estilo del botón de confirmación
+           cancelButton: "bg-gray-300 text-black", // Estilo del botón de cancelación
+    },
         didOpen: () => {
           const popup = Swal.getPopup();
           if (popup) {
@@ -194,8 +202,12 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
             popup.style.backgroundColor = "#333";
             popup.style.color = "white";
           }}
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Redirige a la página de planes
+          window.location.href = "/planes";
+        }
       });
-      console.error("Error al inscribirse:", error);
     } 
   };
 
