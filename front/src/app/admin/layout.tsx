@@ -45,7 +45,7 @@ const sidebarItems = [
       { label: "Planes Disponibles", path: "/admin/planes/disponibles" },
       { label: "Usuarios Miembros", path: "/admin/planes/miembros" },
       { label: "Crear Nuevo Plan", path: "/admin/planes/crear" },
-      { label: "Planes Suspendidos", path: "/admin/planes/suspendidos" },
+    //  { label: "Planes Suspendidos", path: "/admin/planes/suspendidos" },
 
     ],
   },
