@@ -36,14 +36,7 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
   const usuarioNombre = session?.user?.name || "";
   const rolAdmin = rolUsuario === "admin"
 
-  const formattedHorario = new Date(fecha).toLocaleString("es-ES", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+
 
   const isClaseDelProfesor = perfilProfesor?.nombre === usuarioNombre;
   const mostrarBotonInscribirse =
@@ -177,9 +170,15 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
             popup.style.color = 'white'; // Texto blanco
           }
         },
-      })      }
+      }).then(() => {
+        router.push("/profile"); // Redirige al perfil después de cerrar el SweetAlert
+      });     
+      
+     }
     } catch (error) {
+
       console.error("Error al inscribirse a la clase:", error);
+
       const text1 = "Hubo un problema al realizar la acción. Inténtalo nuevamente.";
    const text2 = "Si no tienes un plan activo, no podrás inscribirte. Puedes consultar nuestras opciones de planes aquí:";
 
@@ -237,7 +236,7 @@ const ClassCard: React.FC<ClassCardProps> = ({ clase }) => {
           </p>
           <p className="text-sm text-secondary2 mt-2">{descripcion}</p>
           <p className="text-sm text-secondary2 mt-2">
-            Fecha: {formattedHorario}
+            Fecha: {fecha}
           </p>
           <p className="text-sm text-secondary2 mt-2">
             Cupos disponibles: {disponibilidad}

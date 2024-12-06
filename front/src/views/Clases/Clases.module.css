@@ -68,3 +68,42 @@
 .errorText {
   color: #dc2626;
 }
+
+.select {
+  padding: 8px 13px;
+  border: 2px solid #b6ff04;
+  border-radius: 5px;
+  font-family: "Oswald", sans-serif;
+  font-size: 0.8rem;
+  background-color: #1f2937; /* Fondo oscuro */
+  color: white; /* Texto claro */
+  outline: none;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.select:hover {
+  border-color: #8abf04; /* Un verde ligeramente diferente */
+}
+
+.select:focus {
+  border-color: #8abf04;
+  box-shadow: 0 0 5px #8abf04;
+}
+
+.select option {
+  font-family: "Oswald", sans-serif;
+  background-color: #1f2937; /* Fondo oscuro */
+  color: white; /* Texto claro */
+  padding: 8px;
+}
+
+/* Asegurar que el dropdown siga el estilo al abrirse */
+.select option:hover {
+  background-color: #2d3748; /* Un tono ligeramente más claro */
+}
+
+/* Para asegurarnos de que no haya estilo por defecto en navegadores antiguos */
+.select option:disabled {
+  color: #6b7280; /* Gris tenue */
+}

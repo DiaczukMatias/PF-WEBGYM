@@ -65,7 +65,7 @@ const PlanesPage: React.FC = () => {
   const [membresias, setMembresias] = useState<IMembresia[]>([]);  // Estado para las membresías
   const [useBackend, setUseBackend] = useState(true);  // Estado para controlar el uso de datos temporales o backend
   const [page] = useState<number>(1);  // Página de las membresías
-  const [limit] = useState<number>(3);  // Límite de membresías por página
+  const [limit] = useState<number>(6);  // Límite de membresías por página
 
   useEffect(() => {
     const fetchData = async () => {
