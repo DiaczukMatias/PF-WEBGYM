@@ -4,7 +4,7 @@ import { validateCrearClase } from "@/helpers/validate/validateCrearClase";
 import { ICrearClase } from "@/interfaces/IClase";
 import { IPerfilProfesor } from "@/interfaces/IProfesor";
 import { ICategoria } from "@/interfaces/ICategory";
-import { getCategories } from "@/helpers/Fetch/FetchCategorias";
+import { getCategoriesActivas } from "@/helpers/Fetch/FetchCategorias";
 import { fetchPerfilProfesores } from "@/helpers/Fetch/FetchProfesores";
 import { createClase } from "@/helpers/Fetch/FetchClases";
 import { useSession } from 'next-auth/react';
@@ -32,11 +32,8 @@ const CrearClaseForm: React.FC = () => {
   useEffect(() => {
     const fetchCategoriesYProfesores = async () => {
       try {
-        if (!session?.user.accessToken) {
-          console.error('El token de acceso no está disponible.');
-          return; // Detener la ejecución
-        }
-        const categoriasData = await getCategories(session?.user.accessToken);
+      
+        const categoriasData = await  getCategoriesActivas();;
         const profesoresData = await fetchPerfilProfesores(); // Llamar a la función para obtener los profesores
         setCategories(categoriasData);
         setProfesores(profesoresData);
