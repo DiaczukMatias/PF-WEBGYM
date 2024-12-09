@@ -12,19 +12,8 @@ export function isFetchError(error: unknown): error is FetchError {
 }  
 
   
-
-
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-//const token = authToken();
 
-// Función para configurar los headers de autorización
-/*const authHeader = () => ({
-  
-  Authorization: `Bearer ${token}`,
-  'Content-Type': 'application/json',
-});
-console.log('Authorization para rutas  protegidas: ',authHeader().Authorization);
-*/// Funciones para cada operación HTTP
 
 // Fetch para crear una nueva clase
 export const createClase = async ( formData: FormData, accessToken :string) => {
